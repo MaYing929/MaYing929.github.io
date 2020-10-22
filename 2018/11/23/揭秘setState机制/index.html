@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="前言：state是react中重要的概念， react是通过管理状态来实现对组件的管理，那么 react是如何控制组件的状态 又是如何利用状态来管理组件的呢？ 我们所知道的版本 大概是 通过this.state来访问state，通过setState()方法来更新state，当this.state()被调用的时候 React会重新调用render方法来重新渲染UI 那好的 先来看一道题吧 1234">
+  <meta name="description" content="前言：state 是 react 中重要的概念， react 是通过管理状态来实现对组件的管理，那么 react 是如何控制组件的状态 又是如何利用状态来管理组件的呢？ 我们所知道的版本 大概是 通过 this.state 来访问 state，通过 setState() 方法来更新 state，当 this.state() 被调用的时候 React 会重新调用 render 方法来重新渲染 UI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="揭秘setState机制">
+<meta property="og:title" content="揭秘 setState 机制">
 <meta property="og:url" content="http://maying.ink/2018/11/23/%E6%8F%AD%E7%A7%98setState%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="前言：state是react中重要的概念， react是通过管理状态来实现对组件的管理，那么 react是如何控制组件的状态 又是如何利用状态来管理组件的呢？ 我们所知道的版本 大概是 通过this.state来访问state，通过setState()方法来更新state，当this.state()被调用的时候 React会重新调用render方法来重新渲染UI 那好的 先来看一道题吧 1234">
+<meta property="og:description" content="前言：state 是 react 中重要的概念， react 是通过管理状态来实现对组件的管理，那么 react 是如何控制组件的状态 又是如何利用状态来管理组件的呢？ 我们所知道的版本 大概是 通过 this.state 来访问 state，通过 setState() 方法来更新 state，当 this.state() 被调用的时候 React 会重新调用 render 方法来重新渲染 UI">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://maying.ink/images/setState/setState1.png">
 <meta property="og:image" content="http://maying.ink/images/setState/setState2.png">
@@ -53,7 +53,7 @@
   };
 </script>
 
-  <title>揭秘setState机制 | 亦舒的海角</title>
+  <title>揭秘 setState 机制 | 亦舒的海角</title>
   
 
 
@@ -213,7 +213,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3setState"><span class="nav-number">1.</span> <span class="nav-text">了解setState</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setState%E8%B0%83%E7%94%A8%E6%A0%88"><span class="nav-number">2.</span> <span class="nav-text">setState调用栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">事务机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%AD%E7%A7%98setState%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">揭秘setState机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%AD%A3%E7%A1%AE%E7%9A%84state%E5%80%BC"><span class="nav-number">5.</span> <span class="nav-text">获取正确的state值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E5%9C%A8%E6%9C%80%E5%90%8E%E7%9A%84%E8%AF%9D"><span class="nav-number">6.</span> <span class="nav-text">说在最后的话</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3setState"><span class="nav-number">1.</span> <span class="nav-text">了解 setState</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setState%E8%B0%83%E7%94%A8%E6%A0%88"><span class="nav-number">2.</span> <span class="nav-text">setState 调用栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%9C%BA%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">事务机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%AD%E7%A7%98setState%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">揭秘 setState 机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%AD%A3%E7%A1%AE%E7%9A%84state%E5%80%BC"><span class="nav-number">5.</span> <span class="nav-text">获取正确的 state 值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E5%9C%A8%E6%9C%80%E5%90%8E%E7%9A%84%E8%AF%9D"><span class="nav-number">6.</span> <span class="nav-text">说在最后的话</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -308,7 +308,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          揭秘setState机制
+          揭秘 setState 机制
         </h1>
 
         <div class="post-meta-container">
@@ -344,14 +344,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>4.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -362,49 +362,54 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>前言：state是react中重要的概念， react是通过管理状态来实现对组件的管理，那么 react是如何控制组件的状态 又是如何利用状态来管理组件的呢？</p>
-<p>我们所知道的版本 大概是 通过<code>this.state</code>来访问<code>state</code>，通过<code>setState()</code>方法来更新<code>state</code>，当<code>this.state()</code>被调用的时候 <code>React</code>会重新调用<code>render</code>方法来重新渲染<code>UI</code></p>
+        <p>前言：state 是 react 中重要的概念， react 是通过管理状态来实现对组件的管理，那么 react 是如何控制组件的状态 又是如何利用状态来管理组件的呢？</p>
+<p>我们所知道的版本 大概是 通过 <code>this.state</code> 来访问 <code>state</code>，通过 <code>setState()</code> 方法来更新 <code>state</code>，当 <code>this.state()</code> 被调用的时候 <code>React</code> 会重新调用 <code>render</code> 方法来重新渲染 <code>UI</code></p>
 <p>那好的 先来看一道题吧</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">export <span class="keyword">default</span> class SetState extends React.Component &#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.<span class="keyword">state</span> = &#123;</span><br><span class="line">            val:<span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    componentWillMount()&#123;</span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentWillMount第一次输出',this.<span class="keyword">state</span>.val)</span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentWillMount第二次输出',this.<span class="keyword">state</span>.val)</span><br><span class="line">    &#125;</span><br><span class="line">    componentDidMount()&#123;</span><br><span class="line">        // debugger;</span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidMount第一次输出',this.<span class="keyword">state</span>.val)</span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidMount第二次输出',this.<span class="keyword">state</span>.val)</span><br><span class="line">        <span class="built_in">set</span>Timeout(()=&gt;&#123;</span><br><span class="line">            // debugger;</span><br><span class="line">            console.<span class="keyword">log</span>('开始<span class="built_in">set</span>Timeout',this.<span class="keyword">state</span>.val)</span><br><span class="line">            this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">            console.<span class="keyword">log</span>('第三次输出',this.<span class="keyword">state</span>.val) </span><br><span class="line"></span><br><span class="line">            this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">            console.<span class="keyword">log</span>('第四次输出',this.<span class="keyword">state</span>.val) </span><br><span class="line">        &#125;,<span class="number">0</span>)</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    render()&#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">export default class SetState extends React.Component {</span><br><span class="line">    constructor(){</span><br><span class="line">        super();</span><br><span class="line">        this.state = {</span><br><span class="line">            val:0</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    componentWillMount(){</span><br><span class="line">        this.setState({val:this.state.val+1});</span><br><span class="line">        console.log('componentWillMount第一次输出',this.state.val)</span><br><span class="line">        this.setState({val:this.state.val+1});</span><br><span class="line">        console.log('componentWillMount第二次输出',this.state.val)</span><br><span class="line">    }</span><br><span class="line">    componentDidMount(){</span><br><span class="line">        // debugger;</span><br><span class="line">        this.setState({val:this.state.val+1});</span><br><span class="line">        console.log('componentDidMount第一次输出',this.state.val)</span><br><span class="line">        this.setState({val:this.state.val+1});</span><br><span class="line">        console.log('componentDidMount第二次输出',this.state.val)</span><br><span class="line">        setTimeout(()=&gt;{</span><br><span class="line">            // debugger;</span><br><span class="line">            console.log('开始setTimeout',this.state.val)</span><br><span class="line">            this.setState({val:this.state.val+1});</span><br><span class="line">            console.log('第三次输出',this.state.val) </span><br><span class="line"></span><br><span class="line">            this.setState({val:this.state.val+1});</span><br><span class="line">            console.log('第四次输出',this.state.val) </span><br><span class="line">        },0)</span><br><span class="line">    }</span><br><span class="line">   </span><br><span class="line">    render(){</span><br><span class="line">        return null;</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">  }</span><br></pre></td></tr></tbody></table></figure>
 <p>这道题的答案是 <code>0 0 1 1 2 3 4</code></p>
 <p>假如结果与你心中的答案并不完全相同，那么你应该感兴趣这背后究竟发生了什么.</p>
 <a id="more"></a>
-<h2 id="了解setState"><a href="#了解setState" class="headerlink" title="了解setState"></a>了解setState</h2><ol>
-<li>setState是同步执行的 但是state并不一定会同步更新（异步更新）</li>
+<h2 id="了解setState"><a href="#了解setState" class="headerlink" title="了解setState"></a>了解 setState</h2><ol>
+<li>setState 是同步执行的 但是 state 并不一定会同步更新（异步更新）</li>
 </ol>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">实际上react的异步更新通过一个队列机制来实现，当执行<span class="keyword">state</span>时 需要将更新的<span class="keyword">state</span>合并后放入状态队列而不会立刻更新 队列机制可以高效的批量更新<span class="keyword">state</span> 如果在非构造方法里更改值  类似 this.<span class="keyword">state</span>.name='yishu' 是不会被放到状态队列中 当下次调用<span class="built_in">set</span>State并对状态队列进行合并时 将会忽略它而造成无法预知的错误</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">实际上react的异步更新通过一个队列机制来实现，当执行state时 需要将更新的state合并后放入状态队列而不会立刻更新 队列机制可以高效的批量更新state 如果在非构造方法里更改值  类似 this.state.name='yishu' 是不会被放到状态队列中 当下次调用setState并对状态队列进行合并时 将会忽略它而造成无法预知的错误</span><br></pre></td></tr></tbody></table></figure>
 <ol start="2">
-<li>setState在React生命周期和合成事件中批量覆盖执行</li>
+<li>setState 在 React 生命周期和合成事件中批量覆盖执行 </li>
 </ol>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在React的生命周期钩子和合成事件中，多次执行<span class="keyword">set</span>State，会批量执行，多次同步执行的<span class="keyword">set</span>State，会进行合并，类似于Object.assign</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在React的生命周期钩子和合成事件中，多次执行setState，会批量执行，多次同步执行的setState，会进行合并，类似于Object.assign</span><br></pre></td></tr></tbody></table></figure>
+
 <ol start="3">
-<li>setState在原生事件，setTimeout，setInterval，Promise等异步操作中，state会同步更新</li>
+<li>setState 在原生事件，setTimeout，setInterval，Promise 等异步操作中，state 会同步更新 </li>
 </ol>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">当执行到 <span class="built_in">set</span>Timeout 的时候，把它丢到列队里，并没有去执行，而是先执行的 finally 主进程代码块，等 finally 执行完了， isBatchingUpdates 又变为了 false ，导致最后去执行队列里的 <span class="built_in">set</span>State 时候， requestWork 走的是和原生事件一样的 expirationTime === Sync if分支，所以表现就会和原生事件一样，可以同步拿到最新的<span class="keyword">state</span>的值。</span><br></pre></td></tr></table></figure>
-<p>关于setState这个方法 源码记载</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ReactComponent.prototype.setState = <span class="function"><span class="keyword">function</span><span class="params">(partialState, callback)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  <span class="keyword">this</span>.updater.enqueueSetState(<span class="keyword">this</span>, partialState);</span><br><span class="line">  <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">    <span class="keyword">this</span>.updater.enqueueCallback(<span class="keyword">this</span>, callback, <span class="string">'setState'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">  enqueueSetState: <span class="function"><span class="keyword">function</span><span class="params">(publicInstance, partialState)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">var</span> queue =internalInstance._pendingStateQueue ||</span><br><span class="line">      (internalInstance._pendingStateQueue = []);</span><br><span class="line">    queue.push(partialState);</span><br><span class="line"></span><br><span class="line">    enqueueUpdate(internalInstance);</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>setState方法实际上会执行 <code>enqueueSetState</code>方法 通过<code>_pendingStateQueue</code>更新队列进行合并操作 最终通过<code>enqueueUpdate</code>执行state更新</p>
-<h2 id="setState调用栈"><a href="#setState调用栈" class="headerlink" title="setState调用栈"></a>setState调用栈</h2><p><img src="/images/setState/setState1.png" alt></p>
-<p>如图：通过变量isBatchingUpdate 来决定当前是应该走批量更新 还是立即更新 为true时 说明当前在批量更新模式 为false的话 会立即更新</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">当执行到 setTimeout 的时候，把它丢到列队里，并没有去执行，而是先执行的 finally 主进程代码块，等 finally 执行完了， isBatchingUpdates 又变为了 false ，导致最后去执行队列里的 setState 时候， requestWork 走的是和原生事件一样的 expirationTime === Sync if分支，所以表现就会和原生事件一样，可以同步拿到最新的state的值。</span><br></pre></td></tr></tbody></table></figure>
+
+<p>关于 setState 这个方法 源码记载</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ReactComponent.prototype.setState = function(partialState, callback) {</span><br><span class="line">  //...</span><br><span class="line">  this.updater.enqueueSetState(this, partialState);</span><br><span class="line">  if (callback) {</span><br><span class="line">    this.updater.enqueueCallback(this, callback, 'setState');</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">  enqueueSetState: function(publicInstance, partialState) {</span><br><span class="line">  //...</span><br><span class="line">    var queue =internalInstance._pendingStateQueue ||</span><br><span class="line">      (internalInstance._pendingStateQueue = []);</span><br><span class="line">    queue.push(partialState);</span><br><span class="line"></span><br><span class="line">    enqueueUpdate(internalInstance);</span><br><span class="line">  },</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>setState 方法实际上会执行 <code>enqueueSetState</code> 方法 通过<code>_pendingStateQueue</code> 更新队列进行合并操作 最终通过 <code>enqueueUpdate</code> 执行 state 更新</p>
+<h2 id="setState调用栈"><a href="#setState调用栈" class="headerlink" title="setState调用栈"></a>setState 调用栈</h2><p><img src="/images/setState/setState1.png"></p>
+<p>如图：通过变量 isBatchingUpdate 来决定当前是应该走批量更新 还是立即更新 为 true 时 说明当前在批量更新模式 为 false 的话 会立即更新</p>
 <p>为了更好的理解 涉及到部分源码</p>
 <p>enqueueUpdate 代码如下：</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">enqueueUpdate</span><span class="params">(component)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果不处于批量更新模式 更新</span></span><br><span class="line">  <span class="keyword">if</span> (!batchingStrategy.isBatchingUpdates) &#123;</span><br><span class="line">batchingStrategy.batchedUpdates(enqueueUpdate, component);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 如果处于批量更新模式 则将该组件保存在 dirtyComponents 中</span></span><br><span class="line">  dirtyComponents.push(component);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>那么这个<code>batchingStrategy</code>究竟是做什么的？ 其实它只是一个简单的对象，定义了 isBatchingUpdates 和 batchedUpdates 方法 其中transaction.perform 的调用 涉及到了<font color="red">事务</font>的概念</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// batchedUpdates 方法</span></span><br><span class="line"><span class="keyword">var</span> ReactDefaultBatchingStrategy = &#123;</span><br><span class="line">  isBatchingUpdates: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line">   batchedUpdates: <span class="function"><span class="keyword">function</span><span class="params">(callback, a, b, c, d, e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> alreadyBatchingUpdates = ReactDefaultBatchingStrategy.isBatchingUpdates;</span><br><span class="line"></span><br><span class="line">    ReactDefaultBatchingStrategy.isBatchingUpdates = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (alreadyBatchingUpdates) &#123;</span><br><span class="line">      callback(a, b, c, d, e);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      transaction.perform(callback, <span class="literal">null</span>, a, b, c, d, e);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="事务机制"><a href="#事务机制" class="headerlink" title="事务机制"></a>事务机制</h2><p>事务就是将需要执行的方法使用wrapper封装起来 再通过事务提供的perform方法执行<br><img src="/images/setState/setState2.png" alt><br>执行 perform 之前 先执行  wrapper 中的init方法 执行完 perform之后 再执行 所有的close方法<br>假如有一个事务 test 执行顺序表现为 </p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function enqueueUpdate(component) {</span><br><span class="line"></span><br><span class="line">  // 如果不处于批量更新模式 更新</span><br><span class="line">  if (!batchingStrategy.isBatchingUpdates) {</span><br><span class="line">batchingStrategy.batchedUpdates(enqueueUpdate, component);</span><br><span class="line">    return;</span><br><span class="line">  }</span><br><span class="line">  // 如果处于批量更新模式 则将该组件保存在 dirtyComponents 中</span><br><span class="line">  dirtyComponents.push(component);</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>那么这个 <code>batchingStrategy</code> 究竟是做什么的？ 其实它只是一个简单的对象，定义了 isBatchingUpdates 和 batchedUpdates 方法 其中 transaction.perform 的调用 涉及到了<font color="red">事务</font>的概念</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// batchedUpdates 方法</span><br><span class="line">var ReactDefaultBatchingStrategy = {</span><br><span class="line">  isBatchingUpdates: false,</span><br><span class="line"></span><br><span class="line">   batchedUpdates: function(callback, a, b, c, d, e) {</span><br><span class="line">    var alreadyBatchingUpdates = ReactDefaultBatchingStrategy.isBatchingUpdates;</span><br><span class="line"></span><br><span class="line">    ReactDefaultBatchingStrategy.isBatchingUpdates = true;</span><br><span class="line"></span><br><span class="line">    if (alreadyBatchingUpdates) {</span><br><span class="line">      callback(a, b, c, d, e);</span><br><span class="line">    } else {</span><br><span class="line">      transaction.perform(callback, null, a, b, c, d, e);</span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">};</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="事务机制"><a href="#事务机制" class="headerlink" title="事务机制"></a>事务机制</h2><p>事务就是将需要执行的方法使用 wrapper 封装起来 再通过事务提供的 perform 方法执行<br><img src="/images/setState/setState2.png"><br>执行 perform 之前 先执行  wrapper 中的 init 方法 执行完 perform 之后 再执行 所有的 close 方法<br>假如有一个事务 test 执行顺序表现为 </p>
 <p><code>init-&gt;test-&gt;close</code></p>
-<h2 id="揭秘setState机制"><a href="#揭秘setState机制" class="headerlink" title="揭秘setState机制"></a>揭秘setState机制</h2><p>那么 说了这么多，事务是怎么导致前面所述的setState的各种不同表现呢.</p>
-<p>在整个React组件渲染到Dom中的过程就处于一个大的事务中 ，在生命周期和合成事件执行前后都会执行init 和 close，init会调用batchedUpdate方法将isBatchingUpdates变量置为true，开启批量更新，而close会将isBatchingUpdates置为false，setState的更新会被存入队列中，待同步代码执行完后，再执行队列中的state更新。</p>
-<p>而在原生事件和异步操作中，不会执行pre钩子，或者生命周期的中的异步操作之前执行了pre钩子，但是pos钩子也在异步操作之前执行完了，isBatchingUpdates必定为false，也就不会进行批量更新</p>
-<h2 id="获取正确的state值"><a href="#获取正确的state值" class="headerlink" title="获取正确的state值"></a>获取正确的state值</h2><p>以下：</p>
+<h2 id="揭秘setState机制"><a href="#揭秘setState机制" class="headerlink" title="揭秘setState机制"></a>揭秘 setState 机制</h2><p>那么 说了这么多，事务是怎么导致前面所述的 setState 的各种不同表现呢.</p>
+<p>在整个 React 组件渲染到 Dom 中的过程就处于一个大的事务中 ，在生命周期和合成事件执行前后都会执行 init 和 close，init 会调用 batchedUpdate 方法将 isBatchingUpdates 变量置为 true，开启批量更新，而 close 会将 isBatchingUpdates 置为 false，setState 的更新会被存入队列中，待同步代码执行完后，再执行队列中的 state 更新。</p>
+<p>而在原生事件和异步操作中，不会执行 pre 钩子，或者生命周期的中的异步操作之前执行了 pre 钩子，但是 pos 钩子也在异步操作之前执行完了，isBatchingUpdates 必定为 false，也就不会进行批量更新</p>
+<h2 id="获取正确的state值"><a href="#获取正确的state值" class="headerlink" title="获取正确的state值"></a>获取正确的 state 值</h2><p>以下：</p>
 <ol>
-<li>setState函数式</li>
-<li>放到setTimeout，Promise等异步中执行</li>
-<li>放到componentDidUpdate中</li>
+<li>setState 函数式</li>
+<li>放到 setTimeout，Promise 等异步中执行</li>
+<li>放到 componentDidUpdate 中</li>
 </ol>
 <h2 id="说在最后的话"><a href="#说在最后的话" class="headerlink" title="说在最后的话"></a>说在最后的话</h2><p>所以 开篇的结果应该可以理解了吧</p>
-<p>我们把didMount中四次调用归类，前两次一类 因为它们在同一个调用栈中执行 setTimeout中的两次属于另一类，我们重点看第一类，早在setState调用之前  ReactDefaultBatchingStrategy.isBatchingUpdates已经被设置为true，所以两次的setSate并没有生效 而是被放进了队列中<br>再看setTimeout中的两次state 此时的isBatchingUpdates为false，这也就导致了心的state马上生效 没有走到队列的分支（可参考调用栈图）也就是说 第一次执行setState时 值就为1 加1之后变为2 第二次打印同理</p>
-<p>参考：深入react技术栈一书 希望通过setState 深入源码 知其然也知其所以然</p>
+<p>我们把 didMount 中四次调用归类，前两次一类 因为它们在同一个调用栈中执行 setTimeout 中的两次属于另一类，我们重点看第一类，早在 setState 调用之前  ReactDefaultBatchingStrategy.isBatchingUpdates 已经被设置为 true，所以两次的 setSate 并没有生效 而是被放进了队列中<br>再看 setTimeout 中的两次 state 此时的 isBatchingUpdates 为 false，这也就导致了心的 state 马上生效 没有走到队列的分支（可参考调用栈图）也就是说 第一次执行 setState 时 值就为 1 加 1 之后变为 2 第二次打印同理</p>
+<p>参考：深入 react 技术栈一书 希望通过 setState 深入源码 知其然也知其所以然</p>
 
     </div>
 
@@ -436,13 +441,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2018/11/17/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3js%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/" rel="prev" title="彻底理解js是如何工作的">
-                  <i class="fa fa-chevron-left"></i> 彻底理解js是如何工作的
+                <a href="/2018/11/17/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3js%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/" rel="prev" title="彻底理解 js 是如何工作的">
+                  <i class="fa fa-chevron-left"></i> 彻底理解 js 是如何工作的
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2018/11/27/pushState/" rel="next" title="一个问题引出的pushState用法">
-                  一个问题引出的pushState用法 <i class="fa fa-chevron-right"></i>
+                <a href="/2018/11/27/pushState/" rel="next" title="一个问题引出的 pushState 用法">
+                  一个问题引出的 pushState 用法 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -503,13 +508,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -599,8 +604,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

@@ -26,7 +26,7 @@
 
   <meta name="description" content="汤姆大叔的原文链接">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深入理解Javascript 系列二：揭秘命名函数表达式">
+<meta property="og:title" content="深入理解 Javascript 系列二：揭秘命名函数表达式">
 <meta property="og:url" content="http://maying.ink/2018/03/20/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3js%E7%B3%BB%E5%88%97%E4%BA%8C/index.html">
 <meta property="og:site_name" content="亦舒的海角">
 <meta property="og:description" content="汤姆大叔的原文链接">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title>深入理解Javascript 系列二：揭秘命名函数表达式 | 亦舒的海角</title>
+  <title>深入理解 Javascript 系列二：揭秘命名函数表达式 | 亦舒的海角</title>
   
 
 
@@ -306,7 +306,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          深入理解Javascript 系列二：揭秘命名函数表达式
+          深入理解 Javascript 系列二：揭秘命名函数表达式
         </h1>
 
         <div class="post-meta-container">
@@ -342,14 +342,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -360,14 +360,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><a href="http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html" target="_blank" rel="noopener">汤姆大叔的原文链接</a></p>
+        <p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/TomXu/archive/2011/12/29/2290308.html">汤姆大叔的原文链接</a></p>
 <a id="more"></a>
-<h2 id="函数表达式-和函数声明"><a href="#函数表达式-和函数声明" class="headerlink" title="函数表达式 和函数声明"></a>函数表达式 和函数声明</h2><h4 id="函数表达式"><a href="#函数表达式" class="headerlink" title="函数表达式"></a>函数表达式</h4><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">函数名称（可选）（参数：可选）&#123;函数体&#125;</span></span><br></pre></td></tr></table></figure>
-<h4 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h4><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">函数名称（参数：可选）&#123;函数体&#125;</span></span><br></pre></td></tr></table></figure>
-<h4 id="如何区分两者"><a href="#如何区分两者" class="headerlink" title="如何区分两者"></a>如何区分两者</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">函数表达式：不声明函数名称和声明了函数名称的其他情况</span><br><span class="line">          如果 <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;&#125; 是作为赋值表达式的一部分的话</span><br><span class="line">          像这样：</span><br><span class="line">           <span class="number">1.</span><span class="keyword">var</span> bar = <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;&#125;; <span class="comment">// 表达式，因为它是赋值表达式的一部分</span></span><br><span class="line">           <span class="number">2.</span><span class="keyword">new</span> <span class="function"><span class="keyword">function</span> <span class="title">bar</span><span class="params">()</span></span>&#123;&#125;; <span class="comment">// 表达式，因为它是new表达式</span></span><br><span class="line">           <span class="number">3.</span>被括号括住的(<span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;&#125;)他是表达式的原因是因为括号 ()是一个分组操作符，它的内部只能包含表达式</span><br><span class="line">            (<span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;&#125;); <span class="comment">// 函数表达式：包含在分组操作符内</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">函数声明：声明了函数名称且<span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;&#125; 被包含在一个函数体内（规则：只能出现在程序或函数体内）</span><br><span class="line">            像这样</span><br><span class="line">            (<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">                <span class="function"><span class="keyword">function</span> <span class="title">bar</span><span class="params">()</span></span>&#123;&#125; <span class="comment">// 声明，因为它是函数体的一部分</span></span><br><span class="line">            &#125;)();</span><br><span class="line">        或者位于程序最顶部的话</span><br><span class="line">        像这样</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;&#125; <span class="comment">// 声明，因为它是程序的一部分</span></span><br></pre></td></tr></table></figure>
-<h4 id="一些特性"><a href="#一些特性" class="headerlink" title="一些特性"></a>一些特性</h4><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">函数声明:会在任何表达式被解析和求值之前先被解析和求值 即使你的声明在最后一行 它也会在同作用域内的第一个表达式之前被解析/求值</span></span><br></pre></td></tr></table></figure>
-<h4 id="函数语句"><a href="#函数语句" class="headerlink" title="函数语句"></a>函数语句</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">函数语句不是在变量初始化期间声明的，而是在运行时声明的——与函数表达式一样。不过，函数语句的标识符一旦声明能在函数的整个作用域生效了。标识符有效性正是导致函数语句与函数表达式不同的关键所在</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此刻，foo还没用声明</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'typeof foo1'</span>,<span class="keyword">typeof</span> foo)<span class="comment">// "undefined"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="comment">// 进入这里以后，foo就被声明在整个作用域内了</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log(<span class="string">'11111'</span>) &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 从来不会走到这里，所以这里的foo也不会被声明</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123; <span class="built_in">console</span>.log(<span class="string">'222'</span>) &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">typeof</span> foo; <span class="comment">// "function"</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'typeof foo2'</span>,<span class="keyword">typeof</span> foo)</span><br></pre></td></tr></table></figure>
-<h4 id="命名函数表达式"><a href="#命名函数表达式" class="headerlink" title="命名函数表达式"></a>命名函数表达式</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">命名函数表达式，理所当然，就是它得有名字，前面的例子<span class="keyword">var</span> bar = <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;&#125;;就是一个有效的命名函数表达式，但有一点需要记住：这个名字只在新定义的函数作用域内有效， 这就是 与函数语句的区别</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> foo; <span class="comment">// foo是在内部作用域内有效</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// foo在外部用于是不可见的</span></span><br><span class="line">  <span class="keyword">typeof</span> foo; <span class="comment">// "undefined"</span></span><br><span class="line">  f(); <span class="comment">// "function"</span></span><br><span class="line"></span><br><span class="line">  命名函数表达式出现的意义：便于调试 调试器在调试的时候会将它的名字显示在调用的栈上</span><br></pre></td></tr></table></figure>
+<h2 id="函数表达式-和函数声明"><a href="#函数表达式-和函数声明" class="headerlink" title="函数表达式 和函数声明"></a>函数表达式 和函数声明</h2><h4 id="函数表达式"><a href="#函数表达式" class="headerlink" title="函数表达式"></a>函数表达式</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function 函数名称（可选）（参数：可选）{函数体}</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function 函数名称（参数：可选）{函数体}</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="如何区分两者"><a href="#如何区分两者" class="headerlink" title="如何区分两者"></a>如何区分两者</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">函数表达式：不声明函数名称和声明了函数名称的其他情况</span><br><span class="line">          如果 function foo(){} 是作为赋值表达式的一部分的话</span><br><span class="line">          像这样：</span><br><span class="line">           1.var bar = function foo(){}; // 表达式，因为它是赋值表达式的一部分</span><br><span class="line">           2.new function bar(){}; // 表达式，因为它是new表达式</span><br><span class="line">           3.被括号括住的(function foo(){})他是表达式的原因是因为括号 ()是一个分组操作符，它的内部只能包含表达式</span><br><span class="line">            (function foo(){}); // 函数表达式：包含在分组操作符内</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">函数声明：声明了函数名称且function foo(){} 被包含在一个函数体内（规则：只能出现在程序或函数体内）</span><br><span class="line">            像这样</span><br><span class="line">            (function(){</span><br><span class="line">                function bar(){} // 声明，因为它是函数体的一部分</span><br><span class="line">            })();</span><br><span class="line">        或者位于程序最顶部的话</span><br><span class="line">        像这样</span><br><span class="line">        function foo(){} // 声明，因为它是程序的一部分</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<h4 id="一些特性"><a href="#一些特性" class="headerlink" title="一些特性"></a>一些特性</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">函数声明:会在任何表达式被解析和求值之前先被解析和求值 即使你的声明在最后一行 它也会在同作用域内的第一个表达式之前被解析/求值</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="函数语句"><a href="#函数语句" class="headerlink" title="函数语句"></a>函数语句</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">函数语句不是在变量初始化期间声明的，而是在运行时声明的——与函数表达式一样。不过，函数语句的标识符一旦声明能在函数的整个作用域生效了。标识符有效性正是导致函数语句与函数表达式不同的关键所在</span><br><span class="line"></span><br><span class="line">// 此刻，foo还没用声明</span><br><span class="line">    console.log('typeof foo1',typeof foo)// "undefined"</span><br><span class="line"></span><br><span class="line">    if (true) {</span><br><span class="line">        // 进入这里以后，foo就被声明在整个作用域内了</span><br><span class="line">        function foo(){ console.log('11111') }</span><br><span class="line">    }</span><br><span class="line">    else {</span><br><span class="line">        // 从来不会走到这里，所以这里的foo也不会被声明</span><br><span class="line">        function foo(){ console.log('222') }</span><br><span class="line">    }</span><br><span class="line">    typeof foo; // "function"</span><br><span class="line">    console.log('typeof foo2',typeof foo)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<h4 id="命名函数表达式"><a href="#命名函数表达式" class="headerlink" title="命名函数表达式"></a>命名函数表达式</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">命名函数表达式，理所当然，就是它得有名字，前面的例子var bar = function foo(){};就是一个有效的命名函数表达式，但有一点需要记住：这个名字只在新定义的函数作用域内有效， 这就是 与函数语句的区别</span><br><span class="line"></span><br><span class="line"> var f = function foo(){</span><br><span class="line">    return typeof foo; // foo是在内部作用域内有效</span><br><span class="line">  };</span><br><span class="line">  // foo在外部用于是不可见的</span><br><span class="line">  typeof foo; // "undefined"</span><br><span class="line">  f(); // "function"</span><br><span class="line"></span><br><span class="line">  命名函数表达式出现的意义：便于调试 调试器在调试的时候会将它的名字显示在调用的栈上</span><br></pre></td></tr></tbody></table></figure>
     </div>
 
     
@@ -401,13 +402,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2018/01/16/javascript%E5%86%B7%E7%9F%A5%E8%AF%86/" rel="prev" title="js冷知识">
-                  <i class="fa fa-chevron-left"></i> js冷知识
+                <a href="/2018/03/20/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3js%E7%B3%BB%E5%88%97%E4%B8%80/" rel="prev" title="深入理解 Javascript 系列一：编写高质量代码的基本要点">
+                  <i class="fa fa-chevron-left"></i> 深入理解 Javascript 系列一：编写高质量代码的基本要点
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2018/03/20/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3js%E7%B3%BB%E5%88%97%E4%B8%80/" rel="next" title="深入理解Javascript 系列一：编写高质量代码的基本要点">
-                  深入理解Javascript 系列一：编写高质量代码的基本要点 <i class="fa fa-chevron-right"></i>
+                <a href="/2018/03/30/DomContentLoaded%20%E4%B8%8E%20load/" rel="next" title="DomContentLoaded 与 load">
+                  DomContentLoaded 与 load <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -468,13 +469,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -564,8 +565,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

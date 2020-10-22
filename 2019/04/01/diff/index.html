@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="理解react的diff算法">
+  <meta name="description" content="理解 react 的 diff 算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React diff 算法">
 <meta property="og:url" content="http://maying.ink/2019/04/01/diff/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="理解react的diff算法">
+<meta property="og:description" content="理解 react 的 diff 算法">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://maying.ink/images/passive/diff.png">
 <meta property="og:image" content="http://maying.ink/images/passive/diff2.jpeg">
@@ -344,14 +344,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>519</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -362,22 +362,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>理解react的diff算法</p>
+        <p>理解 react 的 diff 算法</p>
 <a id="more"></a>
+
 <p><img src="/images/passive/diff.png" alt="jsworke"></p>
-<h2 id="同级节点的移动-增加-删除的具体实现"><a href="#同级节点的移动-增加-删除的具体实现" class="headerlink" title="同级节点的移动 增加 删除的具体实现"></a>同级节点的移动 增加 删除的具体实现</h2><h3 id="场景一-新旧集合中存在相同节点但位置不同时，如何移动节点"><a href="#场景一-新旧集合中存在相同节点但位置不同时，如何移动节点" class="headerlink" title="场景一 新旧集合中存在相同节点但位置不同时，如何移动节点"></a>场景一 新旧集合中存在相同节点但位置不同时，如何移动节点</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">旧  <span class="selector-tag">a</span> <span class="selector-tag">b</span> c d</span><br><span class="line">新  <span class="selector-tag">b</span> <span class="selector-tag">a</span> d c</span><br></pre></td></tr></table></figure>
-<p>React先从新组合中取得b，然后判断旧中是否存在相同节点b，当发现存在节点b后，就去判断是否移动b<br>涉及到两个变量 index 和lastIndex</p>
+<h2 id="同级节点的移动-增加-删除的具体实现"><a href="#同级节点的移动-增加-删除的具体实现" class="headerlink" title="同级节点的移动 增加 删除的具体实现"></a>同级节点的移动 增加 删除的具体实现</h2><h3 id="场景一-新旧集合中存在相同节点但位置不同时，如何移动节点"><a href="#场景一-新旧集合中存在相同节点但位置不同时，如何移动节点" class="headerlink" title="场景一 新旧集合中存在相同节点但位置不同时，如何移动节点"></a>场景一 新旧集合中存在相同节点但位置不同时，如何移动节点</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">旧  a b c d</span><br><span class="line">新  b a d c</span><br></pre></td></tr></tbody></table></figure>
+
+<p>React 先从新组合中取得 b，然后判断旧中是否存在相同节点 b，当发现存在节点 b 后，就去判断是否移动 b<br>涉及到两个变量 index 和 lastIndex</p>
 <ul>
-<li>index:b在集合里下标 此时 index = 1</li>
-<li>lastIndex：类似于一个map的索引，一开始默认值是0，它会与map中的元素进行比较，比较完后，更新当前的值（取index和lastIndex的较大数）</li>
+<li>index:b 在集合里下标 此时 index = 1</li>
+<li>lastIndex：类似于一个 map 的索引，一开始默认值是 0，它会与 map 中的元素进行比较，比较完后，更新当前的值（取 index 和 lastIndex 的较大数）</li>
 </ul>
-<h4 id="比较规则："><a href="#比较规则：" class="headerlink" title="比较规则："></a>比较规则：</h4><p>如果 index &lt; lastIndex 那此元素就需要移动<br>在旧组合里将该元素移动到下标为lastIndex的位置</p>
+<h4 id="比较规则："><a href="#比较规则：" class="headerlink" title="比较规则："></a>比较规则：</h4><p>如果 index &lt; lastIndex 那此元素就需要移动<br>在旧组合里将该元素移动到下标为 lastIndex 的位置</p>
 <p>具体的计算过程看下图</p>
 <p><img src="/images/passive/diff2.jpeg" alt="jsworke"></p>
 <h3 id="场景一-新集合中有新加入的节点，旧集合中有删除的节点"><a href="#场景一-新集合中有新加入的节点，旧集合中有删除的节点" class="headerlink" title="场景一 新集合中有新加入的节点，旧集合中有删除的节点"></a>场景一 新集合中有新加入的节点，旧集合中有删除的节点</h3><p>规则同上</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">旧  <span class="selector-tag">a</span> <span class="selector-tag">b</span> c d</span><br><span class="line">新  <span class="selector-tag">b</span> e c a</span><br></pre></td></tr></table></figure>
-<p>比较b 此时 index = 1 lastindex = 0  1&gt;0 b不移动 更新 lastindex为1<br>当比较到e的时候，发现旧组合中不存在，故在旧组合下标为1的位置 创建E，更新lastIndex=1<br>…<br>对比到a 因为是最后一个 所以 diff操作结束</p>
-<p>新组合对比完成后 再去对旧集合遍历 判断新集合没有，但旧集合有的元素（如d），删除d，diff操作结束</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">旧  a b c d</span><br><span class="line">新  b e c a</span><br></pre></td></tr></tbody></table></figure>
+<p>比较 b 此时 index = 1 lastindex = 0  1&gt;0 b 不移动 更新 lastindex 为 1<br>当比较到 e 的时候，发现旧组合中不存在，故在旧组合下标为 1 的位置 创建 E，更新 lastIndex=1<br>…<br>对比到 a 因为是最后一个 所以 diff 操作结束</p>
+<p>新组合对比完成后 再去对旧集合遍历 判断新集合没有，但旧集合有的元素（如 d），删除 d，diff 操作结束</p>
 
     </div>
 
@@ -409,8 +411,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2019/03/31/urlrender/" rel="prev" title="一个页面从输入url到加载完成 这个过程发生了什么">
-                  <i class="fa fa-chevron-left"></i> 一个页面从输入url到加载完成 这个过程发生了什么
+                <a href="/2019/03/31/urlrender/" rel="prev" title="一个页面从输入 url 到加载完成 这个过程发生了什么">
+                  <i class="fa fa-chevron-left"></i> 一个页面从输入 url 到加载完成 这个过程发生了什么
                 </a>
             </div>
             <div class="post-nav-item">
@@ -476,13 +478,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -572,8 +574,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

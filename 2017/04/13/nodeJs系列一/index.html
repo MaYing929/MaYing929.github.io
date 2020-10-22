@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="node简介node是javascript语言的服务器运行环境所谓的运行环境有两层意思：  javascript语言通过node在服务器运行，在这个意义上，node是javascriprt的虚拟机2.node提供大量的工具库，使得javascript语言与操作系统互动（比如读写文件，新建子进程），在这个意义上，node又是javascrip的工具库Node内部采用Google公司的V8引擎，作为J">
+  <meta name="description" content="node 简介node 是 javascript 语言的服务器运行环境所谓的运行环境有两层意思：  javascript 语言通过 node 在服务器运行，在这个意义上，node 是 javascriprt 的虚拟机  node 提供大量的工具库，使得 javascript 语言与操作系统互动（比如读写文件，新建子进程），在这个意义上，node 又是 javascrip 的工具库Node 内部采用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Node.js系列(一)之安装">
+<meta property="og:title" content="Node.js 系列 (一) 之安装">
 <meta property="og:url" content="http://maying.ink/2017/04/13/nodeJs%E7%B3%BB%E5%88%97%E4%B8%80/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="node简介node是javascript语言的服务器运行环境所谓的运行环境有两层意思：  javascript语言通过node在服务器运行，在这个意义上，node是javascriprt的虚拟机2.node提供大量的工具库，使得javascript语言与操作系统互动（比如读写文件，新建子进程），在这个意义上，node又是javascrip的工具库Node内部采用Google公司的V8引擎，作为J">
+<meta property="og:description" content="node 简介node 是 javascript 语言的服务器运行环境所谓的运行环境有两层意思：  javascript 语言通过 node 在服务器运行，在这个意义上，node 是 javascriprt 的虚拟机  node 提供大量的工具库，使得 javascript 语言与操作系统互动（比如读写文件，新建子进程），在这个意义上，node 又是 javascrip 的工具库Node 内部采用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://oucjferwh.bkt.clouddn.com/node1-1.png">
 <meta property="og:image" content="http://oucjferwh.bkt.clouddn.com/node1-2.png">
@@ -57,7 +57,7 @@
   };
 </script>
 
-  <title>Node.js系列(一)之安装 | 亦舒的海角</title>
+  <title>Node.js 系列 (一) 之安装 | 亦舒的海角</title>
   
 
 
@@ -217,7 +217,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#node%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">node简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFGoogle-V8-JavaScript%E5%BC%95%E6%93%8E"><span class="nav-number">2.</span> <span class="nav-text">什么是Google V8 JavaScript引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%9B%B8%E5%85%B3"><span class="nav-number">3.</span> <span class="nav-text">安装相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7nvm"><span class="nav-number">3.1.</span> <span class="nav-text">安装版本管理工具nvm</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.0.0.1.</span> <span class="nav-text">安装最新版本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.0.0.2.</span> <span class="nav-text">安装指定版本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84node"><span class="nav-number">3.1.0.0.3.</span> <span class="nav-text">使用指定版本的node</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85%E7%9A%84%E6%89%80%E6%9C%89%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.0.0.4.</span> <span class="nav-text">查看本地安装的所有版本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%80%80%E5%87%BA%E5%B7%B2%E7%BB%8F%E6%BF%80%E6%B4%BB%E7%9A%84nvm%EF%BC%8C%E4%BD%BF%E7%94%A8deactivate%E5%91%BD%E4%BB%A4%E3%80%82"><span class="nav-number">3.1.0.0.5.</span> <span class="nav-text">退出已经激活的nvm，使用deactivate命令。</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#node%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">node 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFGoogle-V8-JavaScript%E5%BC%95%E6%93%8E"><span class="nav-number">2.</span> <span class="nav-text">什么是 Google V8 JavaScript 引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%9B%B8%E5%85%B3"><span class="nav-number">3.</span> <span class="nav-text">安装相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7nvm"><span class="nav-number">3.1.</span> <span class="nav-text">安装版本管理工具 nvm</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.0.0.1.</span> <span class="nav-text">安装最新版本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.0.0.2.</span> <span class="nav-text">安装指定版本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84node"><span class="nav-number">3.1.0.0.3.</span> <span class="nav-text">使用指定版本的 node</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E5%AE%89%E8%A3%85%E7%9A%84%E6%89%80%E6%9C%89%E7%89%88%E6%9C%AC"><span class="nav-number">3.1.0.0.4.</span> <span class="nav-text">查看本地安装的所有版本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%80%80%E5%87%BA%E5%B7%B2%E7%BB%8F%E6%BF%80%E6%B4%BB%E7%9A%84nvm%EF%BC%8C%E4%BD%BF%E7%94%A8deactivate%E5%91%BD%E4%BB%A4%E3%80%82"><span class="nav-number">3.1.0.0.5.</span> <span class="nav-text">退出已经激活的 nvm，使用 deactivate 命令。</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -312,7 +312,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Node.js系列(一)之安装
+          Node.js 系列 (一) 之安装
         </h1>
 
         <div class="post-meta-container">
@@ -339,14 +339,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -357,33 +357,36 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="node简介"><a href="#node简介" class="headerlink" title="node简介"></a>node简介</h2><p>node是javascript语言的服务器运行环境<br>所谓的运行环境有两层意思：</p>
+        <h2 id="node简介"><a href="#node简介" class="headerlink" title="node简介"></a>node 简介</h2><p>node 是 javascript 语言的服务器运行环境<br>所谓的运行环境有两层意思：</p>
 <ol>
-<li>javascript语言通过node在服务器运行，在这个意义上，node是<strong>javascriprt的虚拟机</strong><br>2.node提供大量的工具库，使得javascript语言与操作系统互动（比如读写文件，新建子进程），在这个意义上，node又是<strong>javascrip的工具库</strong><br>Node内部采用<a href="http://baike.baidu.com/link?url=1kFBYYp0gB7_P6YD0d1s3sqF64zK41APPhCywsEG9qTKgguFTwwYPZTohqZzd82j" target="_blank" rel="noopener">Google公司的V8引擎</a>，作为JavaScript语言解释器；通过自行开发的libuv库，调用操作系统资源。<h2 id="什么是Google-V8-JavaScript引擎"><a href="#什么是Google-V8-JavaScript引擎" class="headerlink" title="什么是Google V8 JavaScript引擎"></a>什么是Google V8 JavaScript引擎</h2>V8是一个由丹麦Google开发的开源JavaScript引擎，V8就是chrome浏览器用的js解释引擎，主要是C编写的<br>V8在执行之前将JavaScript编译成了机器码，而非位元组码或是直译它，以此提升效能。更进一步，有了这些功能，JavaScript程序与V8引擎的速度媲美二进制编译。[4]<h2 id="安装相关"><a href="#安装相关" class="headerlink" title="安装相关"></a>安装相关</h2>访问官方网站nodejs.org<br>安装完成查看node版本</li>
+<li>javascript 语言通过 node 在服务器运行，在这个意义上，node 是 <strong>javascriprt 的虚拟机</strong></li>
+<li> node 提供大量的工具库，使得 javascript 语言与操作系统互动（比如读写文件，新建子进程），在这个意义上，node 又是 <strong>javascrip 的工具库</strong><br>Node 内部采用 <a target="_blank" rel="noopener" href="http://baike.baidu.com/link?url=1kFBYYp0gB7_P6YD0d1s3sqF64zK41APPhCywsEG9qTKgguFTwwYPZTohqZzd82j">Google 公司的 V8 引擎</a>，作为 JavaScript 语言解释器；通过自行开发的 libuv 库，调用操作系统资源。<h2 id="什么是Google-V8-JavaScript引擎"><a href="#什么是Google-V8-JavaScript引擎" class="headerlink" title="什么是Google V8 JavaScript引擎"></a>什么是 Google V8 JavaScript 引擎</h2>V8 是一个由丹麦 Google 开发的开源 JavaScript 引擎，V8 就是 chrome 浏览器用的 js 解释引擎，主要是 C 编写的<br>V8 在执行之前将 JavaScript 编译成了机器码，而非位元组码或是直译它，以此提升效能。更进一步，有了这些功能，JavaScript 程序与 V8 引擎的速度媲美二进制编译。[4]<h2 id="安装相关"><a href="#安装相关" class="headerlink" title="安装相关"></a>安装相关</h2>访问官方网站 nodejs.org<br>安装完成查看 node 版本 </li>
 </ol>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">--version</span></span><br><span class="line"> 或者</span><br><span class="line">$ <span class="keyword">node</span> <span class="title">-v</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ node --version</span><br><span class="line"> 或者</span><br><span class="line">$ node -v</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="http://oucjferwh.bkt.clouddn.com/node1-1.png" alt="wunai"></p>
-<p>更新node版本，可以通过node.js的n模块完成，<br>更新为最新发布的稳定版。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>sudo npm install n -g</span><br><span class="line"><span class="variable">$ </span>sudo n stable</span><br></pre></td></tr></table></figure>
+<p>更新 node 版本，可以通过 node.js 的 n 模块完成，<br>更新为最新发布的稳定版。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install n -g</span><br><span class="line">$ sudo n stable</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="http://oucjferwh.bkt.clouddn.com/node1-2.png" alt="node-1-2"></p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo n <span class="number">0.10</span><span class="number">.21</span></span><br></pre></td></tr></table></figure>
-<h3 id="安装版本管理工具nvm"><a href="#安装版本管理工具nvm" class="headerlink" title="安装版本管理工具nvm"></a>安装版本管理工具nvm</h3><p>如果想在同一台机器同时安装多个版本的node，就需要用到嗯本管理工具nvm，nvm全称<strong>Node Version Manager</strong>，它与n的实现方式不同，其是通过shell脚本实现的。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>git clone <span class="symbol">https:</span>/<span class="regexp">/github.com/creationix</span><span class="regexp">/nvm.git ~/</span>.nvm</span><br><span class="line"><span class="variable">$ </span>source ~<span class="regexp">/.nvm/nvm</span>.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo n 0.10.21</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="安装版本管理工具nvm"><a href="#安装版本管理工具nvm" class="headerlink" title="安装版本管理工具nvm"></a>安装版本管理工具 nvm</h3><p>如果想在同一台机器同时安装多个版本的 node，就需要用到嗯本管理工具 nvm，nvm 全称 <strong>Node Version Manager</strong>，它与 n 的实现方式不同，其是通过 shell 脚本实现的。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/creationix/nvm.git ~/.nvm</span><br><span class="line">$ source ~/.nvm/nvm.sh</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="http://oucjferwh.bkt.clouddn.com/node1-3.png" alt="node-1-3"></p>
-<h6 id="安装最新版本"><a href="#安装最新版本" class="headerlink" title="安装最新版本"></a>安装最新版本</h6><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install <span class="keyword">node</span><span class="title"></span></span><br></pre></td></tr></table></figure>
+<h6 id="安装最新版本"><a href="#安装最新版本" class="headerlink" title="安装最新版本"></a>安装最新版本</h6><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install node</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="http://oucjferwh.bkt.clouddn.com/node1-4.png" alt="node-1-4"></p>
-<h6 id="安装指定版本"><a href="#安装指定版本" class="headerlink" title="安装指定版本"></a>安装指定版本</h6><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install <span class="number">0.12</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
-<p>######使用已安装的最新版本</p>
-<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm use <span class="keyword">node</span><span class="title"></span></span><br></pre></td></tr></table></figure>
-<h6 id="使用指定版本的node"><a href="#使用指定版本的node" class="headerlink" title="使用指定版本的node"></a>使用指定版本的node</h6><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>nvm <span class="keyword">use</span> <span class="number">0</span>.<span class="number">12</span></span><br></pre></td></tr></table></figure>
-<h6 id="查看本地安装的所有版本"><a href="#查看本地安装的所有版本" class="headerlink" title="查看本地安装的所有版本"></a>查看本地安装的所有版本</h6><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>nvm ls</span><br></pre></td></tr></table></figure>
+<h6 id="安装指定版本"><a href="#安装指定版本" class="headerlink" title="安装指定版本"></a>安装指定版本</h6><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install 0.12.1</span><br></pre></td></tr></tbody></table></figure>
+
+<p>###### 使用已安装的最新版本</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm use node</span><br></pre></td></tr></tbody></table></figure>
+
+<h6 id="使用指定版本的node"><a href="#使用指定版本的node" class="headerlink" title="使用指定版本的node"></a>使用指定版本的 node</h6><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm use 0.12</span><br></pre></td></tr></tbody></table></figure>
+<h6 id="查看本地安装的所有版本"><a href="#查看本地安装的所有版本" class="headerlink" title="查看本地安装的所有版本"></a>查看本地安装的所有版本</h6><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm ls</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="http://oucjferwh.bkt.clouddn.com/node1-5.png" alt="node-1-5"></p>
-<h6 id="退出已经激活的nvm，使用deactivate命令。"><a href="#退出已经激活的nvm，使用deactivate命令。" class="headerlink" title="退出已经激活的nvm，使用deactivate命令。"></a>退出已经激活的nvm，使用deactivate命令。</h6><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>nvm deactivate</span><br></pre></td></tr></table></figure>
-<p>######卸载nvm</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ~<span class="string">/.nvm</span></span><br></pre></td></tr></table></figure>
-<p>######查看nvm帮助</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nvm -h</span></span><br></pre></td></tr></table></figure>
-<p>详细文档请参考官方文档<br><a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">https://github.com/creationix/nvm</a></p>
+<h6 id="退出已经激活的nvm，使用deactivate命令。"><a href="#退出已经激活的nvm，使用deactivate命令。" class="headerlink" title="退出已经激活的nvm，使用deactivate命令。"></a>退出已经激活的 nvm，使用 deactivate 命令。</h6><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm deactivate</span><br></pre></td></tr></tbody></table></figure>
+<p>###### 卸载 nvm</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ~/.nvm</span><br></pre></td></tr></tbody></table></figure>
+<p>###### 查看 nvm 帮助</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm -h</span><br></pre></td></tr></tbody></table></figure>
+<p>详细文档请参考官方文档<br><a target="_blank" rel="noopener" href="https://github.com/creationix/nvm">https://github.com/creationix/nvm</a></p>
 
     </div>
 
@@ -420,8 +423,8 @@
             <div class="post-nav-item">
             </div>
             <div class="post-nav-item">
-                <a href="/2017/04/17/Express%E6%A1%86%E6%9E%B6%E7%B3%BB%E5%88%97(%E4%B8%80)%E4%B9%8B%E6%A6%82%E8%BF%B0/" rel="next" title="Express框架系列(一)之概述">
-                  Express框架系列(一)之概述 <i class="fa fa-chevron-right"></i>
+                <a href="/2017/04/17/Express%E6%A1%86%E6%9E%B6%E7%B3%BB%E5%88%97(%E4%B8%80)%E4%B9%8B%E6%A6%82%E8%BF%B0/" rel="next" title="Express 框架系列 (一) 之概述">
+                  Express 框架系列 (一) 之概述 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -482,13 +485,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -578,8 +581,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

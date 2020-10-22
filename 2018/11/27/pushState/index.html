@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="引出问题为什么有这篇文章.最近的开发中遇到这么一个问题如下图扫码进入网页 点击弹出覆盖整个手机屏幕的层 此时点击浏览器的返回 会直接回退到之前扫码页面其实 这个逻辑很合理 因为它没有历史记录 没有所谓的上一个页面 程序上是合理的但用户体验无疑是差到极致对于用户来讲 可能我只是想把当前的弹层关掉而不是退出网页 那么如何解决呢？ 解决方案没有历史记录 那我们就手动造出来一条“历史记录”，让程序的返回时">
+  <meta name="description" content="引出问题为什么有这篇文章.最近的开发中遇到这么一个问题如下图扫码进入网页 点击弹出覆盖整个手机屏幕的层 此时点击浏览器的返回 会直接回退到之前扫码页面其实 这个逻辑很合理 因为它没有历史记录 没有所谓的上一个页面 程序上是合理的但用户体验无疑是差到极致对于用户来讲 可能我只是想把当前的弹层关掉而不是退出网页 那么如何解决呢？ 解决方案没有历史记录 那我们就手动造出来一条 “历史记录”，让程序的返回">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一个问题引出的pushState用法">
+<meta property="og:title" content="一个问题引出的 pushState 用法">
 <meta property="og:url" content="http://maying.ink/2018/11/27/pushState/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="引出问题为什么有这篇文章.最近的开发中遇到这么一个问题如下图扫码进入网页 点击弹出覆盖整个手机屏幕的层 此时点击浏览器的返回 会直接回退到之前扫码页面其实 这个逻辑很合理 因为它没有历史记录 没有所谓的上一个页面 程序上是合理的但用户体验无疑是差到极致对于用户来讲 可能我只是想把当前的弹层关掉而不是退出网页 那么如何解决呢？ 解决方案没有历史记录 那我们就手动造出来一条“历史记录”，让程序的返回时">
+<meta property="og:description" content="引出问题为什么有这篇文章.最近的开发中遇到这么一个问题如下图扫码进入网页 点击弹出覆盖整个手机屏幕的层 此时点击浏览器的返回 会直接回退到之前扫码页面其实 这个逻辑很合理 因为它没有历史记录 没有所谓的上一个页面 程序上是合理的但用户体验无疑是差到极致对于用户来讲 可能我只是想把当前的弹层关掉而不是退出网页 那么如何解决呢？ 解决方案没有历史记录 那我们就手动造出来一条 “历史记录”，让程序的返回">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://maying.ink/images/pushState/pushState1.gif">
 <meta property="og:image" content="http://maying.ink/images/pushState/pushState2.gif">
@@ -54,7 +54,7 @@
   };
 </script>
 
-  <title>一个问题引出的pushState用法 | 亦舒的海角</title>
+  <title>一个问题引出的 pushState 用法 | 亦舒的海角</title>
   
 
 
@@ -214,7 +214,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%87%BA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">引出问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#History"><span class="nav-number">3.</span> <span class="nav-text">History</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTML5-history%E6%96%B0%E7%89%B9%E6%80%A7pushState%E3%80%81replaceState"><span class="nav-number">3.1.</span> <span class="nav-text">HTML5 history新特性pushState、replaceState</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%87%BA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">引出问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#History"><span class="nav-number">3.</span> <span class="nav-text">History</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTML5-history%E6%96%B0%E7%89%B9%E6%80%A7pushState%E3%80%81replaceState"><span class="nav-number">3.1.</span> <span class="nav-text">HTML5 history 新特性 pushState、replaceState</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -309,7 +309,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          一个问题引出的pushState用法
+          一个问题引出的 pushState 用法
         </h1>
 
         <div class="post-meta-container">
@@ -345,14 +345,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>2.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -365,24 +365,25 @@
     <div class="post-body" itemprop="articleBody">
         <h3 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h3><p>为什么有这篇文章.<br>最近的开发中遇到这么一个问题<br>如下图<br><img src="/images/pushState/pushState1.gif" alt="gifqian"><br>扫码进入网页 点击弹出覆盖整个手机屏幕的层 此时点击浏览器的返回 会直接回退到之前扫码页面<br>其实 这个逻辑很合理 因为它没有历史记录 没有所谓的上一个页面 程序上是合理的<br>但用户体验无疑是差到极致<br>对于用户来讲 可能我只是想把当前的弹层关掉而不是退出网页</p>
 <p>那么如何解决呢？</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>没有历史记录 那我们就手动造出来一条“历史记录”，让程序的返回时 能够有迹可循<br>最终效果<br><img src="/images/pushState/pushState2.gif" alt="gifqian"></p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>没有历史记录 那我们就手动造出来一条 “历史记录”，让程序的返回时 能够有迹可循<br>最终效果<br><img src="/images/pushState/pushState2.gif" alt="gifqian"></p>
 <p>相关代码</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> componentDidMount()&#123;</span><br><span class="line">        <span class="comment">//监听popstate事件</span></span><br><span class="line">        <span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>,<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.navLeftClick();</span><br><span class="line">        &#125;)    </span><br><span class="line">    &#125;</span><br><span class="line">   <span class="comment">//弹层的返回按钮</span></span><br><span class="line">   navLeftClick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">       <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">           showBrandContainer: <span class="literal">false</span></span><br><span class="line">       &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">componentWillUnmount() &#123;</span><br><span class="line">    <span class="comment">// 离开页面的时候取消监听popstate</span></span><br><span class="line">   <span class="built_in">window</span>.removeEventListener(<span class="string">'popstate'</span>,<span class="function">(<span class="params">state</span>) =&gt;</span> &#123;</span><br><span class="line">       <span class="keyword">this</span>.back();</span><br><span class="line">   &#125;) </span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    selectBrand = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.history.pushState(&#123;page: <span class="number">1</span>&#125;, <span class="string">"title 1"</span>, <span class="string">"?page=1"</span>); <span class="comment">//向history对象push一条state</span></span><br><span class="line"></span><br><span class="line">          &lt;!-- 实现参数透传----</span><br><span class="line">        <span class="keyword">let</span> search = <span class="built_in">window</span>.location.search;</span><br><span class="line">        <span class="built_in">window</span>.history.pushState(&#123; page: <span class="number">1</span> &#125;, <span class="string">""</span>, search);</span><br><span class="line">        实现参数透传---- --&gt;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            showBrandContainer: <span class="literal">true</span> <span class="comment">//开启弹层</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="History"><a href="#History" class="headerlink" title="History"></a>History</h3><p>DOM中的window对象通过window.history方法提供了对浏览器历史记录的读取，让你可以在用户的访问记录中前进和后退<br>从HTML5开始，我们可以开始操作这个历史记录堆栈<br><strong>前进</strong>  <code>window.history.forward();</code><br><strong>后退</strong> <code>window.history.back();</code><br><strong>向前移动N页</strong> <code>window.history.go(-N);</code><br><strong>向后移动N页</strong> <code>window.history.go(N);</code><br>你甚至可以通过检查浏览器历史记录的length属性来找到历史记录堆栈中的页面总数<br><code>window.history.length</code></p>
-<h4 id="HTML5-history新特性pushState、replaceState"><a href="#HTML5-history新特性pushState、replaceState" class="headerlink" title="HTML5 history新特性pushState、replaceState"></a>HTML5 history新特性pushState、replaceState</h4><p>HTML5引入了histtory.pushState()和history.replaceState()这两个方法，他们允许添加和修改history实体。同时，这些方法会和window.onpostate事件一起工作，关于window.popstate 可参考 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onpopstate" target="_blank" rel="noopener">window.popstate</a><br>pushState：向 history 添加当前页面的记录 使用history.pushState()方法来修改referrer<br>replaceState：和 pushState 的用法完全一样，区别就是它用于修改当前页面在 history 中的记录 </p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"> componentDidMount(){</span><br><span class="line">        //监听popstate事件</span><br><span class="line">        window.addEventListener('popstate',() =&gt; {</span><br><span class="line">            this.navLeftClick();</span><br><span class="line">        })    </span><br><span class="line">    }</span><br><span class="line">   //弹层的返回按钮</span><br><span class="line">   navLeftClick = () =&gt; {</span><br><span class="line">       this.setState({</span><br><span class="line">           showBrandContainer: false</span><br><span class="line">       })</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">componentWillUnmount() {</span><br><span class="line">    // 离开页面的时候取消监听popstate</span><br><span class="line">   window.removeEventListener('popstate',(state) =&gt; {</span><br><span class="line">       this.back();</span><br><span class="line">   }) </span><br><span class="line">}</span><br><span class="line">    </span><br><span class="line">    selectBrand = () =&gt; {</span><br><span class="line">        window.history.pushState({page: 1}, "title 1", "?page=1"); //向history对象push一条state</span><br><span class="line"></span><br><span class="line">          &lt;!-- 实现参数透传----</span><br><span class="line">        let search = window.location.search;</span><br><span class="line">        window.history.pushState({ page: 1 }, "", search);</span><br><span class="line">        实现参数透传---- --&gt;</span><br><span class="line">        </span><br><span class="line">        this.setState({</span><br><span class="line">            showBrandContainer: true //开启弹层</span><br><span class="line">        })</span><br><span class="line">    }</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="History"><a href="#History" class="headerlink" title="History"></a>History</h3><p>DOM 中的 window 对象通过 window.history 方法提供了对浏览器历史记录的读取，让你可以在用户的访问记录中前进和后退<br>从 HTML5 开始，我们可以开始操作这个历史记录堆栈<br><strong>前进</strong>  <code>window.history.forward();</code><br><strong>后退</strong> <code>window.history.back();</code><br><strong>向前移动 N 页</strong> <code>window.history.go(-N);</code><br><strong>向后移动 N 页</strong> <code>window.history.go(N);</code><br>你甚至可以通过检查浏览器历史记录的 length 属性来找到历史记录堆栈中的页面总数<br><code>window.history.length</code></p>
+<h4 id="HTML5-history新特性pushState、replaceState"><a href="#HTML5-history新特性pushState、replaceState" class="headerlink" title="HTML5 history新特性pushState、replaceState"></a>HTML5 history 新特性 pushState、replaceState</h4><p>HTML5 引入了 histtory.pushState () 和 history.replaceState () 这两个方法，他们允许添加和修改 history 实体。同时，这些方法会和 window.onpostate 事件一起工作，关于 window.popstate 可参考 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onpopstate">window.popstate</a><br>pushState：向 history 添加当前页面的记录 使用 history.pushState () 方法来修改 referrer<br>replaceState：和 pushState 的用法完全一样，区别就是它用于修改当前页面在 history 中的记录 </p>
 <p>一个🌰</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">假设http://<span class="number">10.70</span>.<span class="number">134.53</span>:<span class="number">3000</span>/opt/financial 控制台执行了JS</span><br><span class="line">var <span class="keyword">state</span>Obj = &#123; foo: <span class="string">"test"</span> &#125;; history.pushState(<span class="keyword">state</span>Obj, <span class="string">"page 2"</span>,<span class="string">"test.html"</span>);</span><br><span class="line">url地址栏变为 http://<span class="number">10.70</span>.<span class="number">134.53</span>:<span class="number">3000</span>/opt/test.html，但浏览器不会加载bar.html页面，即使这个页面存在也不会加载。</span><br><span class="line">此时 如果你点击浏览器的返回 浏览器就貌似有了前一页</span><br><span class="line">如下图：</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">假设http://10.70.134.53:3000/opt/financial 控制台执行了JS</span><br><span class="line">var stateObj = { foo: "test" }; history.pushState(stateObj, "page 2","test.html");</span><br><span class="line">url地址栏变为 http://10.70.134.53:3000/opt/test.html，但浏览器不会加载bar.html页面，即使这个页面存在也不会加载。</span><br><span class="line">此时 如果你点击浏览器的返回 浏览器就貌似有了前一页</span><br><span class="line">如下图：</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p><img src="/images/pushState/pushState3.gif" alt="gifqian"></p>
 <p>总结：</p>
 <p>关于 popstate 事件 需要注意的几点</p>
 <ul>
-<li>调用history.pushState()或者history.replaceState()不会触发popstate事件.</li>
-<li>popstate事件只会在浏览器某些行为下触发, 比如点击后退、前进按钮(或者在JavaScript中调用history.back()、history.forward()、history.go()方法).</li>
+<li>调用 history.pushState () 或者 history.replaceState () 不会触发 popstate 事件.</li>
+<li>popstate 事件只会在浏览器某些行为下触发，比如点击后退、前进按钮 (或者在 JavaScript 中调用 history.back ()、history.forward ()、history.go () 方法).</li>
 </ul>
 <p>也就是说 要触发该事件 你需要两步</p>
 <ol>
-<li>添加并激活一个历史记录条目(history.pushState)</li>
-<li>.改变历史记录条目(用户行为,比如后退,前进)</li>
+<li>添加并激活一个历史记录条目 (history.pushState)</li>
+<li>. 改变历史记录条目 (用户行为，比如后退，前进)</li>
 </ol>
 
     </div>
@@ -415,8 +416,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2018/11/23/%E6%8F%AD%E7%A7%98setState%E6%9C%BA%E5%88%B6/" rel="prev" title="揭秘setState机制">
-                  <i class="fa fa-chevron-left"></i> 揭秘setState机制
+                <a href="/2018/11/23/%E6%8F%AD%E7%A7%98setState%E6%9C%BA%E5%88%B6/" rel="prev" title="揭秘 setState 机制">
+                  <i class="fa fa-chevron-left"></i> 揭秘 setState 机制
                 </a>
             </div>
             <div class="post-nav-item">
@@ -482,13 +483,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -578,8 +579,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

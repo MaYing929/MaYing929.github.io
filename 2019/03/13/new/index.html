@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="JS中 new关键字用来实例化构造函数，那么它背后到底做了什么,能否被模拟实现答案是肯定的 new关键字做了什么你一定从别的文章或者在实际开发中感受到new的妙处，不错,总结下来它主要支持了四个功能">
+  <meta name="description" content="JS 中 new 关键字用来实例化构造函数，那么它背后到底做了什么，能否被模拟实现答案是肯定的 new 关键字做了什么你一定从别的文章或者在实际开发中感受到 new 的妙处，不错，总结下来它主要支持了四个功能">
 <meta property="og:type" content="article">
-<meta property="og:title" content="模拟实现JS的new操作符">
+<meta property="og:title" content="模拟实现 JS 的 new 操作符">
 <meta property="og:url" content="http://maying.ink/2019/03/13/new/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="JS中 new关键字用来实例化构造函数，那么它背后到底做了什么,能否被模拟实现答案是肯定的 new关键字做了什么你一定从别的文章或者在实际开发中感受到new的妙处，不错,总结下来它主要支持了四个功能">
+<meta property="og:description" content="JS 中 new 关键字用来实例化构造函数，那么它背后到底做了什么，能否被模拟实现答案是肯定的 new 关键字做了什么你一定从别的文章或者在实际开发中感受到 new 的妙处，不错，总结下来它主要支持了四个功能">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-03-12T16:15:39.000Z">
 <meta property="article:modified_time" content="2020-10-22T18:41:42.183Z">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>模拟实现JS的new操作符 | 亦舒的海角</title>
+  <title>模拟实现 JS 的 new 操作符 | 亦舒的海角</title>
   
 
 
@@ -210,7 +210,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#new%E5%85%B3%E9%94%AE%E5%AD%97%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">new关键字做了什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0new"><span class="nav-number">2.</span> <span class="nav-text">模拟实现new</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E9%AA%8C%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">实例验证</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#new%E5%85%B3%E9%94%AE%E5%AD%97%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">new 关键字做了什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0new"><span class="nav-number">2.</span> <span class="nav-text">模拟实现 new</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E9%AA%8C%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">实例验证</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -305,7 +305,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          模拟实现JS的new操作符
+          模拟实现 JS 的 new 操作符
         </h1>
 
         <div class="post-meta-container">
@@ -332,14 +332,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>4.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -350,25 +350,32 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><code>JS</code>中 <code>new</code>关键字用来实例化构造函数，那么它背后到底做了什么,能否被模拟实现<br>答案是肯定的</p>
-<h2 id="new关键字做了什么"><a href="#new关键字做了什么" class="headerlink" title="new关键字做了什么"></a>new关键字做了什么</h2><p>你一定从别的文章或者在实际开发中感受到<code>new</code>的妙处，不错,总结下来它主要支持了四个功能</p>
+        <p><code>JS</code> 中 <code>new</code> 关键字用来实例化构造函数，那么它背后到底做了什么，能否被模拟实现<br>答案是肯定的</p>
+<h2 id="new关键字做了什么"><a href="#new关键字做了什么" class="headerlink" title="new关键字做了什么"></a>new 关键字做了什么</h2><p>你一定从别的文章或者在实际开发中感受到 <code>new</code> 的妙处，不错，总结下来它主要支持了四个功能</p>
 <a id="more"></a>
 <ol>
 <li>创建了一个全新的对象</li>
-<li>这个对象会被执行[[prototype]]（也就是<strong>proto</strong>）链接</li>
-<li>生成的新对象会绑定到函数调用的this</li>
-<li>通过<code>new</code>创建的每个对象将最终被来接到这个函数的prototype对象上</li>
-<li>如果函数没有返回对象类型Object(包含Functoin, Array, Date, RegExg, Error)，那么new表达式中的函数调用会自动返回这个新的对象</li>
+<li>这个对象会被执行 [[prototype]]（也就是__proto__）链接</li>
+<li>生成的新对象会绑定到函数调用的 this</li>
+<li> 通过 <code>new</code> 创建的每个对象将最终被来接到这个函数的 prototype 对象上</li>
+<li>如果函数没有返回对象类型 Object (包含 Functoin, Array, Date, RegExg, Error)，那么 new 表达式中的函数调用会自动返回这个新的对象</li>
 </ol>
-<h2 id="模拟实现new"><a href="#模拟实现new" class="headerlink" title="模拟实现new"></a>模拟实现new</h2><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newOperator</span></span>(ctor)&#123;</span><br><span class="line">    <span class="keyword">if</span>(typeof ctor !== <span class="string">'function'</span>)&#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">'newOperator function the first param must be a function'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ES6 new.target 是指向构造函数</span></span><br><span class="line">    <span class="keyword">new</span><span class="type">Operator</span>.target = ctor;</span><br><span class="line">    <span class="comment">// 1.创建一个全新的对象，</span></span><br><span class="line">    <span class="comment">// 2.并且执行[[Prototype]]链接</span></span><br><span class="line">    <span class="comment">// 4.通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上。</span></span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">new</span><span class="type">Obj</span> = Object.create(ctor.prototype);</span><br><span class="line">    <span class="comment">// ES5 arguments转成数组 当然也可以用ES6 [...arguments], Aarry.from(arguments);</span></span><br><span class="line">    <span class="comment">// 除去ctor构造函数的其余参数</span></span><br><span class="line">    <span class="keyword">var</span> argsArr = [].slice.call(arguments, <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// 3.生成的新对象会绑定到函数调用的`this`。</span></span><br><span class="line">    <span class="comment">// 获取到ctor函数返回结果</span></span><br><span class="line">    <span class="keyword">var</span> ctorReturnResult = ctor.apply(<span class="keyword">new</span><span class="type">Obj</span>, argsArr);</span><br><span class="line">    <span class="comment">// 小结4 中这些类型中合并起来只有Object和Function两种类型 typeof null 也是'object'所以要不等于null，排除null</span></span><br><span class="line">    <span class="keyword">var</span> isObject = typeof ctorReturnResult === <span class="string">'object'</span> &amp;&amp; ctorReturnResult !== <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> isFunction = typeof ctorReturnResult === <span class="string">'function'</span>;</span><br><span class="line">    <span class="keyword">if</span>(isObject || isFunction)&#123;</span><br><span class="line">        <span class="keyword">return</span> ctorReturnResult;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 5.如果函数没有返回对象类型`Object`(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`)，那么`new`表达式中的函数调用会自动返回这个新的对象。</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span><span class="type">Obj</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="实例验证"><a href="#实例验证" class="headerlink" title="实例验证"></a>实例验证</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Student</span>(<span class="params">name, age</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">    <span class="comment">// this.doSth();</span></span><br><span class="line">    <span class="comment">// return Error();</span></span><br><span class="line">&#125;</span><br><span class="line">Student.prototype.doSth = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> student1 = newOperator(Student, <span class="string">'轩辕'</span>, <span class="number">18</span>);</span><br><span class="line"><span class="keyword">var</span> student2 = newOperator(Student, <span class="string">'Rowboat'</span>, <span class="number">18</span>);</span><br><span class="line"><span class="comment">// var student1 = new Student('轩辕');</span></span><br><span class="line"><span class="comment">// var student2 = new Student('Rowboat');</span></span><br><span class="line"><span class="built_in">console</span>.log(student1, student1.doSth()); <span class="comment">// &#123;name: '轩辕'&#125; '轩辕'</span></span><br><span class="line"><span class="built_in">console</span>.log(student2, student2.doSth()); <span class="comment">// &#123;name: 'Rowboat'&#125; 'Rowboat'</span></span><br><span class="line"></span><br><span class="line">student1.__proto__ === Student.prototype; <span class="comment">// true</span></span><br><span class="line">student2.__proto__ === Student.prototype; <span class="comment">// true</span></span><br><span class="line"><span class="comment">// __proto__ 是浏览器实现的查看原型方案。</span></span><br><span class="line"><span class="comment">// 用ES5 则是：</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(student1) === Student.prototype; <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(student2) === Student.prototype; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>模拟<code>new</code>最大的功臣当属于<code>Object.create()</code>这个ES5提供的API</p>
-<p><code>Object.create(proto, [propertiesObject])</code>方法创建一个新对象，使用现有的对象来提供新创建的对象的<code>__proto__</code> 它接收两个参数，不过第二个可选参数是属性描述符（不常用，默认是<code>undefined</code>）</p>
-<p>对于不支持ES5的浏览器，MDN上提供了ployfill方案。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">Object</span>.create !== <span class="string">"function"</span>) &#123;</span><br><span class="line">    <span class="built_in">Object</span>.create = <span class="function"><span class="keyword">function</span> (<span class="params">proto, propertiesObject</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> proto !== <span class="string">'object'</span> &amp;&amp; <span class="keyword">typeof</span> proto !== <span class="string">'function'</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Object prototype may only be an Object: '</span> + proto);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (proto === <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"This browser's implementation of Object.create is a shim and doesn't support 'null' as the first argument."</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> propertiesObject != <span class="string">'undefined'</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"This browser's implementation of Object.create is a shim and doesn't support a second argument."</span>);</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">        F.prototype = proto;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>##总结</p>
-<p>模拟new洁净版</p>
-<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 去除了注释</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newOperator</span></span>(ctor)&#123;</span><br><span class="line">    <span class="keyword">if</span>(typeof ctor !== <span class="string">'function'</span>)&#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">'newOperator function the first param must be a function'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">new</span><span class="type">Operator</span>.target = ctor;</span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">new</span><span class="type">Obj</span> = Object.create(ctor.prototype);</span><br><span class="line">    <span class="keyword">var</span> argsArr = [].slice.call(arguments, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> ctorReturnResult = ctor.apply(<span class="keyword">new</span><span class="type">Obj</span>, argsArr);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> isObject = typeof ctorReturnResult === <span class="string">'object'</span> &amp;&amp; ctorReturnResult !== <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">var</span> isFunction = typeof ctorReturnResult === <span class="string">'function'</span>;</span><br><span class="line">    <span class="keyword">if</span>(isObject || isFunction)&#123;</span><br><span class="line">        <span class="keyword">return</span> ctorReturnResult;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span><span class="type">Obj</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="模拟实现new"><a href="#模拟实现new" class="headerlink" title="模拟实现new"></a>模拟实现 new</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">function newOperator(ctor){</span><br><span class="line">    if(typeof ctor !== 'function'){</span><br><span class="line">      throw 'newOperator function the first param must be a function';</span><br><span class="line">    }</span><br><span class="line">    // ES6 new.target 是指向构造函数</span><br><span class="line">    newOperator.target = ctor;</span><br><span class="line">    // 1.创建一个全新的对象，</span><br><span class="line">    // 2.并且执行[[Prototype]]链接</span><br><span class="line">    // 4.通过`new`创建的每个对象将最终被`[[Prototype]]`链接到这个函数的`prototype`对象上。</span><br><span class="line">    var newObj = Object.create(ctor.prototype);</span><br><span class="line">    // ES5 arguments转成数组 当然也可以用ES6 [...arguments], Aarry.from(arguments);</span><br><span class="line">    // 除去ctor构造函数的其余参数</span><br><span class="line">    var argsArr = [].slice.call(arguments, 1);</span><br><span class="line">    // 3.生成的新对象会绑定到函数调用的`this`。</span><br><span class="line">    // 获取到ctor函数返回结果</span><br><span class="line">    var ctorReturnResult = ctor.apply(newObj, argsArr);</span><br><span class="line">    // 小结4 中这些类型中合并起来只有Object和Function两种类型 typeof null 也是'object'所以要不等于null，排除null</span><br><span class="line">    var isObject = typeof ctorReturnResult === 'object' &amp;&amp; ctorReturnResult !== null;</span><br><span class="line">    var isFunction = typeof ctorReturnResult === 'function';</span><br><span class="line">    if(isObject || isFunction){</span><br><span class="line">        return ctorReturnResult;</span><br><span class="line">    }</span><br><span class="line">    // 5.如果函数没有返回对象类型`Object`(包含`Functoin`, `Array`, `Date`, `RegExg`, `Error`)，那么`new`表达式中的函数调用会自动返回这个新的对象。</span><br><span class="line">    return newObj;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="实例验证"><a href="#实例验证" class="headerlink" title="实例验证"></a>实例验证</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">function Student(name, age){</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.age = age;</span><br><span class="line">    // this.doSth();</span><br><span class="line">    // return Error();</span><br><span class="line">}</span><br><span class="line">Student.prototype.doSth = function() {</span><br><span class="line">    console.log(this.name);</span><br><span class="line">};</span><br><span class="line">var student1 = newOperator(Student, '轩辕', 18);</span><br><span class="line">var student2 = newOperator(Student, 'Rowboat', 18);</span><br><span class="line">// var student1 = new Student('轩辕');</span><br><span class="line">// var student2 = new Student('Rowboat');</span><br><span class="line">console.log(student1, student1.doSth()); // {name: '轩辕'} '轩辕'</span><br><span class="line">console.log(student2, student2.doSth()); // {name: 'Rowboat'} 'Rowboat'</span><br><span class="line"></span><br><span class="line">student1.__proto__ === Student.prototype; // true</span><br><span class="line">student2.__proto__ === Student.prototype; // true</span><br><span class="line">// __proto__ 是浏览器实现的查看原型方案。</span><br><span class="line">// 用ES5 则是：</span><br><span class="line">Object.getPrototypeOf(student1) === Student.prototype; // true</span><br><span class="line">Object.getPrototypeOf(student2) === Student.prototype; // true</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>模拟 <code>new</code> 最大的功臣当属于 <code>Object.create()</code> 这个 ES5 提供的 API</p>
+<p><code>Object.create(proto, [propertiesObject]) </code>方法创建一个新对象，使用现有的对象来提供新创建的对象的<code>__proto__</code> 它接收两个参数，不过第二个可选参数是属性描述符（不常用，默认是 <code>undefined</code>）</p>
+<p>对于不支持 ES5 的浏览器，MDN 上提供了 ployfill 方案。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if (typeof Object.create !== "function") {</span><br><span class="line">    Object.create = function (proto, propertiesObject) {</span><br><span class="line">        if (typeof proto !== 'object' &amp;&amp; typeof proto !== 'function') {</span><br><span class="line">            throw new TypeError('Object prototype may only be an Object: ' + proto);</span><br><span class="line">        } else if (proto === null) {</span><br><span class="line">            throw new Error("This browser's implementation of Object.create is a shim and doesn't support 'null' as the first argument.");</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        if (typeof propertiesObject != 'undefined') throw new Error("This browser's implementation of Object.create is a shim and doesn't support a second argument.");</span><br><span class="line"></span><br><span class="line">        function F() {}</span><br><span class="line">        F.prototype = proto;</span><br><span class="line">        return new F();</span><br><span class="line">    };</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>## 总结</p>
+<p>模拟 new 洁净版</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 去除了注释</span><br><span class="line">function newOperator(ctor){</span><br><span class="line">    if(typeof ctor !== 'function'){</span><br><span class="line">      throw 'newOperator function the first param must be a function';</span><br><span class="line">    }</span><br><span class="line">    newOperator.target = ctor;</span><br><span class="line">    var newObj = Object.create(ctor.prototype);</span><br><span class="line">    var argsArr = [].slice.call(arguments, 1);</span><br><span class="line">    var ctorReturnResult = ctor.apply(newObj, argsArr);</span><br><span class="line"></span><br><span class="line">    var isObject = typeof ctorReturnResult === 'object' &amp;&amp; ctorReturnResult !== null;</span><br><span class="line">    var isFunction = typeof ctorReturnResult === 'function';</span><br><span class="line">    if(isObject || isFunction){</span><br><span class="line">        return ctorReturnResult;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    return newObj;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+
+
 
     </div>
 
@@ -400,13 +407,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2019/03/06/SSRDemo/" rel="prev" title="实现一个SSR同构应用">
-                  <i class="fa fa-chevron-left"></i> 实现一个SSR同构应用
+                <a href="/2019/03/06/SSRDemo/" rel="prev" title="实现一个 SSR 同构应用">
+                  <i class="fa fa-chevron-left"></i> 实现一个 SSR 同构应用
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2019/03/13/bind/" rel="next" title="模拟实现JS的bind方法">
-                  模拟实现JS的bind方法 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/03/13/bind/" rel="next" title="模拟实现 JS 的 bind 方法">
+                  模拟实现 JS 的 bind 方法 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -467,13 +474,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -563,8 +570,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

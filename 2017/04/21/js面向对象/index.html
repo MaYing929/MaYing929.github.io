@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="工厂模式解决了重复实例化的问题 123456789101112function createObject(name,age)&amp;#123;var obj &#x3D; new Object();obj.name&#x3D; name;obj.age &#x3D; age;obj.run &#x3D; function()&amp;#123; return this.name + this.age + &#39;运行中&#39;&amp;#125;return obj;&amp;">
+  <meta name="description" content="工厂模式解决了重复实例化的问题 123456789101112function createObject(name,age){var obj &#x3D; new Object();obj.name&#x3D; name;obj.age &#x3D; age;obj.run &#x3D; function(){ return this.name + this.age + &#39;运行中&#39;}return obj;}var box1 &#x3D; crea">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js面向对象">
+<meta property="og:title" content="js 面向对象">
 <meta property="og:url" content="http://maying.ink/2017/04/21/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="工厂模式解决了重复实例化的问题 123456789101112function createObject(name,age)&amp;#123;var obj &#x3D; new Object();obj.name&#x3D; name;obj.age &#x3D; age;obj.run &#x3D; function()&amp;#123; return this.name + this.age + &#39;运行中&#39;&amp;#125;return obj;&amp;">
+<meta property="og:description" content="工厂模式解决了重复实例化的问题 123456789101112function createObject(name,age){var obj &#x3D; new Object();obj.name&#x3D; name;obj.age &#x3D; age;obj.run &#x3D; function(){ return this.name + this.age + &#39;运行中&#39;}return obj;}var box1 &#x3D; crea">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-04-20T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-10-22T18:41:42.183Z">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title>js面向对象 | 亦舒的海角</title>
+  <title>js 面向对象 | 亦舒的海角</title>
   
 
 
@@ -305,7 +305,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          js面向对象
+          js 面向对象
         </h1>
 
         <div class="post-meta-container">
@@ -332,14 +332,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -351,23 +351,29 @@
     
     <div class="post-body" itemprop="articleBody">
         <p><strong>工厂模式</strong><br>解决了重复实例化的问题</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createObject</span>(<span class="params">name,age</span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">obj.name= name;</span><br><span class="line">obj.age = age;</span><br><span class="line">obj.run = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="keyword">this</span>.age + <span class="string">'运行中'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> box1 = createObject（‘lee’,<span class="number">100</span>）</span><br><span class="line"><span class="keyword">var</span> box2 = createObject（‘jack’,<span class="number">200</span>）</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function createObject(name,age){</span><br><span class="line">var obj = new Object();</span><br><span class="line">obj.name= name;</span><br><span class="line">obj.age = age;</span><br><span class="line">obj.run = function(){</span><br><span class="line"> return this.name + this.age + '运行中'</span><br><span class="line">}</span><br><span class="line">return obj;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">var box1 = createObject（‘lee’,100）</span><br><span class="line">var box2 = createObject（‘jack’,200）</span><br></pre></td></tr></tbody></table></figure>
+
 <p>工厂模式的缺点：<br>无法区分实例是哪个对象的实例</p>
 <p><strong>构造函数模式</strong></p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Box</span><span class="params">(name,age)</span></span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.name= name;</span><br><span class="line"> <span class="keyword">this</span>.age = age;</span><br><span class="line"> <span class="keyword">this</span>.run = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="keyword">this</span>.age + <span class="string">'运行中'</span></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> box3 = <span class="keyword">new</span> Box（‘lee’,<span class="number">100</span>）</span><br><span class="line"><span class="keyword">var</span> box4 = <span class="keyword">new</span> Box（‘jack’,<span class="number">200</span>）</span><br></pre></td></tr></table></figure>
-<p>如何识别了对象？<br>构造函数没有new Object，但是它后台回自动var obj = new Object();<br>this指的就是obj<br>没有返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function Box(name,age){</span><br><span class="line"> this.name= name;</span><br><span class="line"> this.age = age;</span><br><span class="line"> this.run = function(){</span><br><span class="line">  return this.name + this.age + '运行中'</span><br><span class="line"> }</span><br><span class="line">}</span><br><span class="line">var box3 = new Box（‘lee’,100）</span><br><span class="line">var box4 = new Box（‘jack’,200）</span><br></pre></td></tr></tbody></table></figure>
+<p>如何识别了对象？<br>构造函数没有 new Object，但是它后台回自动 var obj = new Object ();<br>this 指的就是 obj<br>没有返回值</p>
 <p>console.log(box4 instanceof Box)</p>
-<p><strong>对象冒充</strong><br>把o冒充成box对象</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span>  o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">Box.call(o,<span class="string">'Lee'</span>,<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>对象冒充</strong><br>把 o 冒充成 box 对象</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var  o = new Object();</span><br><span class="line">Box.call(o,'Lee',100)</span><br></pre></td></tr></tbody></table></figure>
+
+
 <p><strong>原型</strong></p>
-<p>prototype原型属性是一个对象</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Box</span><span class="params">()</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>prototype 原型属性是一个对象</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function Box(){}</span><br></pre></td></tr></tbody></table></figure>
 <p> 这里如果有属性或者方法 叫做实例属性和实例方法</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Box<span class="selector-class">.prototypr</span><span class="selector-class">.name</span> 原型属性</span><br><span class="line">Box<span class="selector-class">.prototypr</span><span class="selector-class">.run</span>=function()&#123;&#125; 原型方法</span><br></pre></td></tr></table></figure>
-<p><strong><em>proto</em>：</strong> 实际上是一个指向原型对象的一个指针，它的作用就是指向构造函数的原型属性constructor</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">var</span> box1 = new Box()</span><br><span class="line">box1<span class="selector-class">.constructor</span> 指向构造函数</span><br><span class="line">box1._proto_指向原型对象</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Box.prototypr.name 原型属性</span><br><span class="line">Box.prototypr.run=function(){} 原型方法</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>_proto_：</strong> 实际上是一个指向原型对象的一个指针，它的作用就是指向构造函数的原型属性 constructor</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var box1 = new Box()</span><br><span class="line">box1.constructor 指向构造函数</span><br><span class="line">box1._proto_指向原型对象</span><br></pre></td></tr></tbody></table></figure>
+
 <p>判断一个对象实例是不是指向了对象的原型对象，实例化之后是自动指向的</p>
-<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Box</span>.proto<span class="keyword">type</span>.isPrototypeOf(box1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Box.prototype.isPrototypeOf(box1)</span><br></pre></td></tr></tbody></table></figure>
+
 <p><strong>什么叫闭包？ 有什么用</strong></p>
 <p>闭包是指有权访问另一个作用域中的变量和函数，常见的形式是在<font face="STCAIYUN" color="red" size="4">某个作用域中定义的函数</font></p>
 <p>闭包的作用域链包括三部分：</p>
@@ -383,12 +389,14 @@
 <li>模拟面向对象的代码风格</li>
 </ol>
 <p><strong>匿名执行函数</strong></p>
-<p>不加<strong>var</strong>关键字 默认回呗添加到全局对象的属性中去，类似的临时变量的属性加入全局对象有很多坏处<br>比如：<br>别的函数可能误用这些变量 造成全局变量过于庞大，影响访问速度（因为变量的取值是需要从圆形链上遍历的）</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> datamodel = &#123;    </span><br><span class="line">    table : [],    </span><br><span class="line">    tree : &#123;&#125;    </span><br><span class="line">&#125;;    </span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span><span class="params">(dm)</span></span>&#123;    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; dm.table.rows; i++)&#123;    </span><br><span class="line">       <span class="keyword">var</span> row = dm.table.rows[i];    </span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; row.cells; i++)&#123;    </span><br><span class="line">           drawCell(i, j);    </span><br><span class="line">       &#125;    </span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line">    <span class="comment">//build dm.tree      </span></span><br><span class="line">&#125;)(datamodel);  </span><br><span class="line"></span><br><span class="line">创建了一个匿名的函数并立即执行它，由于外部无法引用它内部的变量，因此在执行之后很快就会被释放 不会污染全局对象</span><br></pre></td></tr></table></figure>
+<p>不加 <strong>var</strong> 关键字 默认回呗添加到全局对象的属性中去，类似的临时变量的属性加入全局对象有很多坏处<br>比如：<br>别的函数可能误用这些变量 造成全局变量过于庞大，影响访问速度（因为变量的取值是需要从圆形链上遍历的）</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">var datamodel = {    </span><br><span class="line">    table : [],    </span><br><span class="line">    tree : {}    </span><br><span class="line">};    </span><br><span class="line"></span><br><span class="line">(function(dm){    </span><br><span class="line">    for(var i = 0; i &lt; dm.table.rows; i++){    </span><br><span class="line">       var row = dm.table.rows[i];    </span><br><span class="line">       for(var j = 0; j &lt; row.cells; i++){    </span><br><span class="line">           drawCell(i, j);    </span><br><span class="line">       }    </span><br><span class="line">    }    </span><br><span class="line"></span><br><span class="line">    //build dm.tree      </span><br><span class="line">})(datamodel);  </span><br><span class="line"></span><br><span class="line">创建了一个匿名的函数并立即执行它，由于外部无法引用它内部的变量，因此在执行之后很快就会被释放 不会污染全局对象</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+
 <p><strong>缓存</strong></p>
 <p>设想我们有一个处理过程很耗时的函数对象，每次调用都会花费很长时间，<br>那么我们就需要将计算出来的值存储起来，当调用这个函数的时候，首先在缓存中查找，如果找不到，则进行计算，然后更新缓存并返回值，如果找到了，直接返回查找到的值即可。闭包正是可以做到这一点，因为它不会释放外部的引用，从而函数内部的值可以得以保留。</p>
 <p><strong>实现封装</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;    </span><br><span class="line">    <span class="comment">//变量作用域为函数内部，外部无法访问    </span></span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">"default"</span>;       </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;    </span><br><span class="line">       getName : <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;    </span><br><span class="line">           <span class="keyword">return</span> name;    </span><br><span class="line">       &#125;,    </span><br><span class="line">       setName : <span class="function"><span class="keyword">function</span><span class="params">(newName)</span></span>&#123;    </span><br><span class="line">           name = newName;    </span><br><span class="line">       &#125;    </span><br><span class="line">    &#125;    </span><br><span class="line">&#125;();    </span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span>(person.name);<span class="comment">//直接访问，结果为undefined    </span></span><br><span class="line"><span class="keyword">print</span>(person.getName());    </span><br><span class="line">person.setName(<span class="string">"abruzzi"</span>);    </span><br><span class="line"><span class="keyword">print</span>(person.getName());</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">var person = function(){    </span><br><span class="line">    //变量作用域为函数内部，外部无法访问    </span><br><span class="line">    var name = "default";       </span><br><span class="line"></span><br><span class="line">    return {    </span><br><span class="line">       getName : function(){    </span><br><span class="line">           return name;    </span><br><span class="line">       },    </span><br><span class="line">       setName : function(newName){    </span><br><span class="line">           name = newName;    </span><br><span class="line">       }    </span><br><span class="line">    }    </span><br><span class="line">}();    </span><br><span class="line"></span><br><span class="line">print(person.name);//直接访问，结果为undefined    </span><br><span class="line">print(person.getName());    </span><br><span class="line">person.setName("abruzzi");    </span><br><span class="line">print(person.getName());   </span><br></pre></td></tr></tbody></table></figure>
 
     </div>
 
@@ -423,13 +431,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/04/20/ES6/" rel="prev" title="ES6系列(一)">
-                  <i class="fa fa-chevron-left"></i> ES6系列(一)
+                <a href="/2017/04/20/ES6/" rel="prev" title="ES6 系列 (一)">
+                  <i class="fa fa-chevron-left"></i> ES6 系列 (一)
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2017/04/23/js%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="js模块化编程系列（一）">
-                  js模块化编程系列（一） <i class="fa fa-chevron-right"></i>
+                <a href="/2017/04/23/js%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="js 模块化编程系列（一）">
+                  js 模块化编程系列（一） <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -490,13 +498,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -586,8 +594,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

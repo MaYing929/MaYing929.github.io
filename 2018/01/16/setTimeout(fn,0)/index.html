@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="近期在研究异步编程的我对于setTimeout之类的东西异常敏感。在SegmentFault上看到了一个问题《关于SetTimeout时间设为0时》：提问者读了一篇文章，原文解释setTimeout延迟时间为0时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于setTimeout的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终编写了这篇文章。 本">
+  <meta name="description" content="近期在研究异步编程的我对于 setTimeout 之类的东西异常敏感。在 SegmentFault 上看到了一个问题《关于 SetTimeout 时间设为 0 时》：提问者读了一篇文章，原文解释 setTimeout 延迟时间为 0 时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于 setTimeout 的理解和自己的认知有点出入，于是编写了相关测试的代码以求答">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript下的setTimeout(fn,0)意味着什么？[转]">
+<meta property="og:title" content="JavaScript 下的 setTimeout (fn,0) 意味着什么？[转]">
 <meta property="og:url" content="http://maying.ink/2018/01/16/setTimeout(fn,0)/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="近期在研究异步编程的我对于setTimeout之类的东西异常敏感。在SegmentFault上看到了一个问题《关于SetTimeout时间设为0时》：提问者读了一篇文章，原文解释setTimeout延迟时间为0时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于setTimeout的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终编写了这篇文章。 本">
+<meta property="og:description" content="近期在研究异步编程的我对于 setTimeout 之类的东西异常敏感。在 SegmentFault 上看到了一个问题《关于 SetTimeout 时间设为 0 时》：提问者读了一篇文章，原文解释 setTimeout 延迟时间为 0 时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于 setTimeout 的理解和自己的认知有点出入，于是编写了相关测试的代码以求答">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-01-15T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-10-22T18:41:42.186Z">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title>JavaScript下的setTimeout(fn,0)意味着什么？[转] | 亦舒的海角</title>
+  <title>JavaScript 下的 setTimeout (fn,0) 意味着什么？[转] | 亦舒的海角</title>
   
 
 
@@ -306,7 +306,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          JavaScript下的setTimeout(fn,0)意味着什么？[转]
+          JavaScript 下的 setTimeout (fn,0) 意味着什么？[转]
         </h1>
 
         <div class="post-meta-container">
@@ -342,14 +342,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>8.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -360,113 +360,160 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>近期在研究异步编程的我对于setTimeout之类的东西异常敏感。在SegmentFault上看到了一个问题《关于SetTimeout时间设为0时》：提问者读了一篇文章，原文解释setTimeout延迟时间为0时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于setTimeout的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终编写了这篇文章。</p>
+        <p>近期在研究异步编程的我对于 setTimeout 之类的东西异常敏感。在 SegmentFault 上看到了一个问题《关于 SetTimeout 时间设为 0 时》：提问者读了一篇文章，原文解释 setTimeout 延迟时间为 0 时会发生的事情，提问者提出了几个文章中的几个疑点。读了那篇文章之后发现原文的作者对于 setTimeout 的理解和自己的认知有点出入，于是编写了相关测试的代码以求答案。最终编写了这篇文章。</p>
 <p>本文内容如下：</p>
-<p>起因<br>单线程的JavaScript<br>setTimeout背后意味着什么<br><a id="more"></a><br>起因<br>上午在SegmentFault上看到了这个问题《关于SetTimeout 时间设为0时》（注：SegmentFault正在调整备案，如不能访问，请点击这里），原提问者注明了问题来源：《JS setTimeout延迟时间为0的详解》。这个问题来源也是转载的，我后来找到了出处。<br>在问题来源的那篇的文章中（后者），讲述了JS是单线程引擎：它把任务放到队列中，不会同步去执行，必须在完成一个任务后才开始另外一个任务。<br>而后，转载的那篇文章列出并补充了原文的栗子：</p>
-<p>&lt;!DOCTYPE HTML PUBLIC “-//W3C//DTD HTML 4.01//EN” “<a href="http://www.w3.org/TR/html4/strict.dtd&quot;&gt;" target="_blank" rel="noopener">http://www.w3.org/TR/html4/strict.dtd&quot;&gt;</a></p>
-<p><html></html></p>
-<p><head><meta name="generator" content="Hexo 3.9.0"><br>    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><br>    <title>setTimeout</title><br>    <script type="text/javascript"><br>        function get(id) {<br>            return document.getElementById(id);<br>        }<br>        window.onload = function () {<br>            //第一个例子：未使用setTimeout<br>            get(‘makeinput’).onmousedown = function () {<br>                var input = document.createElement(‘input’);<br>                input.setAttribute(‘type’, ‘text’);<br>                input.setAttribute(‘value’, ‘test1’);<br>                get(‘inpwrapper’).appendChild(input);<br>                input.focus();<br>                input.select();<br>            }<br>            //第二个例子：使用setTimeout<br>            get(‘makeinput2’).onmousedown = function () {<br>                var input = document.createElement(‘input’);<br>                input.setAttribute(‘type’, ‘text’);<br>                input.setAttribute(‘value’, ‘test1’);<br>                get(‘inpwrapper2’).appendChild(input);<br>                //setTimeout<br>                setTimeout(function () {<br>                    input.focus();<br>                    input.select();<br>                }, 0);<br>            }<br>            //第三个例子，onkeypress输入的时候少了一个值<br>            get(‘input’).onkeypress = function () {<br>                get(‘preview’).innerHTML = this.value;<br>            }<br>        }<br>    </script><br></head></p>
-<p><body><br>    <h1><code>setTimeout</code></h1><br>    <h2>1、未使用 <code>setTimeout</code></h2><br>    <button id="makeinput">生成 input</button><br>    <p id="inpwrapper"></p></body></p>
+<p>起因<br>单线程的 JavaScript<br>setTimeout 背后意味着什么</p>
+<a id="more"></a>
+<p>起因<br>上午在 SegmentFault 上看到了这个问题《关于 SetTimeout 时间设为 0 时》（注：SegmentFault 正在调整备案，如不能访问，请点击这里），原提问者注明了问题来源：《JS setTimeout 延迟时间为 0 的详解》。这个问题来源也是转载的，我后来找到了出处。<br>在问题来源的那篇的文章中（后者），讲述了 JS 是单线程引擎：它把任务放到队列中，不会同步去执行，必须在完成一个任务后才开始另外一个任务。<br>而后，转载的那篇文章列出并补充了原文的栗子：</p>
+
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>setTimeout</title>
+    <script type="text/javascript">
+        function get(id) {
+            return document.getElementById(id);
+        }
+        window.onload = function () {
+            //第一个例子：未使用setTimeout
+            get('makeinput').onmousedown = function () {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', 'test1');
+                get('inpwrapper').appendChild(input);
+                input.focus();
+                input.select();
+            }
+            //第二个例子：使用setTimeout
+            get('makeinput2').onmousedown = function () {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', 'test1');
+                get('inpwrapper2').appendChild(input);
+                //setTimeout
+                setTimeout(function () {
+                    input.focus();
+                    input.select();
+                }, 0);
+            }
+            //第三个例子，onkeypress输入的时候少了一个值
+            get('input').onkeypress = function () {
+                get('preview').innerHTML = this.value;
+            }
+        }
+    </script>
+
+
+    <h1><code>setTimeout</code></h1>
+    <h2>1、未使用 <code>setTimeout</code></h2>
+    <button id="makeinput">生成 input</button>
+    <p id="inpwrapper"></p>
+
+
 <pre><code>&lt;h2&gt;2、使用 &lt;code&gt;setTimeout&lt;/code&gt;&lt;/h2&gt;
-&lt;button id=&quot;makeinput2&quot;&gt;生成 input&lt;/button&gt;
-&lt;p id=&quot;inpwrapper2&quot;&gt;&lt;/p&gt;
+&lt;button id="makeinput2"&gt;生成 input&lt;/button&gt;
+&lt;p id="inpwrapper2"&gt;&lt;/p&gt;
 
 
 &lt;h2&gt;3、另一个例子&lt;/h2&gt;
 &lt;p&gt;
-    &lt;input type=&quot;text&quot; id=&quot;input&quot; value=&quot;&quot; /&gt;&lt;span id=&quot;preview&quot;&gt;&lt;/span&gt;
-&lt;/p&gt;
-</code></pre><p><br><br>代码运行实例请戳这里。<br>原文中有这么一段话，描述的有点抽象：</p>
-<p>JavaScript引擎在执行onmousedown时，由于没有多线程的同步执行，不可能同时去处理刚创建元素的focus 和select方法，由于这两个方法都不在队列中，在完成onmousedown后，JavaScript 引擎已经丢弃了这两个任务，正如第一种情况。而在第二种情况中，由于setTimeout可以把任务从某个队列中跳脱成为新队列，因而能够得到期望的结果。</p>
+    &lt;input type="text" id="input" value="" /&gt;&lt;span id="preview"&gt;&lt;/span&gt;
+&lt;/p&gt;</code></pre>
+
+
+代码运行实例请戳这里。
+原文中有这么一段话，描述的有点抽象：
+
+<p>JavaScript 引擎在执行 onmousedown 时，由于没有多线程的同步执行，不可能同时去处理刚创建元素的 focus 和 select 方法，由于这两个方法都不在队列中，在完成 onmousedown 后，JavaScript 引擎已经丢弃了这两个任务，正如第一种情况。而在第二种情况中，由于 setTimeout 可以把任务从某个队列中跳脱成为新队列，因而能够得到期望的结果。</p>
 <p>我看到这里就觉得非常不对劲了。因为按照这种任务会被丢弃的说法，那么只要在事件触发的函数中再触发其他的事件都会被丢弃，浏览器是绝对不会这么做的，于是我编写了测试代码：</p>
 <pre><code>window.onload = function () {
     //第一个例子：未使用setTimeout
-    get(&apos;makeinput&apos;).onmousedown = function () {
-        var input = document.createElement(&apos;input&apos;);
-        input.setAttribute(&apos;type&apos;, &apos;text&apos;);
-        input.setAttribute(&apos;value&apos;, &apos;test1&apos;);
-        get(&apos;inpwrapper&apos;).appendChild(input);
+    get('makeinput').onmousedown = function () {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('value', 'test1');
+        get('inpwrapper').appendChild(input);
         //按照文中的理论，这里的click不会被触发，但它却成功触发了
-        get(&apos;inpwrapper&apos;).click();//触发了inpwrapper的onclick事件
+        get('inpwrapper').click();//触发了inpwrapper的onclick事件
     }
-    get(&apos;inpwrapper&apos;).onclick = function () {
-        alert(&apos;linkFly&apos;);
+    get('inpwrapper').onclick = function () {
+        alert('linkFly');
     };
-}
-</code></pre><p>下面的onclick()最终是执行了：弹出了”linkFly”。</p>
+}</code></pre>
+<p>下面的 onclick () 最终是执行了：弹出了”linkFly”。</p>
 <p>而在转载的文中为了引人深思，又提出了第三个例子：</p>
-<p>在此，你可以看看例子 3，它的任务是实时更新输入的文本，现在请试试，你会发现预览区域总是落后一拍，比如你输 a, 预览区并没有出现 a, 在紧接输入b时，a才不慌不忙地出现。</p>
-<p>而文中最后留给大家的思考的问题，解决方案就是使用setTimeout再次调整浏览器的代码任务运行队列。</p>
-<pre><code>var domInput = get(&apos;input&apos;);
+<p>在此，你可以看看例子 3，它的任务是实时更新输入的文本，现在请试试，你会发现预览区域总是落后一拍，比如你输 a, 预览区并没有出现 a, 在紧接输入 b 时，a 才不慌不忙地出现。</p>
+<p>而文中最后留给大家的思考的问题，解决方案就是使用 setTimeout 再次调整浏览器的代码任务运行队列。</p>
+<pre><code>var domInput = get('input');
 domInput.onkeypress = function () {
     setTimeout(function () {
         //第三个例子的问题就这样就会被解决
-        get(&apos;preview&apos;).innerHTML = domInput.value;
+        get('preview').innerHTML = domInput.value;
     })
-}
-</code></pre><p>原文和转载的文章中都对setTimeout(fn,0)进行了思考，但原文指出的问题本质漏洞百出，所以才出了这篇文章，我们的正文，现在开始。</p>
-<p>单线程的JavaScript<br>首先我们来看浏览器下的JavaScript：</p>
+}</code></pre>
+<p>原文和转载的文章中都对 setTimeout (fn,0) 进行了思考，但原文指出的问题本质漏洞百出，所以才出了这篇文章，我们的正文，现在开始。</p>
+<p>单线程的 JavaScript<br>首先我们来看浏览器下的 JavaScript：</p>
 <ul>
-<li>javascriipt引擎线程</li>
-<li>GUI渲染线程</li>
+<li>javascriipt 引擎线程</li>
+<li> GUI 渲染线程</li>
 <li>浏览器事件触发线程</li>
 </ul>
-<p>javascript引擎是基于事件驱动单线程执行的，JS引擎一直等待着任务队列中任务的到来，然后加以处理，浏览器无论什么时候都只有一个JS线程在运行JS程序。<br>GUI渲染线程负责渲染浏览器界面，当界面需要重绘（Repaint）或由于某种操作引发回流(reflow)时,该线程就会执行。但需要注意 GUI渲染线程与JS引擎是互斥的，当JS引擎执行时GUI线程会被挂起，GUI更新会被保存在一个队列中等到JS引擎空闲时立即被执行。<br>事件触发线程，当一个事件被触发时该线程会把事件添加到待处理队列的队尾，等待JS引擎的处理。这些事件可来自JavaScript引擎当前执行的代码块如setTimeOut、也可来自浏览器内核的其他线程如鼠标点击、AJAX异步请求等，但由于JS的单线程关系所有这些事件都得排队等待JS引擎处理。（当线程中没有执行任何同步代码的前提下才会执行异步代码）<br>js的单线程在这一段面试代码中尤为明显（理解即可，请不要尝试…浏览器会假死的）：</p>
-<pre><code>var isEnd = true;
-window.setTimeout(function () {
-    isEnd = false;//1s后，改变isEnd的值
-}, 1000);
-//这个while永远的占用了js线程，所以setTimeout里面的函数永远不会执行
-while (isEnd);
-//alert也永远不会弹出
-alert(&apos;end&apos;);
-</code></pre><p>在我工作中对js的认识，个人认为js的任务单位是函数。即，一个函数表示着一个任务，这个函数没有执行结束，则在浏览器中当前的任务即没有结束。<br>上面的代码中，当前任务因为while的执行而造成永远无法执行，所以后面的setTimeout也永远不会被执行。它在浏览器的任务队列中如图所示：</p>
+<p>javascript 引擎是基于事件驱动单线程执行的，JS 引擎一直等待着任务队列中任务的到来，然后加以处理，浏览器无论什么时候都只有一个 JS 线程在运行 JS 程序。<br>GUI 渲染线程负责渲染浏览器界面，当界面需要重绘（Repaint）或由于某种操作引发回流 (reflow) 时，该线程就会执行。但需要注意 GUI 渲染线程与 JS 引擎是互斥的，当 JS 引擎执行时 GUI 线程会被挂起，GUI 更新会被保存在一个队列中等到 JS 引擎空闲时立即被执行。<br>事件触发线程，当一个事件被触发时该线程会把事件添加到待处理队列的队尾，等待 JS 引擎的处理。这些事件可来自 JavaScript 引擎当前执行的代码块如 setTimeOut、也可来自浏览器内核的其他线程如鼠标点击、AJAX 异步请求等，但由于 JS 的单线程关系所有这些事件都得排队等待 JS 引擎处理。（当线程中没有执行任何同步代码的前提下才会执行异步代码）<br>js 的单线程在这一段面试代码中尤为明显（理解即可，请不要尝试… 浏览器会假死的）：</p>
+<pre><code>    var isEnd = true;
+    window.setTimeout(function () {
+        isEnd = false;//1s后，改变isEnd的值
+    }, 1000);
+    //这个while永远的占用了js线程，所以setTimeout里面的函数永远不会执行
+    while (isEnd);
+    //alert也永远不会弹出
+    alert('end');</code></pre>
+<p>在我工作中对 js 的认识，个人认为 js 的任务单位是函数。即，一个函数表示着一个任务，这个函数没有执行结束，则在浏览器中当前的任务即没有结束。<br>上面的代码中，当前任务因为 while 的执行而造成永远无法执行，所以后面的 setTimeout 也永远不会被执行。它在浏览器的任务队列中如图所示：</p>
 <p>Browser Event</p>
-<p>setTimeout背后意味着什么<br>这篇文章一直在使用setTimeout为我们展现和理解js单线程的设计，只是它错误的使用了Event来进行演示，并过度解读了Event。<br>这里原文和转载的文章忽略了这些基础的事件触发，而且也偏偏挑了两套本身设计就比较复杂的API：onmouseXXX系和onkeyXXX系。</p>
-<p>onKeyXXX系的API触发顺序如图：</p>
+<p>setTimeout 背后意味着什么<br>这篇文章一直在使用 setTimeout 为我们展现和理解 js 单线程的设计，只是它错误的使用了 Event 来进行演示，并过度解读了 Event。<br>这里原文和转载的文章忽略了这些基础的事件触发，而且也偏偏挑了两套本身设计就比较复杂的 API：onmouseXXX 系和 onkeyXXX 系。</p>
+<p>onKeyXXX 系的 API 触发顺序如图：</p>
 <p>onKeyXXX</p>
 <p>而我个人所理解它们对应的功能：</p>
-<p>onkeydown - 主要获取和处理当前按下按键，例如按下Enter后进行提交。在这一层，并没有更新相关DOM元素的值。<br>onkeypress - 主要获取和处理长按键，因为onkeypress在长按键盘的情况下会反复触发直到释放，这里并没有更新相关DOM元素的值，值得注意的是：keypress之后才会更新值，所以在长按键盘反复触发onkeypress事件的时候，后一个触发的onkeypress能得到上一个onkeypress的值。所以出现了onkeypress每次取值都会是上一次的值而不是最新值。<br>onkeyup - 触发onkeyup的DOM元素的值在这里已经更新，可以拿到最新的值，所以这里主要处理相关DOM元素的值。<br>流程就是上面的图画的那样：</p>
+<p>onkeydown - 主要获取和处理当前按下按键，例如按下 Enter 后进行提交。在这一层，并没有更新相关 DOM 元素的值。<br>onkeypress - 主要获取和处理长按键，因为 onkeypress 在长按键盘的情况下会反复触发直到释放，这里并没有更新相关 DOM 元素的值，值得注意的是：keypress 之后才会更新值，所以在长按键盘反复触发 onkeypress 事件的时候，后一个触发的 onkeypress 能得到上一个 onkeypress 的值。所以出现了 onkeypress 每次取值都会是上一次的值而不是最新值。<br>onkeyup - 触发 onkeyup 的 DOM 元素的值在这里已经更新，可以拿到最新的值，所以这里主要处理相关 DOM 元素的值。<br>流程就是上面的图画的那样：</p>
 <p>onkeydown =&gt; onkeypress =&gt; onkeyup</p>
-<p>使用了setTimeout之后，流程应该是下面这样子的：</p>
+<p>使用了 setTimeout 之后，流程应该是下面这样子的：</p>
 <p>onkeydown =&gt; onkeypress =&gt; function =&gt; onkeyup</p>
-<p>使用setTimeout(fn,0)之后，在onkeypress后面插入了我们的函数function。上面所说，浏览器在onkeypress之后就会更新相关DOM元素的状态（input[type=text]的value），所以我们的function里面可以拿到最新的值。<br>所以我们在onkeypress里面挂起setTimeout能拿到正确的值，下面的代码可以测试使用setTimeout(fn,0)之后的流程：</p>
+<p>使用 setTimeout (fn,0) 之后，在 onkeypress 后面插入了我们的函数 function。上面所说，浏览器在 onkeypress 之后就会更新相关 DOM 元素的状态（input [type=text] 的 value），所以我们的 function 里面可以拿到最新的值。<br>所以我们在 onkeypress 里面挂起 setTimeout 能拿到正确的值，下面的代码可以测试使用 setTimeout (fn,0) 之后的流程：</p>
 <pre><code>window.onload = function () {
-    var domInput = get(&apos;input&apos;), view = get(&apos;preview&apos;);
+    var domInput = get('input'), view = get('preview');
     //onkeypress兼容性和说明：http://www.w3school.com.cn/jsref/jsref_events.asp
     domInput.onkeypress = function () {
         setTimeout(function () {
             //这个函数在keypress之后，keyup之前执行
-            console.log(&apos;linkFly&apos;);
+            console.log('linkFly');
         });
     };
     domInput.onkeyup = function () {
-        console.log(&apos;up&apos;);
+        console.log('up');
     };
-};
-</code></pre><p>然后我们再来谈谈原代码中的示例1和示例2，示例1和示例2的区别在这里：</p>
-<pre><code>//示例1
-input.focus();
-input.select();
-
-//示例2
-setTimeout(function () {
+};</code></pre>
+<p>然后我们再来谈谈原代码中的示例 1 和示例 2，示例 1 和示例 2 的区别在这里：</p>
+<pre><code>    //示例1
     input.focus();
     input.select();
-}, 0);
-</code></pre><p>原文章中说示例1的focus()和select()在onmousedown事件中被丢弃，从而导致了没有选中，但原文的作者忽略了他注册的事件是：onmousedown。<br>我们暂且不讨论onmouseXXX系的其他API，我们仅关注和点击相关的，它们的执行顺序是：</p>
-<p>mousedown - 鼠标按钮按下<br>mouseup - 鼠标按钮释放<br>click - 完成单击<br>我们在onmousedown里面新建了input，并且选中input的值（调用了input.focus(),input.select()）。<br>那么为什么没有被选中呢？这样，我们来做一次测试，看看我们的onfocus到底是被丢弃了，还是触发了。我们把原文的代码进行改写：</p>
+
+    //示例2
+    setTimeout(function () {
+        input.focus();
+        input.select();
+    }, 0);</code></pre>
+<p>原文章中说示例 1 的 focus () 和 select () 在 onmousedown 事件中被丢弃，从而导致了没有选中，但原文的作者忽略了他注册的事件是：onmousedown。<br>我们暂且不讨论 onmouseXXX 系的其他 API，我们仅关注和点击相关的，它们的执行顺序是：</p>
+<p>mousedown - 鼠标按钮按下<br>mouseup - 鼠标按钮释放<br>click - 完成单击<br>我们在 onmousedown 里面新建了 input，并且选中 input 的值（调用了 input.focus (),input.select ()）。<br>那么为什么没有被选中呢？这样，我们来做一次测试，看看我们的 onfocus 到底是被丢弃了，还是触发了。我们把原文的代码进行改写：</p>
 <pre><code>window.onload = function () {
-    var makeBtn = get(&apos;makeinput&apos;);
+    var makeBtn = get('makeinput');
     //观察onmouseXXX系完成整个单击的顺序
     makeBtn.onmousedown = function (e) {
         console.log(e.type);
-        var input = document.createElement(&apos;input&apos;);
-        input.setAttribute(&apos;type&apos;, &apos;text&apos;);
-        input.setAttribute(&apos;value&apos;, &apos;test1&apos;);
-        get(&apos;inpwrapper&apos;).appendChild(input);
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('value', 'test1');
+        get('inpwrapper').appendChild(input);
         input.onfocus = function () {//观察我们新生成的input什么时候获取焦点的，或者它有没有像原文作者说的那样被丢弃了
-            console.info(&apos;input focus&apos;);
+            console.info('input focus');
         };
         input.focus();
         input.select();
@@ -478,21 +525,21 @@ setTimeout(function () {
         console.log(e.type);
     };
     makeBtn.onfocus = function () {//观察我们生成按钮什么时候获取焦点的
-        console.log(&apos;makeBtn focus&apos;);
+        console.log('makeBtn focus');
     }
-};
-</code></pre><p>代码运行的结果是这样的：<br>onmouseXXX &amp; focus</p>
-<p>我们的input focus执行了——那么它为什么没有获取到焦点呢？我们再看看后面执行的函数：我们点击的按钮，在mousedown之后，才获得焦点，也就是说：我们的input本来已经得到了focus()，但在onmousedown之后，我们点击的按钮才迟迟触发了自己的onfocus()，导致我们的input被覆盖。<br>我们再加上setTimeout进行测试：</p>
+};</code></pre>
+<p>代码运行的结果是这样的：<br>onmouseXXX &amp; focus</p>
+<p>我们的 input focus 执行了 —— 那么它为什么没有获取到焦点呢？我们再看看后面执行的函数：我们点击的按钮，在 mousedown 之后，才获得焦点，也就是说：我们的 input 本来已经得到了 focus ()，但在 onmousedown 之后，我们点击的按钮才迟迟触发了自己的 onfocus ()，导致我们的 input 被覆盖。<br>我们再加上 setTimeout 进行测试：</p>
 <pre><code>window.onload = function () {
-    var makeBtn = get(&apos;makeinput&apos;);
+    var makeBtn = get('makeinput');
     makeBtn.onmousedown = function (e) {
         console.log(e.type);
-        var input = document.createElement(&apos;input&apos;);
-        input.setAttribute(&apos;type&apos;, &apos;text&apos;);
-        input.setAttribute(&apos;value&apos;, &apos;test1&apos;);
-        get(&apos;inpwrapper&apos;).appendChild(input);
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('value', 'test1');
+        get('inpwrapper').appendChild(input);
         input.onfocus = function () {
-            console.info(&apos;input focus&apos;);
+            console.info('input focus');
         };
         //我们加上setTimeout，看看会发生什么
         setTimeout(function () {
@@ -507,33 +554,33 @@ setTimeout(function () {
         console.log(e.type);
     };
     makeBtn.onfocus = function () {
-        console.log(&apos;makeBtn focus&apos;);
+        console.log('makeBtn focus');
     }
-};
-</code></pre><p>执行结果是这样：<br>onmouseXXX and settimeout</p>
-<p>可以看见当我们点击”生成”按钮的时候，按钮的focus正确的执行了，然后才执行了input focus。<br>在示例1中，我们在onmousedown()中执行了input.focus()导致input得到焦点，而onmousedown之后，我们点击的按钮才迟迟得到了自己的焦点，造成了我们input刚拿到手还没焐热的焦点被转移。<br>而示例2中的代码，我们延迟了焦点，当按钮获得焦点之后，我们的input再把焦点抢过来，所以，使用setTimeout(fn,0)之后，我们的input可以得到焦点并选中文本。<br>这里值得思考的focus()的执行时机，根据这次测试观察，发现focus事件好像挂载在mousedown之内的最后面，而不是直接挂在mousedown的后面。它和mousedown仿佛是一体的。<br>我们使用setTimeout之前的任务流程是这样的（-&gt;表示在上一个任务中，=&gt;表示在上一个任务后）：</p>
+};</code></pre>
+<p>执行结果是这样：<br>onmouseXXX and settimeout</p>
+<p>可以看见当我们点击” 生成” 按钮的时候，按钮的 focus 正确的执行了，然后才执行了 input focus。<br>在示例 1 中，我们在 onmousedown () 中执行了 input.focus () 导致 input 得到焦点，而 onmousedown 之后，我们点击的按钮才迟迟得到了自己的焦点，造成了我们 input 刚拿到手还没焐热的焦点被转移。<br>而示例 2 中的代码，我们延迟了焦点，当按钮获得焦点之后，我们的 input 再把焦点抢过来，所以，使用 setTimeout (fn,0) 之后，我们的 input 可以得到焦点并选中文本。<br>这里值得思考的 focus () 的执行时机，根据这次测试观察，发现 focus 事件好像挂载在 mousedown 之内的最后面，而不是直接挂在 mousedown 的后面。它和 mousedown 仿佛是一体的。<br>我们使用 setTimeout 之前的任务流程是这样的（-&gt; 表示在上一个任务中，=&gt; 表示在上一个任务后）：</p>
 <p><code>onmousedown -&gt; onmousedown中执行了input.focus() -&gt; button.onfocus =&gt; onmouseup =&gt; onclick</code></p>
-<p>onmouseXXX事件流程</p>
-<p>而我们使用了setTimeout之后的任务流程是这样的：</p>
+<p>onmouseXXX 事件流程</p>
+<p>而我们使用了 setTimeout 之后的任务流程是这样的：</p>
 <p><code>onmousedown -&gt; button.onfocus =&gt; input.focus =&gt; onmouseup =&gt; onclick</code></p>
-<p>onmouseXXX+setTimeout事件流程</p>
-<p>而从上面的流程上我们得知了另外的消息，我们还可以把input.focus挂在mouseup和click下，因为在这些事件之前，我们的按钮已经得到过焦点了，不会再抢我们的焦点了。</p>
-<pre><code>makeBtn.click = function (e) {
-    console.log(e.type);
-    var input = document.createElement(&apos;input&apos;);
-    input.setAttribute(&apos;type&apos;, &apos;text&apos;);
-    input.setAttribute(&apos;value&apos;, &apos;test1&apos;);
-    get(&apos;inpwrapper&apos;).appendChild(input);
-    input.onfocus = function () {//观察我们新生成的input什么时候获取焦点的
-        console.info(&apos;input focus&apos;);
-    };
-    input.focus();
-    input.select();
-}
-</code></pre><p>我们应该认识到，利用setTimeout(fn,0)的特性，可以帮助我们在某些极端场景下，修正浏览器的下一个任务</p>
-<p>总结：<br><strong>意思就是说input的focus有执行， 只是被button的mouseup影响了，所以要要把focus()放到后面执行<br>页面上只有一个元素能获得焦点，就这样而已。。</strong></p>
-<p>参考和引用<br>JavaScript异步机制<br>什么是 Event Loop<br>javascript线程解释<br>JavaScript - 前端开发交流群：377786580</p>
-<p>作者：linkFly<br>原文：<a href="http://www.cnblogs.com/silin6/p/4333999.html" target="_blank" rel="noopener">http://www.cnblogs.com/silin6/p/4333999.html</a><br>出处：<a href="http://www.cnblogs.com/silin6/" target="_blank" rel="noopener">www.cnblogs.com/silin6/</a></p>
+<p>onmouseXXX+setTimeout 事件流程</p>
+<p>而从上面的流程上我们得知了另外的消息，我们还可以把 input.focus 挂在 mouseup 和 click 下，因为在这些事件之前，我们的按钮已经得到过焦点了，不会再抢我们的焦点了。</p>
+<pre><code>    makeBtn.click = function (e) {
+        console.log(e.type);
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('value', 'test1');
+        get('inpwrapper').appendChild(input);
+        input.onfocus = function () {//观察我们新生成的input什么时候获取焦点的
+            console.info('input focus');
+        };
+        input.focus();
+        input.select();
+    }</code></pre>
+<p>我们应该认识到，利用 setTimeout (fn,0) 的特性，可以帮助我们在某些极端场景下，修正浏览器的下一个任务</p>
+<p>总结：<br><strong>意思就是说 input 的 focus 有执行， 只是被 button 的 mouseup 影响了，所以要要把 focus () 放到后面执行<br>页面上只有一个元素能获得焦点，就这样而已。。</strong></p>
+<p>参考和引用<br>JavaScript 异步机制<br>什么是 Event Loop<br>javascript 线程解释<br>JavaScript - 前端开发交流群：377786580</p>
+<p>作者：linkFly<br>原文：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/silin6/p/4333999.html">http://www.cnblogs.com/silin6/p/4333999.html</a><br>出处：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/silin6/">www.cnblogs.com/silin6/</a></p>
 
     </div>
 
@@ -568,13 +615,13 @@ setTimeout(function () {
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/08/09/%E7%BD%91%E6%98%93%E4%B8%8E%E6%B7%98%E5%AE%9D%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="prev" title="网易与淘宝移动端适配工作流思考一">
-                  <i class="fa fa-chevron-left"></i> 网易与淘宝移动端适配工作流思考一
+                <a href="/2018/01/16/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="prev" title="Javascript 设计模式系列">
+                  <i class="fa fa-chevron-left"></i> Javascript 设计模式系列
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2018/01/16/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="Javascript 设计模式系列">
-                  Javascript 设计模式系列 <i class="fa fa-chevron-right"></i>
+                <a href="/2018/01/16/javascript%E5%86%B7%E7%9F%A5%E8%AF%86/" rel="next" title="js 冷知识">
+                  js 冷知识 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -635,13 +682,13 @@ setTimeout(function () {
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -731,8 +778,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

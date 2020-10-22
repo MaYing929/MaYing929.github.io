@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="引出问题一个很简单的需求 页面有一张小图 点击是个swiper实现的图集 同时有一个灰色的蒙层 蒙层底部页面不可滑动 关闭蒙层 页面可恢复正常 实现方式 12345678910111213function bodyScroll(event)&amp;#123;    event.preventDefault();&amp;#125;function _switchTag(type) &amp;#123;    if (t">
+  <meta name="description" content="引出问题一个很简单的需求 页面有一张小图 点击是个 swiper 实现的图集 同时有一个灰色的蒙层 蒙层底部页面不可滑动 关闭蒙层 页面可恢复正常 实现方式 12345678910111213function bodyScroll(event){    event.preventDefault();}function _switchTag(type) {    if (type &#x3D;&#x3D;&#x3D; &#39;on&#39;)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="addEventListener 中的 passive 用法">
 <meta property="og:url" content="http://maying.ink/2018/12/21/passive/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="引出问题一个很简单的需求 页面有一张小图 点击是个swiper实现的图集 同时有一个灰色的蒙层 蒙层底部页面不可滑动 关闭蒙层 页面可恢复正常 实现方式 12345678910111213function bodyScroll(event)&amp;#123;    event.preventDefault();&amp;#125;function _switchTag(type) &amp;#123;    if (t">
+<meta property="og:description" content="引出问题一个很简单的需求 页面有一张小图 点击是个 swiper 实现的图集 同时有一个灰色的蒙层 蒙层底部页面不可滑动 关闭蒙层 页面可恢复正常 实现方式 12345678910111213function bodyScroll(event){    event.preventDefault();}function _switchTag(type) {    if (type &#x3D;&#x3D;&#x3D; &#39;on&#39;)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://maying.ink/images/passive/passive1.gif">
 <meta property="og:image" content="http://maying.ink/images/passive/iOSqian.gif">
@@ -217,7 +217,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%87%BA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">引出问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.1.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89-passive%E8%BF%99%E4%B8%AA%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">为什么会有 passive这个概念</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%87%BA%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">引出问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.1.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89-passive%E8%BF%99%E4%B8%AA%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">为什么会有 passive 这个概念</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -348,14 +348,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>2.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -366,35 +366,38 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h2><p>一个很简单的需求 页面有一张小图 点击是个swiper实现的图集 同时有一个灰色的蒙层 蒙层底部页面不可滑动 关闭蒙层 页面可恢复正常</p>
+        <h2 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h2><p>一个很简单的需求 页面有一张小图 点击是个 swiper 实现的图集 同时有一个灰色的蒙层 蒙层底部页面不可滑动 关闭蒙层 页面可恢复正常</p>
 <p>实现方式</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bodyScroll</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">    event.preventDefault();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_switchTag</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">'on'</span>) &#123;</span><br><span class="line">        <span class="built_in">window</span>.addEventListener(<span class="string">'touchmove'</span>, bodyScroll);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.removeEventListener(<span class="string">'touchmove'</span>, bodyScroll);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">_switchTag(on) 页面不可滑动</span><br><span class="line">_switchTag(off) 页面恢复滑动</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function bodyScroll(event){</span><br><span class="line">    event.preventDefault();</span><br><span class="line">}</span><br><span class="line">function _switchTag(type) {</span><br><span class="line">    if (type === 'on') {</span><br><span class="line">        window.addEventListener('touchmove', bodyScroll);</span><br><span class="line">    } else {</span><br><span class="line">        window.removeEventListener('touchmove', bodyScroll);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">_switchTag(on) 页面不可滑动</span><br><span class="line">_switchTag(off) 页面恢复滑动</span><br></pre></td></tr></tbody></table></figure>
 <p>移动端的效果如下<br>android<br><img src="/images/passive/passive1.gif" alt="jsworke"></p>
 <p>ios<br><img src="/images/passive/iOSqian.gif" alt="jsworke"></p>
 <p>我不知道为什么无效 直到我在模拟器上看到了</p>
 <p><img src="/images/passive/webqian.gif" alt="jsworke"></p>
 <p>啊哦 报错了🦢</p>
-<p><font color="red">Unable to preventDefault inside passive event listener due to target being treated as passive</font><br>来自 google 的解释 <a href="https://developers.google.com/web/updates/2017/01/scrolling-intervention" target="_blank" rel="noopener">https://developers.google.com/web/updates/2017/01/scrolling-intervention</a></p>
+<p><font color="red">Unable to preventDefault inside passive event listener due to target being treated as passive</font><br>来自 google 的解释 <a target="_blank" rel="noopener" href="https://developers.google.com/web/updates/2017/01/scrolling-intervention">https://developers.google.com/web/updates/2017/01/scrolling-intervention</a></p>
 <p>大概的意思是说</p>
-<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">由于浏览器必须要在执行事件处理函数之后，才能知道有没有调用过 preventDefault() ，这就导致了浏览器不能及时响应滚动，略有延迟。</span><br><span class="line"></span><br><span class="line">所以为了让页面滚动的效果如丝般顺滑，从 chrome56 开始，在 window、document 和 body 上注册的 touchstart 和 touchmove 事件处理函数，会默认为是 passive: <span class="literal">true</span>。浏览器忽略 preventDefault() 就可以第一时间滚动了。</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">wnidow.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">func</span>) 效果和下面一句一样</span></span><br><span class="line">wnidow.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">func</span>, &#123; <span class="title">passive</span>: <span class="title">true</span> &#125;)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">由于浏览器必须要在执行事件处理函数之后，才能知道有没有调用过 preventDefault() ，这就导致了浏览器不能及时响应滚动，略有延迟。</span><br><span class="line"></span><br><span class="line">所以为了让页面滚动的效果如丝般顺滑，从 chrome56 开始，在 window、document 和 body 上注册的 touchstart 和 touchmove 事件处理函数，会默认为是 passive: true。浏览器忽略 preventDefault() 就可以第一时间滚动了。</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">wnidow.addEventListener('touchmove', func) 效果和下面一句一样</span><br><span class="line">wnidow.addEventListener('touchmove', func, { passive: true })</span><br></pre></td></tr></tbody></table></figure>
 <p>这就导致了这个问题</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果在以上这 3 个元素的 <span class="selector-tag">touchstart</span> 和 <span class="selector-tag">touchmove</span> 事件处理函数中调用 <span class="selector-tag">e</span><span class="selector-class">.preventDefault</span>() ，会被浏览器忽略掉，并不会阻止默认行为</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果在以上这 3 个元素的 touchstart 和 touchmove 事件处理函数中调用 e.preventDefault() ，会被浏览器忽略掉，并不会阻止默认行为</span><br></pre></td></tr></tbody></table></figure>
 <p>所以出现了以上视频中问题</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>那么我们如何来解决这个问题 即不要让浏览器忽略掉e.preventDefault()？</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>那么我们如何来解决这个问题 即不要让浏览器忽略掉 e.preventDefault ()？</p>
 <ol>
 <li>window.addEventListener(‘touchmove’, func, { passive: false })</li>
 </ol>
-<p>设置passive: false之后的结果<br>android<br><img src="/images/passive/androdhou.gif" alt="jsworke"><br>ios<br><img src="/images/passive/iOShou.gif" alt="jsworke"><br>浏览器<br><img src="/images/passive/webhou.gif" alt="jsworke"><br>问题完美解决</p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">你看到这里可以结束了 如果你还想再了解一点点</span><br><span class="line">👇👇👇👇</span><br><span class="line"></span><br><span class="line">#### 你可能不知道的<span class="keyword">addEventListener</span></span><br><span class="line"><span class="keyword"></span></span><br><span class="line"><span class="keyword">很久之前addEventListener的参数是这样儿的</span></span><br><span class="line"><span class="keyword">`addEventListener(type, </span>listener, useCapture)`</span><br><span class="line"></span><br><span class="line">后来也就是控制监听器是在捕获阶段执行还是在冒泡阶段执行的 useCapture 参数，变成了可选参数</span><br><span class="line">`<span class="keyword">addEventListener(type, </span>listener [,useCapture])`</span><br><span class="line"></span><br><span class="line">再后来 DOM 规范做了修订<span class="keyword">addEventListener() </span>的第三个参数可以是个对象值了，也就是说第三个参数现在可以是两种类型的值了 变成这样儿式儿的</span><br></pre></td></tr></table></figure>
-<p>addEventListener(type, listener[, useCapture ])<br>addEventListener(type, listener[, options ])<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">扩展新的选项，从而自定义更多的行为，目前规范中 <span class="keyword">options</span> 对象可用的属性有三个：</span><br></pre></td></tr></table></figure></p>
-<p>addEventListener(type, listener, {<br>    capture: false, 等价于 useCapture 默认值false<br>    passive: false, 是否让阻止默认事件失效 true:失效 false：不失效<br>    once: false //表明该监听器是一次性的，执行一次后就被自动 removeEventListener 掉，还没有浏览器实现它 默认值false<br>})<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">还想再说一点 那我设置了 passive的事件 这么移除呢 这里给出了方法</span><br></pre></td></tr></table></figure></p>
+<p>设置 passive: false 之后的结果<br>android<br><img src="/images/passive/androdhou.gif" alt="jsworke"><br>ios<br><img src="/images/passive/iOShou.gif" alt="jsworke"><br>浏览器<br><img src="/images/passive/webhou.gif" alt="jsworke"><br>问题完美解决</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">你看到这里可以结束了 如果你还想再了解一点点</span><br><span class="line">👇👇👇👇</span><br><span class="line"></span><br><span class="line">#### 你可能不知道的addEventListener</span><br><span class="line"></span><br><span class="line">很久之前addEventListener的参数是这样儿的</span><br><span class="line">`addEventListener(type, listener, useCapture)`</span><br><span class="line"></span><br><span class="line">后来也就是控制监听器是在捕获阶段执行还是在冒泡阶段执行的 useCapture 参数，变成了可选参数</span><br><span class="line">`addEventListener(type, listener [,useCapture])`</span><br><span class="line"></span><br><span class="line">再后来 DOM 规范做了修订addEventListener() 的第三个参数可以是个对象值了，也就是说第三个参数现在可以是两种类型的值了 变成这样儿式儿的</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>addEventListener(type, listener[, useCapture ])<br>addEventListener(type, listener[, options ])</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">扩展新的选项，从而自定义更多的行为，目前规范中 options 对象可用的属性有三个：</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>addEventListener(type, listener, {<br>    capture: false, 等价于 useCapture 默认值 false<br>    passive: false, 是否让阻止默认事件失效 true: 失效 false：不失效<br>    once: false // 表明该监听器是一次性的，执行一次后就被自动 removeEventListener 掉，还没有浏览器实现它 默认值 false<br>})</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">还想再说一点 那我设置了 passive的事件 这么移除呢 这里给出了方法</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <p>你可以直接省略第三个参数<br>window.removeEventListener(‘touchmove’, func)</p>
 <p>如果添加了 第一个参数 capture 可以这样移除</p>
 <p>window.removeEventListener(‘touchmove’, func, true)<br>window.removeEventListener(‘touchmove’, func, {capture :true})</p>
-<h3 id="为什么会有-passive这个概念"><a href="#为什么会有-passive这个概念" class="headerlink" title="为什么会有 passive这个概念"></a>为什么会有 passive这个概念</h3><p>像这样儿的代码</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"touchstart"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">    ... <span class="comment">// 浏览器不知道这里会不会有 e.preventDefault()</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>由于 touchstart 事件对象的 cancelable 属性为 true，也就是说它的默认行为可以被监听器通过 preventDefault() 方法阻止，那它的默认行为是什么呢，通常来说就是滚动当前页面（还可能是缩放页面），如果它的默认行为被阻止了，页面就必须静止不动。但浏览器无法预先知道一个监听器会不会调用 preventDefault()，它能做的只有等监听器执行完后再去执行默认行为，而监听器执行是要耗时的，有些甚至耗时很明显，这样就会导致页面卡顿。视频里也说了，即便监听器是个空函数，也会产生一定的卡顿，毕竟空函数的执行也会耗时。</p>
-<p>有 80% 的滚动事件监听器是不会阻止默认行为的，也就是说大部分情况下，浏览器是白等了。所以，passive 监听器诞生了，passive 的意思是“顺从的”，表示它不会对事件的默认行为说 no，浏览器知道了一个监听器是 passive 的，它就可以在两个线程里同时执行监听器中的 JavaScript 代码和浏览器的默认行为了</p>
+<h3 id="为什么会有-passive这个概念"><a href="#为什么会有-passive这个概念" class="headerlink" title="为什么会有 passive这个概念"></a>为什么会有 passive 这个概念</h3><p>像这样儿的代码</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">document.addEventListener("touchstart", function(e){</span><br><span class="line">    ... // 浏览器不知道这里会不会有 e.preventDefault()</span><br><span class="line">})</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>由于 touchstart 事件对象的 cancelable 属性为 true，也就是说它的默认行为可以被监听器通过 preventDefault () 方法阻止，那它的默认行为是什么呢，通常来说就是滚动当前页面（还可能是缩放页面），如果它的默认行为被阻止了，页面就必须静止不动。但浏览器无法预先知道一个监听器会不会调用 preventDefault ()，它能做的只有等监听器执行完后再去执行默认行为，而监听器执行是要耗时的，有些甚至耗时很明显，这样就会导致页面卡顿。视频里也说了，即便监听器是个空函数，也会产生一定的卡顿，毕竟空函数的执行也会耗时。</p>
+<p>有 80% 的滚动事件监听器是不会阻止默认行为的，也就是说大部分情况下，浏览器是白等了。所以，passive 监听器诞生了，passive 的意思是 “顺从的”，表示它不会对事件的默认行为说 no，浏览器知道了一个监听器是 passive 的，它就可以在两个线程里同时执行监听器中的 JavaScript 代码和浏览器的默认行为了</p>
 
     </div>
 
@@ -426,8 +429,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2018/11/27/pushState/" rel="prev" title="一个问题引出的pushState用法">
-                  <i class="fa fa-chevron-left"></i> 一个问题引出的pushState用法
+                <a href="/2018/11/27/pushState/" rel="prev" title="一个问题引出的 pushState 用法">
+                  <i class="fa fa-chevron-left"></i> 一个问题引出的 pushState 用法
                 </a>
             </div>
             <div class="post-nav-item">
@@ -493,13 +496,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -589,8 +592,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

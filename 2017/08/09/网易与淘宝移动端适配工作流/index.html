@@ -332,14 +332,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -350,23 +350,33 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>最近尝试了解了一些移动端的概念<br>得空总结了网易与淘宝的一些适配方案，为后续工作记录一下<br><a id="more"></a></p>
-<p>##网易移动端适配方案<br>要点：<br><figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* 网易页面上html的<span class="built_in">font</span>-<span class="built_in">size</span>不是预先通过媒介查询在css里定义好的，而是通过js计算出来的</span><br><span class="line">* 为了方便，取一个<span class="number">100</span>px的<span class="built_in">font</span>-<span class="built_in">size</span>为参照</span><br></pre></td></tr></table></figure></p>
-<p>步骤：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>拿设计稿竖着的横向分辨率除以<span class="number">100</span>得到body的宽度</span><br><span class="line">  eg：  iphone6，横向分辨率为<span class="number">750</span>，<span class="built_in">width</span> =<span class="number">750</span> / <span class="number">100</span> = <span class="number">7.5</span>rem</span><br><span class="line">        iphone4/<span class="number">5</span>，横向分辨率为<span class="number">640</span>，<span class="built_in">width</span>为<span class="number">640</span> / <span class="number">100</span> = <span class="number">6.4</span>rem</span><br><span class="line"> <span class="number">2.</span>布局时  css尺寸 = 设计稿标注尺寸／<span class="number">100</span></span><br><span class="line">   eg：<span class="number">210</span>px = <span class="number">210</span>/<span class="number">100</span> = <span class="number">2.1</span>rem       </span><br><span class="line">  <span class="number">3.</span>   Dom <span class="built_in">ready</span>以后获取html的font-<span class="built_in">size</span></span><br><span class="line">    ⚠️ 当设备宽度（deviceWidth大于设计稿的横向分辨率时 html的font-<span class="built_in">size</span>始终等于横向分辨率/body元素宽）</span><br><span class="line"> 代码体现</span><br><span class="line">   var deviceWidth = document.documentElement.clientWidth;</span><br><span class="line">        <span class="built_in">if</span>(deviceWidth &gt; <span class="number">640</span>) deviceWidth = <span class="number">640</span>;</span><br><span class="line">        document.documentElement.style.fontSize = deviceWidth / <span class="number">7.5</span> + <span class="string">'px'</span>;</span><br><span class="line"><span class="number">4.</span>font-<span class="built_in">size</span> 可能需要额外的媒体查询 而且不要用rem</span><br><span class="line"></span><br><span class="line">   @media screen <span class="keyword">and</span> (<span class="built_in">max</span>-<span class="built_in">width</span>:<span class="number">321</span>px)&#123;</span><br><span class="line">           .m-navlist&#123;font-<span class="built_in">size</span>:<span class="number">15</span>px&#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          @media screen <span class="keyword">and</span> (<span class="built_in">min</span>-<span class="built_in">width</span>:<span class="number">321</span>px) <span class="keyword">and</span> (<span class="built_in">max</span>-<span class="built_in">width</span>:<span class="number">400</span>px)&#123;</span><br><span class="line">              .m-navlist&#123;font-<span class="built_in">size</span>:<span class="number">16</span>px&#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          @media screen <span class="keyword">and</span> (<span class="built_in">min</span>-<span class="built_in">width</span>:<span class="number">400</span>px)&#123;</span><br><span class="line">              .m-navlist&#123;font-<span class="built_in">size</span>:<span class="number">18</span>px&#125;</span><br><span class="line">          &#125;</span><br><span class="line"><span class="number">5.</span>关于视口的设置</span><br><span class="line">      &lt;meta name=<span class="string">"viewport"</span> content=<span class="string">"initial-scale=1,maximum-scale=1, minimum-scale=1"</span>&gt;</span><br></pre></td></tr></table></figure></p>
-<p>#淘宝移动端适配方案<br>要点：<br><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>.设置视口标签</span><br><span class="line"> &lt;meta <span class="attr">name="viewport"</span>   <span class="attr">content="width=device-width,</span> <span class="attr">initial-scale=1,</span> <span class="attr">maximum-scale=1,</span> <span class="attr">user-scalable=no"&gt;</span></span><br><span class="line">使得整个网页在设备内显示时页面的宽度始终等于设备宽度（device-width）</span><br><span class="line"></span><br><span class="line"><span class="attr">scale</span>  =<span class="number">1</span> 时 <span class="attr">device-width</span> = 设备的物理分辨率／devicePixelRatio（设备像素比）</span><br></pre></td></tr></table></figure></p>
- <font face="STCAIYUN" color="#83933b" size="4">手淘的布局前提是  动态设置 viewport的scale  目的就是为了保证页面大小与设计稿大小一致</font><br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">比如设计稿是<span class="number">750</span>的横向分辨率 那么实际页面的device-width 以iphone6来说 也等于<span class="number">750</span></span><br><span class="line">这样的话设计稿上标注的尺寸只要除以某一个值就能够转换成rem了</span><br></pre></td></tr></table></figure><br><br>2.<font face="STCAIYUN" color="red" size="3">那么 如何动态设置？</font>
+        <p>最近尝试了解了一些移动端的概念<br>得空总结了网易与淘宝的一些适配方案，为后续工作记录一下</p>
+<a id="more"></a>
+<p>## 网易移动端适配方案<br>要点：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* 网易页面上html的font-size不是预先通过媒介查询在css里定义好的，而是通过js计算出来的</span><br><span class="line">* 为了方便，取一个100px的font-size为参照</span><br></pre></td></tr></tbody></table></figure>
+<p>步骤：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">1.拿设计稿竖着的横向分辨率除以100得到body的宽度</span><br><span class="line">  eg：  iphone6，横向分辨率为750，width =750 / 100 = 7.5rem</span><br><span class="line">        iphone4/5，横向分辨率为640，width为640 / 100 = 6.4rem</span><br><span class="line"> 2.布局时  css尺寸 = 设计稿标注尺寸／100</span><br><span class="line">   eg：210px = 210/100 = 2.1rem       </span><br><span class="line">  3.   Dom ready以后获取html的font-size</span><br><span class="line">    ⚠️ 当设备宽度（deviceWidth大于设计稿的横向分辨率时 html的font-size始终等于横向分辨率/body元素宽）</span><br><span class="line"> 代码体现</span><br><span class="line">   var deviceWidth = document.documentElement.clientWidth;</span><br><span class="line">        if(deviceWidth &gt; 640) deviceWidth = 640;</span><br><span class="line">        document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';</span><br><span class="line">4.font-size 可能需要额外的媒体查询 而且不要用rem</span><br><span class="line"></span><br><span class="line">   @media screen and (max-width:321px){</span><br><span class="line">           .m-navlist{font-size:15px}</span><br><span class="line">          }</span><br><span class="line"></span><br><span class="line">          @media screen and (min-width:321px) and (max-width:400px){</span><br><span class="line">              .m-navlist{font-size:16px}</span><br><span class="line">          }</span><br><span class="line"></span><br><span class="line">          @media screen and (min-width:400px){</span><br><span class="line">              .m-navlist{font-size:18px}</span><br><span class="line">          }</span><br><span class="line">5.关于视口的设置</span><br><span class="line">      &lt;meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1"&gt;</span><br></pre></td></tr></tbody></table></figure>
 
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">var</span> <span class="built_in">scale</span> = <span class="number">1</span> / devicePixelRatio;</span><br><span class="line">document.querySelector('meta[name=<span class="string">"viewport"</span>]').setAttribute('<span class="built_in">content</span>','initial-<span class="built_in">scale</span>=' + <span class="built_in">scale</span> + ', maximum-<span class="built_in">scale</span>=' + <span class="built_in">scale</span> + ', minimum-<span class="built_in">scale</span>=' + <span class="built_in">scale</span> + ', user-scalable=no');</span><br></pre></td></tr></table></figure>
-<p>3.<font face="STCAIYUN" color="red" size="3">手淘布局的第二个要点就是关于html元素的font-size计算公式</font></p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">font-size</span> = deviceWidth/<span class="number">10</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>可能会需要额外的媒体查询 同网易 不使用rem<br>但是呢 淘宝的rem不太好计算  如果借助less 就好算多了<br>类似：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个变量和一个mixin</span></span><br><span class="line"><span class="variable">@baseFontSize:</span> <span class="number">75</span>;<span class="comment">//基于视觉稿横屏尺寸/100得出的基准font-size</span></span><br><span class="line"><span class="selector-class">.px2rem</span>(<span class="variable">@name</span>, <span class="variable">@px</span>)&#123;</span><br><span class="line">    <span class="attribute">@&#123;name&#125;</span>: <span class="variable">@px</span> / <span class="variable">@baseFontSize</span> * <span class="number">1rem</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用示例：</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="selector-class">.px2rem</span>(height, <span class="number">240</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//less翻译结果：</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">3.2rem</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>4.<font face="STCAIYUN" color="red" size="3">元素的css尺寸如何计算？</font><br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">比如一个设计稿上某一个元素的高是 <span class="number">150</span>px</span><br><span class="line">css尺寸 =  设计稿标记尺寸/该设计稿对应的html的font-size</span><br><span class="line">也就是说  设计稿是<span class="number">750</span>  所以 font-size = <span class="number">750</span>/<span class="number">10</span> =<span class="number">75</span>px</span><br><span class="line"> <span class="number">150</span>/<span class="number">75</span> = <span class="number">2</span>rem</span><br></pre></td></tr></table></figure></p>
+<p>#淘宝移动端适配方案<br>要点：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1.设置视口标签</span><br><span class="line"> &lt;meta name="viewport"   content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"&gt;</span><br><span class="line">使得整个网页在设备内显示时页面的宽度始终等于设备宽度（device-width）</span><br><span class="line"></span><br><span class="line">scale  =1 时 device-width = 设备的物理分辨率／devicePixelRatio（设备像素比）</span><br></pre></td></tr></tbody></table></figure>
+
+<p> <font face="STCAIYUN" color="#83933b" size="4">手淘的布局前提是  动态设置 viewport 的 scale  目的就是为了保证页面大小与设计稿大小一致</font></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">比如设计稿是750的横向分辨率 那么实际页面的device-width 以iphone6来说 也等于750</span><br><span class="line">这样的话设计稿上标注的尺寸只要除以某一个值就能够转换成rem了</span><br></pre></td></tr></tbody></table></figure>
+<p>2.<font face="STCAIYUN" color="red" size="3"> 那么 如何动态设置？</font></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var scale = 1 / devicePixelRatio;</span><br><span class="line">document.querySelector('meta[name="viewport"]').setAttribute('content','initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');</span><br></pre></td></tr></tbody></table></figure>
+
+<p>3.<font face="STCAIYUN" color="red" size="3"> 手淘布局的第二个要点就是关于 html 元素的 font-size 计算公式</font></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">font-size = deviceWidth/10;</span><br></pre></td></tr></tbody></table></figure>
+<p>可能会需要额外的媒体查询 同网易 不使用 rem<br>但是呢 淘宝的 rem 不太好计算  如果借助 less 就好算多了<br>类似：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//定义一个变量和一个mixin</span><br><span class="line">@baseFontSize: 75;//基于视觉稿横屏尺寸/100得出的基准font-size</span><br><span class="line">.px2rem(@name, @px){</span><br><span class="line">    @{name}: @px / @baseFontSize * 1rem;</span><br><span class="line">}</span><br><span class="line">//使用示例：</span><br><span class="line">.container {</span><br><span class="line">    .px2rem(height, 240);</span><br><span class="line">}</span><br><span class="line">//less翻译结果：</span><br><span class="line">.container {</span><br><span class="line">    height: 3.2rem;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>4.<font face="STCAIYUN" color="red" size="3"> 元素的 css 尺寸如何计算？</font></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">比如一个设计稿上某一个元素的高是 150px</span><br><span class="line">css尺寸 =  设计稿标记尺寸/该设计稿对应的html的font-size</span><br><span class="line">也就是说  设计稿是750  所以 font-size = 750/10 =75px</span><br><span class="line"> 150/75 = 2rem</span><br></pre></td></tr></tbody></table></figure>
+
+
 <p>关于这种做法的具体实现，淘宝已经给我们提供了一个开源的解决方案</p>
-<font face="STCAIYUN" color="bluegreen" size="5"><a href="https://github.com/amfe/lib-flexible" target="_blank" rel="noopener">淘宝移动端布局方案</a></font>
-
-<p><font face="STCAIYUN" color="red" size="3">比较网易与淘宝的做法</font></p>
-<p><font face="STCAIYUN" color="bluegreen" size="3">共同点：</font><br>都能适配所有的手机设备，对于pad，网易与淘宝都会跳转到pc页面，不再使用触屏版的页面<br>都需要动态设置html的font-size<br>布局时各元素的尺寸值都是根据设计稿标注的尺寸计算出来，由于html的font-size是动态调整的，所以能够做到不同分辨率下页面布局呈现等比变化<br>容器元素的font-size都不用rem，需要额外地对font-size做媒介查询<br>都能应用于尺寸不同的设计稿，只要按以上总结的方法去用就可以了</p>
-<p><font face="STCAIYUN" color="bluegreen" size="3">不同点：</font><br>淘宝的设计稿是基于750的横向分辨率，网易的设计稿是基于640的横向分辨率，还要强调的是，虽然设计稿不同，但是最终的结果是一致的，设计稿的尺寸一个公司设计人员的工作标准，每个公司不一样而已<br>淘宝还需要动态设置viewport的scale，网易不用<br>最重要的区别就是：网易的做法，rem值很好计算，淘宝的做法肯定得用计算器才能用好了 。不过要是你使用了less和sass这样的css处理器，就好办多了</p>
+<p><font face="STCAIYUN" color="bluegreen" size="5"><a target="_blank" rel="noopener" href="https://github.com/amfe/lib-flexible">淘宝移动端布局方案</a></font></p>
+<p><font face="STCAIYUN" color="red" size="3">比较网易与淘宝的做法</font><br><font face="STCAIYUN" color="bluegreen" size="3">共同点：</font><br>都能适配所有的手机设备，对于 pad，网易与淘宝都会跳转到 pc 页面，不再使用触屏版的页面<br>都需要动态设置 html 的 font-size<br>布局时各元素的尺寸值都是根据设计稿标注的尺寸计算出来，由于 html 的 font-size 是动态调整的，所以能够做到不同分辨率下页面布局呈现等比变化<br>容器元素的 font-size 都不用 rem，需要额外地对 font-size 做媒介查询<br>都能应用于尺寸不同的设计稿，只要按以上总结的方法去用就可以了</p>
+<p><font face="STCAIYUN" color="bluegreen" size="3">不同点：</font><br>淘宝的设计稿是基于 750 的横向分辨率，网易的设计稿是基于 640 的横向分辨率，还要强调的是，虽然设计稿不同，但是最终的结果是一致的，设计稿的尺寸一个公司设计人员的工作标准，每个公司不一样而已<br>淘宝还需要动态设置 viewport 的 scale，网易不用<br>最重要的区别就是：网易的做法，rem 值很好计算，淘宝的做法肯定得用计算器才能用好了 。不过要是你使用了 less 和 sass 这样的 css 处理器，就好办多了</p>
 
     </div>
 
@@ -401,13 +411,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/08/03/viewports%E5%89%96%E6%9E%90%E4%B8%80/" rel="prev" title="viewports剖析一">
-                  <i class="fa fa-chevron-left"></i> viewports剖析一
+                <a href="/2017/08/03/viewports%E5%89%96%E6%9E%90%E4%B8%80/" rel="prev" title="viewports 剖析一">
+                  <i class="fa fa-chevron-left"></i> viewports 剖析一
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2018/01/16/setTimeout(fn,0)/" rel="next" title="JavaScript下的setTimeout(fn,0)意味着什么？[转]">
-                  JavaScript下的setTimeout(fn,0)意味着什么？[转] <i class="fa fa-chevron-right"></i>
+                <a href="/2018/01/16/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="Javascript 设计模式系列">
+                  Javascript 设计模式系列 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -468,13 +478,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -564,8 +574,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

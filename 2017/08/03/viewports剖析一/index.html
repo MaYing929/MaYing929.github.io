@@ -24,29 +24,25 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="因为工作的原因，很少有机会接触移动web开发，一直都还挺遗憾的，偶尔写几个页面也都是“按照套路”出牌，最近终于有空了解一些概念性的东西，记录一下文中的图片为了说明问题均为盗图，具体出处会在文末注明 本文大概将以下几个概念以做对比  PC  设备的pixels和CSS的pixels  所谓的100%缩放  屏幕尺寸和浏览器尺寸  页面的滚动移位  viewport以及度量viewport  html">
+  <meta name="description" content="因为工作的原因，很少有机会接触移动 web 开发，一直都还挺遗憾的，偶尔写几个页面也都是 “按照套路” 出牌，最近终于有空了解一些概念性的东西，记录一下文中的图片为了说明问题均为盗图，具体出处会在文末注明 本文大概将以下几个概念以做对比  PC   设备的 pixels 和 CSS 的 pixels   所谓的 100% 缩放  屏幕尺寸和浏览器尺寸  页面的滚动移位   viewport 以及度">
 <meta property="og:type" content="article">
-<meta property="og:title" content="viewports剖析一">
+<meta property="og:title" content="viewports 剖析一">
 <meta property="og:url" content="http://maying.ink/2017/08/03/viewports%E5%89%96%E6%9E%90%E4%B8%80/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="因为工作的原因，很少有机会接触移动web开发，一直都还挺遗憾的，偶尔写几个页面也都是“按照套路”出牌，最近终于有空了解一些概念性的东西，记录一下文中的图片为了说明问题均为盗图，具体出处会在文末注明 本文大概将以下几个概念以做对比  PC  设备的pixels和CSS的pixels  所谓的100%缩放  屏幕尺寸和浏览器尺寸  页面的滚动移位  viewport以及度量viewport  html">
+<meta property="og:description" content="因为工作的原因，很少有机会接触移动 web 开发，一直都还挺遗憾的，偶尔写几个页面也都是 “按照套路” 出牌，最近终于有空了解一些概念性的东西，记录一下文中的图片为了说明问题均为盗图，具体出处会在文末注明 本文大概将以下几个概念以做对比  PC   设备的 pixels 和 CSS 的 pixels   所谓的 100% 缩放  屏幕尺寸和浏览器尺寸  页面的滚动移位   viewport 以及度">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://maying.ink/images/viewports/1.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/2.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/3.jpg">
-<meta property="og:image" content="http://maying.ink/images/viewports/4.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/5.jpg">
-<meta property="og:image" content="http://maying.ink/images/viewports/6.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/7.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/8.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/9.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/10.jpg">
-<meta property="og:image" content="http://maying.ink/images/viewports/11.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/12.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/13.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/14.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/15.jpg">
-<meta property="og:image" content="http://maying.ink/images/viewports/16.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/viewport-21.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/20.jpg">
 <meta property="og:image" content="http://maying.ink/images/viewports/21.jpg">
@@ -79,7 +75,7 @@
   };
 </script>
 
-  <title>viewports剖析一 | 亦舒的海角</title>
+  <title>viewports 剖析一 | 亦舒的海角</title>
   
 
 
@@ -333,7 +329,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          viewports剖析一
+          viewports 剖析一
         </h1>
 
         <div class="post-meta-container">
@@ -360,14 +356,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>4.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -378,105 +374,181 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>因为工作的原因，很少有机会接触移动web开发，一直都还挺遗憾的，偶尔写几个页面也都是“按照套路”出牌，最近终于有空了解一些概念性的东西，记录一下<br>文中的图片为了说明问题均为<code>盗图</code>，具体出处会在文末注明</p>
+        <p>因为工作的原因，很少有机会接触移动 web 开发，一直都还挺遗憾的，偶尔写几个页面也都是 “按照套路” 出牌，最近终于有空了解一些概念性的东西，记录一下<br>文中的图片为了说明问题均为<code>盗图</code>，具体出处会在文末注明</p>
 <p>本文大概将以下几个概念以做对比</p>
 <ul>
 <li>PC<ul>
-<li><a href="#line1"> <font face="STCAIYUN" size="3" color="blueGreen">设备的pixels和CSS的pixels</font></a></li>
-<li><a href="#line2"> <font face="STCAIYUN" size="3" color="blueGreen">所谓的100%缩放</font></a></li>
+<li><a href="#line1"> <font face="STCAIYUN" size="3" color="blueGreen"> 设备的 pixels 和 CSS 的 pixels</font></a></li>
+<li><a href="#line2"> <font face="STCAIYUN" size="3" color="blueGreen"> 所谓的 100% 缩放</font></a></li>
 <li><a href="#line3"> <font face="STCAIYUN" size="3" color="blueGreen">屏幕尺寸和浏览器尺寸</font></a></li>
 <li><a href="#line4"> <font face="STCAIYUN" size="3" color="blueGreen">页面的滚动移位</font></a></li>
-<li><a href="#line5"> <font face="STCAIYUN" size="3" color="blueGreen">viewport以及度量viewport</font></a></li>
-<li><a href="#line6"> <font face="STCAIYUN" size="3" color="blueGreen">html元素以及度量html</font></a></li>
-<li><a href="#line7"> <font face="STCAIYUN" size="3" color="blueGreen">关于事件坐标</font></a></li>
-<li><a href="#line8"> <font face="STCAIYUN" size="3" color="blueGreen">媒体查询width/height与 device-width/height</font></a></li>
+<li><a href="#line5"> <font face="STCAIYUN" size="3" color="blueGreen"> viewport 以及度量 viewport</font></a></li>
+<li><a href="#line6"> <font face="STCAIYUN" size="3" color="blueGreen">html 元素以及度量 html</font></a></li>
+<li><a href="#line7"> <font face="STCAIYUN" size="3" color="blueGreen"> 关于事件坐标</font></a></li>
+<li><a href="#line8"> <font face="STCAIYUN" size="3" color="blueGreen">媒体查询 width/height 与 device-width/height</font></a></li>
 </ul>
 </li>
 <li>mobile<ul>
-<li><a href="#line9"> <font face="STCAIYUN" size="3" color="blueGreen">mobile浏览器</font></a></li>
-<li><a href="#line10"> <font face="STCAIYUN" size="3" color="blueGreen">两种viewport</font></a><ul>
+<li><a href="#line9"> <font face="STCAIYUN" size="3" color="blueGreen">mobile 浏览器</font></a></li>
+<li><a href="#line10"> <font face="STCAIYUN" size="3" color="blueGreen">两种 viewport</font></a><ul>
 <li><font face="STCAIYUN" size="3" color="red">layoutviewport</font></li>
 <li><font face="STCAIYUN" size="3" color="red">visualviewport</font></li>
 </ul>
 </li>
-<li><a href="#line11"> <font face="STCAIYUN" size="3" color="blueGreen">缩放 Zooming</font></a></li>
-<li><a href="#line12"> <font face="STCAIYUN" size="3" color="blueGreen">屏幕尺寸</font></a></li>
+<li><a href="#line11"> <font face="STCAIYUN" size="3" color="blueGreen"> 缩放 Zooming</font></a></li>
+<li><a href="#line12"> <font face="STCAIYUN" size="3" color="blueGreen"> 屏幕尺寸</font></a></li>
 <li><a href="#line13"> <font face="STCAIYUN" size="3" color="blueGreen">页面的滚动移位</font></a></li>
-<li><a href="#line14"> <font face="STCAIYUN" size="3" color="blueGreen">html元素以及度量html</font></a></li>
-<li><a href="#line15"> <font face="STCAIYUN" size="3" color="blueGreen">关于事件坐标</font></a></li>
-<li><a href="#line16"> <font face="STCAIYUN" size="3" color="blueGreen">媒体查询width/height与 device-width/height</font></a></li>
-<li><a href="#line17"> <font face="STCAIYUN" size="3" color="blueGreen">viewport的meta标签</font></a></li>
+<li><a href="#line14"> <font face="STCAIYUN" size="3" color="blueGreen"> html 元素以及度量 html</font></a></li>
+<li> <a href="#line15"> <font face="STCAIYUN" size="3" color="blueGreen"> 关于事件坐标</font></a></li>
+<li><a href="#line16"> <font face="STCAIYUN" size="3" color="blueGreen">媒体查询 width/height 与 device-width/height</font></a></li>
+<li><a href="#line17"> <font face="STCAIYUN" size="3" color="blueGreen">viewport 的 meta 标签</font></a></li>
 </ul>
 </li>
 </ul>
-<p></p><p id="line1"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">设备的pixels和CSS的pixels</font><br></p><br><strong>设备的pixels</strong><br>    设备像素是我们直觉上觉得「靠谱」的像素。这些像素为你所使用的各种设备都提供了正规的分辨率<br>    大多数情况下能从<code>screen.width/height</code> 取出具体值<br>    当然了 设备的pixels对web开发人员几乎毫无用处<br>    这里只需要知道它的概念即可<br><strong>CSS的pixels</strong><br>这些就是那些控制你的样式表如何被渲染的像素<p></p>
-<p>现代浏览器上的缩放是基于<code>伸展</code>pixels<br>所以 html元素上的宽度不会因为你缩放了200%而变成了两倍宽，它在形式上还是一倍宽 只不过占用了两倍的设备pixels<br>如下图1-1 有4个1pixels，缩放为100%的html元素 此时css pixels和设备的pixels完全重合<br><img src="/images/viewports/1.jpg" alt><br>此时我们如果缩小浏览器 css的pixels开始收缩，导致1单位的设备pixels 上重叠了多个css的pixels 如下图1-2<br><img src="/images/viewports/2.jpg" alt><br>如果放大浏览器 css的pixels就会放大 导致1单位的css pixels上重叠了多个设备pixels 如图1-3<br><img src="/images/viewports/3.jpg" alt><br>总而言之 你只需要关注CSS的pixels 这些pixels将指定你的样式被如何渲染<br>就像上面所说的 设备的pixels对开发人员无用 但是对用户有用，因为用户回手动缩放页面，这些开发人员不用关注 <font face="STCAIYUN" color="red" size="3">浏览器会自动保证你的css pixels会被伸展还是被收缩</font></p>
-<p></p><p id="line2"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">所谓的100%缩放</font><br></p><p></p>
-<p><font face="STCAIYUN" color="red" size="3">100% 缩放的情况下 1单位的的CSS pixels 严格等于1单位的设备pixels</font></p>
-<p></p><p id="line3"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">屏幕尺寸和浏览器尺寸</font><br></p><br><strong>屏幕尺寸（Screen size）</strong><br>含义：用户的屏幕的完整大小<br>度量：设备的pixels 不会因为缩放而改变 是显示器的特征<br>对我们来说<font face="STCAIYUN" color="red" size="4">没用</font><br>获取方式<br>如下图1-4<br><img src="/images/viewports/4.jpg" alt><p></p>
-<p><strong>浏览器尺寸（Window size）</strong><br>含义：包含<code>滚动条尺寸</code>的浏览器完整尺寸<br>度量：CSS pixels<br>浏览器内部尺寸，它定义了当前用户有多大区域。可供你的css布局占用<br>如下图1-5<br><img src="/images/viewports/5.jpg" alt></p>
-<p></p><p id="line4"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">页面的滚动移位</font><br></p><br>含义：页面的移位<br>度量：CSS pixels<br>定义了页面（document）的相对于窗口远点的位移，可以利用这个特性获取用户滚动了多少的滚动条距离<br>如下图1-6<br><img src="/images/viewports/6.jpg" alt><p></p>
-<p></p><p id="line5"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">viewport以及度量viewport</font><br></p><br><strong>viewport</strong><br>啊啊啊 终于提到viewport了 鸡冻<p></p>
-<p><font face="STCAIYUN" color="red" size="3">划重点</font> <code>viewport</code>是控制<code>&lt;html&gt;</code>元素的容器  是<code>&lt;html&gt;</code>的爹</p>
-<p>你发现了么？<br>百分比布局时 你定义的一个侧边栏宽度为10% 当你改变大小时 它的宽度会自动扩张和收缩  原理是啥<br>当然了 它的宽度是依赖父元素 假如它父元素就是<code>&lt;body&gt;</code> 那么<code>&lt;body&gt;</code>多宽？<br>向上类推 <code>&lt;body&gt;</code>的宽度取决于它的父元素<code>&lt;html&gt;</code><br>呃.. 废话好多 <code>&lt;html&gt;</code>宽度取决于它的父元素<br> <code>&lt;html&gt;</code>恰好等于浏览器的宽度 所以你的10%会占用浏览器宽度的10% 我们都是这么用的  今天深扒发现<br><code>&lt;html&gt;</code>宽度受<code>viewport</code>限制 ，等于<code>viewport</code>宽度的100%<br>也就是说<br><code>viewport</code>严格等于浏览器窗口<br>需要注意的是：<code>viewport</code>不是一个html的概念 所以不能通过CSS修改它</p>
-<p><strong>真实页面宽度概念</strong><br>如果你放大页面几倍 如何标识页面宽度（此时已经有横向滚动条了，也就是说页面的内容溢出了<code>&lt;html&gt;</code>元素）<br>使用 document width<br>如图1-7<br><img src="/images/viewports/7.jpg" alt><br>如图1-8<br><img src="/images/viewports/8.jpg" alt><br><strong>度量viewport</strong><br>含义：viewport尺寸<br>度量：CSS pixels<br>如下图1-9<br><img src="/images/viewports/9.jpg" alt><br>document.documentElement 代表<font face="STCAIYUN" color="red" size="3">HTML文档根元素</font><code>&lt;html&gt;</code><br>来 先看张图<br><img src="/images/viewports/10.jpg" alt><br>这张图是在为<code>&lt;html&gt;</code>元素赋值25% 但是<code>document.documentElement.clientWidth</code>值仍然不变<br>说明<font face="STCAIYUN" color="red" size="3">document. documentElement. clientWidth/Height只会给出viewport的尺寸，而不管<html>元素尺寸如何改变</html></font></p>
-<p><font face="STCAIYUN" color="#886" size="4">那么问题来了</font><br>我是不是也可以用<code>window.innerWidth</code>来定义<code>viewport</code><br>呃.<br>他与<code>document.documentElement.clientWidth</code>有一点细微的差别<br>前者不包含滚动条</p>
-<p></p><p id="line6"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">html元素以及度量html</font><br></p><br><strong>html</strong><br>ta爹(<code>viewport</code>)如果<code>document.documentElement.clientWidth</code>表示那么<code>&lt;html&gt;</code>这样获取 <code>document.documentElement.offsetWidth</code><br><img src="/images/viewports/11.jpg" alt><br>如果给<code>&lt;html&gt;</code>元素赋值了宽度 那么<code>offsetWidth</code>就会真实的反映出来<p></p>
-<p><img src="/images/viewports/12.jpg" alt></p>
-<p></p><p id="line7"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">关于事件坐标</font><br></p><br><strong>pageX/Y, clientX/Y, screenX/Y</strong><p></p>
+<p id="line1">
+<font face="STCAIYUN" color="#883958" size="3">设备的 pixels 和 CSS 的 pixels</font>
+</p>
+**设备的pixels**
+    设备像素是我们直觉上觉得「靠谱」的像素。这些像素为你所使用的各种设备都提供了正规的分辨率
+    大多数情况下能从`screen.width/height` 取出具体值
+    当然了 设备的pixels对web开发人员几乎毫无用处
+    这里只需要知道它的概念即可
+**CSS的pixels**
+这些就是那些控制你的样式表如何被渲染的像素
+
+<p>现代浏览器上的缩放是基于<code>伸展</code> pixels<br>所以 html 元素上的宽度不会因为你缩放了 200% 而变成了两倍宽，它在形式上还是一倍宽 只不过占用了两倍的设备 pixels<br>如下图 1-1 有 4 个 1pixels，缩放为 100% 的 html 元素 此时 css pixels 和设备的 pixels 完全重合<br><img src="/images/viewports/1.jpg"><br>此时我们如果缩小浏览器 css 的 pixels 开始收缩，导致 1 单位的设备 pixels 上重叠了多个 css 的 pixels 如下图 1-2<br><img src="/images/viewports/2.jpg"><br>如果放大浏览器 css 的 pixels 就会放大 导致 1 单位的 css pixels 上重叠了多个设备 pixels 如图 1-3<br><img src="/images/viewports/3.jpg"><br>总而言之 你只需要关注 CSS 的 pixels 这些 pixels 将指定你的样式被如何渲染<br>就像上面所说的 设备的 pixels 对开发人员无用 但是对用户有用，因为用户回手动缩放页面，这些开发人员不用关注 <font face="STCAIYUN" color="red" size="3">浏览器会自动保证你的 css pixels 会被伸展还是被收缩</font></p>
+<p id="line2">
+<font face="STCAIYUN" color="#883958" size="3">所谓的 100% 缩放</font>
+</p>
+<font face="STCAIYUN" color="red" size="3"> 100% 缩放的情况下 1 单位的的 CSS pixels 严格等于 1 单位的设备 pixels</font>
+<p id="line3">
+<font face="STCAIYUN" color="#883958" size="3"> 屏幕尺寸和浏览器尺寸</font>
+</p>
+**屏幕尺寸（Screen size）**
+含义：用户的屏幕的完整大小
+度量：设备的pixels 不会因为缩放而改变 是显示器的特征
+对我们来说<font face="STCAIYUN" color="red" size="4">没用</font>
+获取方式
+如下图1-4
+![](/images/viewports/4.jpg)
+
+<p><strong>浏览器尺寸（Window size）</strong><br>含义：包含<code>滚动条尺寸</code>的浏览器完整尺寸<br>度量：CSS pixels<br>浏览器内部尺寸，它定义了当前用户有多大区域。可供你的 css 布局占用<br>如下图 1-5<br><img src="/images/viewports/5.jpg"></p>
+<p id="line4">
+<font face="STCAIYUN" color="#883958" size="3">页面的滚动移位</font>
+</p>
+含义：页面的移位
+度量：CSS pixels
+定义了页面（document）的相对于窗口远点的位移，可以利用这个特性获取用户滚动了多少的滚动条距离
+如下图1-6
+![](/images/viewports/6.jpg)
+
+<p id="line5">
+<font face="STCAIYUN" color="#883958" size="3"> viewport 以及度量 viewport</font>
+</p>
+**viewport**
+啊啊啊 终于提到viewport了 鸡冻
+<font face="STCAIYUN" color="red" size="3"> 划重点</font> `viewport`是控制``元素的容器  是``的爹
+
+<p>你发现了么？<br>百分比布局时 你定义的一个侧边栏宽度为 10% 当你改变大小时 它的宽度会自动扩张和收缩  原理是啥<br>当然了 它的宽度是依赖父元素 假如它父元素就是 <code>&lt;body&gt;</code> 那么 <code>&lt;body&gt;</code> 多宽？<br>向上类推 <code>&lt;body&gt;</code> 的宽度取决于它的父元素 <code>&lt;html&gt;</code><br>呃.. 废话好多 <code>&lt;html&gt;</code> 宽度取决于它的父元素<br> <code>&lt;html&gt;</code> 恰好等于浏览器的宽度 所以你的 10% 会占用浏览器宽度的 10% 我们都是这么用的  今天深扒发现<br><code>&lt;html&gt;</code> 宽度受 <code>viewport</code> 限制 ，等于 <code>viewport</code> 宽度的 100%<br>也就是说<br><code>viewport</code> 严格等于浏览器窗口<br>需要注意的是：<code>viewport</code> 不是一个 html 的概念 所以不能通过 CSS 修改它</p>
+<p><strong>真实页面宽度概念</strong><br>如果你放大页面几倍 如何标识页面宽度（此时已经有横向滚动条了，也就是说页面的内容溢出了 <code>&lt;html&gt;</code> 元素）<br>使用 document width<br>如图 1-7<br><img src="/images/viewports/7.jpg"><br>如图 1-8<br><img src="/images/viewports/8.jpg"><br><strong>度量 viewport</strong><br>含义：viewport 尺寸<br>度量：CSS pixels<br>如下图 1-9<br><img src="/images/viewports/9.jpg"><br>document.documentElement 代表<font face="STCAIYUN" color="red" size="3"> HTML 文档根元素</font><code>&lt;html&gt;</code><br>来 先看张图<br><img src="/images/viewports/10.jpg"><br>这张图是在为 <code>&lt;html&gt;</code> 元素赋值 25% 但是 <code>document.documentElement.clientWidth</code> 值仍然不变<br>说明<font face="STCAIYUN" color="red" size="3"> document. documentElement. clientWidth/Height 只会给出 viewport 的尺寸，而不管元素尺寸如何改变</font><br><font face="STCAIYUN" color="#886" size="4">那么问题来了</font><br>我是不是也可以用 <code>window.innerWidth</code> 来定义 <code>viewport</code><br>呃.<br>他与 <code>document.documentElement.clientWidth</code> 有一点细微的差别<br>前者不包含滚动条</p>
+<p id="line6">
+<font face="STCAIYUN" color="#883958" size="3">html 元素以及度量 html</font>
+</p>
+**html**
+ta爹(`viewport`)如果`document.documentElement.clientWidth`表示那么``这样获取 `document.documentElement.offsetWidth`
+![](/images/viewports/11.jpg)
+如果给``元素赋值了宽度 那么`offsetWidth`就会真实的反映出来
+
+
+<p><img src="/images/viewports/12.jpg"></p>
+<p id="line7">
+<font face="STCAIYUN" color="#883958" size="3"> 关于事件坐标</font>
+</p>
+**pageX/Y, clientX/Y, screenX/Y**
+
 <ul>
-<li>pageX/Y：从<html>原点到事件触发点的CSS的 pixels</html></li>
-<li>clientX/Y：从viewport原点（浏览器窗口）到事件触发点的CSS的 pixels</li>
-<li>screenX/Y：从用户显示器窗口原点到事件触发点的设备 的 pixels。<br>上图<br><img src="/images/viewports/13.jpg" alt><br><img src="/images/viewports/14.jpg" alt><br><img src="/images/viewports/15.jpg" alt></li>
+<li> pageX/Y：从原点到事件触发点的 CSS 的 pixels</li>
+<li>clientX/Y：从 viewport 原点（浏览器窗口）到事件触发点的 CSS 的 pixels</li>
+<li>screenX/Y：从用户显示器窗口原点到事件触发点的设备 的 pixels。<br>上图<br><img src="/images/viewports/13.jpg"><br><img src="/images/viewports/14.jpg"><br><img src="/images/viewports/15.jpg"></li>
 </ul>
-<p></p><p id="line8"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">媒体查询width/height与 device-width/height</font><br></p><p></p>
+<p id="line8">
+<font face="STCAIYUN" color="#883958" size="3">媒体查询 width/height 与 device-width/height</font>
+</p>
+* `device-width/height`使用`screen.width/height`来做为的判定值。该值以设备的pixels来度量
+* `width/height`使用`documentElement.clientWidth/Height`即viewport的值。该值以CSS的pixels来度量
+![](/images/viewports/16.jpg)
+桌面浏览器上使用<font face="STCAIYUN" color="red" size="4">width</font>
+<p id="line9">
+<font face="STCAIYUN" color="#883958" size="3">mobile 浏览器</font>
+</p>
+移动设备的屏幕宽度比桌面浏览器小（好多废话.）
+试想一下 如果我们只是copy桌面的样式到移动设备 该有多丑
+如下图
+移动设备浏览器在初始默认打开以最小缩放模式打开网站。（即在手机屏幕上展示完整宽度的页面）
+
+<p><img src="/images/viewports/viewport-21.jpg"></p>
+<p><font face="STCAIYUN" color="#285853" size="3">假设当前设备的宽度是 400px 还是之前说过的 10% 侧边栏，如果移动设备上做同样的处理，会显示 40px 的宽 太窄了，布局会变得非常可怕</font><br>那么 如何处理？</p>
+<p id="line10">
+<font face="STCAIYUN" color="#883958" size="3">两种 viewport</font></p>
+因为viewport太窄，最显然的解决方式就是将它变宽
+由此 引出了 虚拟视口  （`viewportvisualviewport`） 与      布局视口（`viewportlayoutviewport`）
+关于它们 有一个很好的解释
+
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  想象一下viewportlayoutviewport是一张大的不能改变大小和角度的图片 现在你有个更小的框来观看这张大图片</span><br><span class="line">这个框被不透明的材料包围 因而你只能看到大图片的一部分 你通过这个框子看到的大图片的那部分就叫做虚拟视口（viewportvisualviewport）</span><br><span class="line"></span><br><span class="line">你拿着这个框拿着站的离大图原点（用户的缩小页面功能）以一次性看到这个大图片</span><br><span class="line">你站的离的近一点（用户的放大页面功能）以看到一部分</span><br><span class="line">你能改变这个框框的远近 但是这张大图片的大小和形状都不会改变</span><br></pre></td></tr></tbody></table></figure>
+<p>visualviewport 是当前显示在屏幕上的部分页面。用户会滚动页面来改变可见部分，或者缩放浏览器来改变 visualviewport 的尺寸。<br>如下图<br><img src="/images/viewports/20.jpg"><br>但是 CSS 布局 通常是按照<font face="STCAIYUN" color="red" size="3"> layoutviewport 定义的，这要比 visualviewport 宽很多</font></p>
+元素的宽度继承于layoutviewport
+<p id="line11">
+<font face="STCAIYUN" color="#883958" size="3">缩放 Zooming</font>
+</p>
+两种viewports都以CSS的 pixels来度量。当你通过缩放改变visualviewport时，layoutviewport保存不变。
+<p id="line12">
+<font face="STCAIYUN" color="#883958" size="3"> 屏幕尺寸</font>
+</p>
+**理解layout viewport**
+许多移动设备浏览器在初始默认打开以最小缩放模式打开网站（也就是在手机屏幕上展示完整宽度的页面）
+
+<p><img src="/images/viewports/21.jpg"><br>此时浏览器已经选择好他们的 layoutviewport 的尺寸 它完整覆盖了最小缩放模式下的移动浏览器的屏幕，这个时候 layoutviewport 的宽度高度和最小缩放模式下能在页面上显示的内容的宽度和高度一致。<br><br><br><font face="STCAIYUN" color="red" size="3">那么移动端如何计算 layoutviewport 的尺寸？</font><br><code>document. documentElement. clientWidth/Height</code></p>
+<p><img src="/images/viewports/25.jpg"><br><strong>理解 visual viewport</strong><br><font face="STCAIYUN" color="red" size="3">那么移动端如何计算 visualviewport 的尺寸？</font><br><code>window.innerWidth/Height</code> 随着用户的缩放浏览器 值会改变 更多 更少的 CSS pixels 放进了屏幕<br><img src="/images/viewports/27.jpg"><br><strong>屏幕尺寸 screen</strong><br>和 pc 浏览器一样 screen.width/height 标示了设置屏幕的尺寸 以设备的 pixels 显然 这跟开发人员没有什么关系</p>
+<p id="line13">
+<font face="STCAIYUN" color="#883958" size="3">页面的滚动移位</font>
+</p>
+你同样需要知道当前的虚拟视口相对于布局视口的距离 这叫做`滚动位移` ，它像在pc端获取一样
+使用**window.pageX/YOffset**
+
+<p><img src="/images/viewports/29.jpg"></p>
+<p id="line14">
+<font face="STCAIYUN" color="#883958" size="3"> html 元素以及度量 html</font>
+</p>
+html元素的整体尺寸，和pc端一致 使用`document.documentElement.offsetWidth/Height`，元素以CSS pixels度量
+
+<p><img src="/images/viewports/30.jpg"></p>
+<p id="line15">
+<font face="STCAIYUN" color="#883958" size="3"> 关于事件坐标</font>
+</p>
+同pc浏览器 只需要关注 pageX/Y
+
+<p><img src="/images/viewports/32.jpg"></p>
+<p id="line16">
+<font face="STCAIYUN" color="#883958" size="3">媒体查询 width/height 与 device-width/height</font>
+</p>
+也如同pc浏览器
+ `width/height `使用css的pixels度量layoutviewport 即`document. documentElement. clientWidth/Height `
+`device-width/height  `使用设备的pixels 即 `screen.width/height. `
+所有浏览器都遵循这个原理
+<p id="line17">
+<font face="STCAIYUN" color="#883958" size="3">viewport 的 meta 标签 </font>
+</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name="viewport" content="width=320"&gt;</span><br></pre></td></tr></tbody></table></figure>
+最初这是apple的一个html扩展标签，被很多浏览器复用
+设置 `虚拟视口`的宽度
+
+<p>假设你现在创建一个页面  并不为它设置宽度 那么它会伸展开来占据 100% 的 viewlayout 的宽度 绝大多数浏览器缩小这个页面在一屏的宽度上显示这个 layoutviewport</p>
+<p><img src="/images/viewports/33.jpg"><br>当用户放大页面  绝大多数会保存元素的宽度（保持元素的定位不变）而导致文字超出屏幕<br><img src="/images/viewports/34.jpg"><br>当你设置</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name="viewport" content="width=320"&gt;</span><br></pre></td></tr></tbody></table></figure>
+<p>你网站的 layoutviewport 变成了 320px。页面的初始状态就很正确了<br><img src="/images/viewports/36.jpg"></p>
 <ul>
-<li><code>device-width/height</code>使用<code>screen.width/height</code>来做为的判定值。该值以设备的pixels来度量</li>
-<li><code>width/height</code>使用<code>documentElement.clientWidth/Height</code>即viewport的值。该值以CSS的pixels来度量<br><img src="/images/viewports/16.jpg" alt><br>桌面浏览器上使用<font face="STCAIYUN" color="red" size="4">width</font><br><p id="line9"><br><font face="STCAIYUN" color="#883958" size="3">mobile浏览器</font><br></p><br>移动设备的屏幕宽度比桌面浏览器小（好多废话.）<br>试想一下 如果我们只是copy桌面的样式到移动设备 该有多丑<br>如下图<br>移动设备浏览器在初始默认打开以最小缩放模式打开网站。（即在手机屏幕上展示完整宽度的页面）</li>
-</ul>
-<p><img src="/images/viewports/viewport-21.jpg" alt></p>
-<p><font face="STCAIYUN" color="#285853" size="3">假设当前设备的宽度是400px 还是之前说过的10%侧边栏，如果移动设备上做同样的处理，会显示40px的宽 太窄了，布局会变得非常可怕</font><br>那么 如何处理?</p>
-<p></p><p id="line10"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">两种viewport</font></p><br>因为viewport太窄，最显然的解决方式就是将它变宽<br>由此 引出了 虚拟视口  （<code>viewportvisualviewport</code>） 与      布局视口（<code>viewportlayoutviewport</code>）<br>关于它们 有一个很好的解释<p></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  想象一下viewportlayoutviewport是一张大的不能改变大小和角度的图片 现在你有个更小的框来观看这张大图片</span><br><span class="line">这个框被不透明的材料包围 因而你只能看到大图片的一部分 你通过这个框子看到的大图片的那部分就叫做虚拟视口（viewportvisualviewport）</span><br><span class="line"></span><br><span class="line">你拿着这个框拿着站的离大图原点（用户的缩小页面功能）以一次性看到这个大图片</span><br><span class="line">你站的离的近一点（用户的放大页面功能）以看到一部分</span><br><span class="line">你能改变这个框框的远近 但是这张大图片的大小和形状都不会改变</span><br></pre></td></tr></table></figure>
-<p>visualviewport是当前显示在屏幕上的部分页面。用户会滚动页面来改变可见部分，或者缩放浏览器来改变visualviewport的尺寸。<br>如下图<br><img src="/images/viewports/20.jpg" alt><br>但是CSS布局 通常是按照<font face="STCAIYUN" color="red" size="3">layoutviewport定义的，这要比visualviewport宽很多</font></p>
-<p><html>元素的宽度继承于layoutviewport</html></p>
-<p></p><p id="line11"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">缩放 Zooming</font><br></p><br>两种viewports都以CSS的 pixels来度量。当你通过缩放改变visualviewport时，layoutviewport保存不变。<p></p>
-<p></p><p id="line12"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">屏幕尺寸</font><br></p><br><strong>理解layout viewport</strong><br>许多移动设备浏览器在初始默认打开以最小缩放模式打开网站（也就是在手机屏幕上展示完整宽度的页面）<p></p>
-<p><img src="/images/viewports/21.jpg" alt><br>此时浏览器已经选择好他们的layoutviewport的尺寸 它完整覆盖了最小缩放模式下的移动浏览器的屏幕，这个时候layoutviewport的宽度高度和最小缩放模式下能在页面上显示的内容的宽度和高度一致。<br><br></p>
-<p><font face="STCAIYUN" color="red" size="3">那么移动端如何计算layoutviewport的尺寸？</font><br><code>document. documentElement. clientWidth/Height</code></p>
-<p><img src="/images/viewports/25.jpg" alt><br><strong>理解visual viewport</strong></p>
-<p><font face="STCAIYUN" color="red" size="3">那么移动端如何计算visualviewport的尺寸？</font><br><code>window.innerWidth/Height</code> 随着用户的缩放浏览器 值会改变 更多 更少的CSS pixels放进了屏幕<br><img src="/images/viewports/27.jpg" alt><br><strong>屏幕尺寸 screen</strong><br>和pc浏览器一样 screen.width/height标示了设置屏幕的尺寸 以设备的pixels 显然 这跟开发人员没有什么关系</p>
-<p></p><p id="line13"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">页面的滚动移位</font><br></p><br>你同样需要知道当前的虚拟视口相对于布局视口的距离 这叫做<code>滚动位移</code> ，它像在pc端获取一样<br>使用<strong>window.pageX/YOffset</strong><p></p>
-<p><img src="/images/viewports/29.jpg" alt></p>
-<p></p><p id="line14"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">html元素以及度量html</font><br></p><br>html元素的整体尺寸，和pc端一致 使用<code>document.documentElement.offsetWidth/Height</code>，元素以CSS pixels度量<p></p>
-<p><img src="/images/viewports/30.jpg" alt></p>
-<p></p><p id="line15"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">关于事件坐标</font><br></p><br>同pc浏览器 只需要关注 pageX/Y<p></p>
-<p><img src="/images/viewports/32.jpg" alt></p>
-<p></p><p id="line16"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">媒体查询width/height与 device-width/height</font><br></p><br>也如同pc浏览器<br> <code>width/height</code>使用css的pixels度量layoutviewport 即<code>document. documentElement. clientWidth/Height</code><br><code>device-width/height</code>使用设备的pixels 即 <code>screen.width/height.</code><br>所有浏览器都遵循这个原理<p></p>
-<p></p><p id="line17"></p>
-<p><font face="STCAIYUN" color="#883958" size="3">viewport的meta标签</font><br></p><br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="attribute">name</span>=<span class="string">"viewport"</span> <span class="attribute">content</span>=<span class="string">"width=320"</span>&gt;</span><br></pre></td></tr></table></figure><p></p>
-<p>最初这是apple的一个html扩展标签，被很多浏览器复用<br>设置 <code>虚拟视口</code>的宽度</p>
-<p>假设你现在创建一个页面  并不为它设置宽度 那么它会伸展开来占据100%的viewlayout的宽度 绝大多数浏览器缩小这个页面在一屏的宽度上显示这个layoutviewport</p>
-<p><img src="/images/viewports/33.jpg" alt><br>当用户放大页面  绝大多数会保存元素的宽度（保持元素的定位不变）而导致文字超出屏幕<br><img src="/images/viewports/34.jpg" alt><br>当你设置<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="attribute">name</span>=<span class="string">"viewport"</span> <span class="attribute">content</span>=<span class="string">"width=320"</span>&gt;</span><br></pre></td></tr></table></figure></p>
-<p>你网站的layoutviewport变成了320px。页面的初始状态就很正确了<br><img src="/images/viewports/36.jpg" alt></p>
-<ul>
-<li>Part1:<a href="http://www.quirksmode.org/mobile/viewports.html" target="_blank" rel="noopener">http://www.quirksmode.org/mobile/viewports.html</a></li>
-<li>Part2:<a href="http://www.quirksmode.org/mobile/viewports2.html" target="_blank" rel="noopener">http://www.quirksmode.org/mobile/viewports2.html</a></li>
+<li>Part1:<a target="_blank" rel="noopener" href="http://www.quirksmode.org/mobile/viewports.html">http://www.quirksmode.org/mobile/viewports.html</a></li>
+<li>Part2:<a target="_blank" rel="noopener" href="http://www.quirksmode.org/mobile/viewports2.html">http://www.quirksmode.org/mobile/viewports2.html</a></li>
 </ul>
 
     </div>
@@ -579,13 +651,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -675,8 +747,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

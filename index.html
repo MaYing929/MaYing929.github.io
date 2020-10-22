@@ -302,7 +302,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/23/node/" class="post-title-link" itemprop="url">Node.js实战-技术预研</a>
+            <a href="/2020/03/23/node/" class="post-title-link" itemprop="url">Node.js 实战 - 技术预研</a>
         </h2>
 
         <div class="post-meta-container">
@@ -329,14 +329,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>13k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -347,32 +347,32 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>以一种要开发Node.js实战项目为最终目标<br>进行一系列的技术预研过程</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>以一种要开发 Node.js 实战项目为最终目标<br>进行一系列的技术预研过程</p>
 <p>有特点，有针对性，有目标</p>
-<p>培养Node领域的全局观</p>
-<h1 id="1-关于Nodejs"><a href="#1-关于Nodejs" class="headerlink" title="1 关于Nodejs"></a>1 关于Nodejs</h1><h2 id="1-1-什么是Node-js"><a href="#1-1-什么是Node-js" class="headerlink" title="1.1 什么是Node.js"></a>1.1 什么是Node.js</h2><p>官网的话：</p>
+<p>培养 Node 领域的全局观</p>
+<h1 id="1-关于Nodejs"><a href="#1-关于Nodejs" class="headerlink" title="1 关于Nodejs"></a>1 关于 Nodejs</h1><h2 id="1-1-什么是Node-js"><a href="#1-1-什么是Node-js" class="headerlink" title="1.1 什么是Node.js"></a>1.1 什么是 Node.js</h2><p>官网的话：</p>
 <ul>
-<li>Node.js是基于ChromeV8执行引擎的JS运行时环境</li>
-<li>Node.js使用了一个事件驱动，非阻塞式I/O的模型，使其轻量又高效</li>
+<li>Node.js 是基于 ChromeV8 执行引擎的 JS 运行时环境</li>
+<li> Node.js 使用了一个事件驱动，非阻塞式 I/O 的模型，使其轻量又高效</li>
 </ul>
 <p>每一个字其实都看得懂，聚合到一起就有点懵了</p>
-<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1584894283204&amp;di=6e87b25c91207a1929250f11285d3a2c&amp;imgtype=0&amp;src=http%3A%2F%2Fimg2.biaoqingjia.com%2Fbiaoqing%2F201608%2Fa70d12bb1f409850857c8d930cf2d6d1.gif" alt="image"></p>
-<p>我们先不来说nodejs是什么，先根据以往的经验抛出问题</p>
-<h3 id="1-1-1-在Node-js里运行Js跟在Chrome运行Js有啥不同？"><a href="#1-1-1-在Node-js里运行Js跟在Chrome运行Js有啥不同？" class="headerlink" title="1.1.1 在Node.js里运行Js跟在Chrome运行Js有啥不同？"></a>1.1.1 在Node.js里运行Js跟在Chrome运行Js有啥不同？</h3><p>已知Chrome浏览器用的是同样的Javascript引擎和模型</p>
+<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1584894283204&amp;di=6e87b25c91207a1929250f11285d3a2c&amp;imgtype=0&amp;src=http://img2.biaoqingjia.com/biaoqing/201608/a70d12bb1f409850857c8d930cf2d6d1.gif" alt="image"></p>
+<p>我们先不来说 nodejs 是什么，先根据以往的经验抛出问题</p>
+<h3 id="1-1-1-在Node-js里运行Js跟在Chrome运行Js有啥不同？"><a href="#1-1-1-在Node-js里运行Js跟在Chrome运行Js有啥不同？" class="headerlink" title="1.1.1 在Node.js里运行Js跟在Chrome运行Js有啥不同？"></a>1.1.1 在 Node.js 里运行 Js 跟在 Chrome 运行 Js 有啥不同？</h3><p>已知 Chrome 浏览器用的是同样的 Javascript 引擎和模型</p>
 <blockquote>
-<p>其实，在Node.js里写Js和在Chrome里写Js，<font color="red">几乎一样</font></p>
+<p>其实，在 Node.js 里写 Js 和在 Chrome 里写 Js，<font color="red">几乎一样</font></p>
 </blockquote>
 <p>晃眼的<font color="red">几乎一样</font> 那就是有不一样的地方呗！</p>
 <ul>
-<li>Nodejs没有浏览器API，即(Document,window等)</li>
-<li>相应的，也增加了它专属的API，比如文件系统，进程.</li>
+<li>Nodejs 没有浏览器 API，即 (Document,window 等)</li>
+<li> 相应的，也增加了它专属的 API，比如文件系统，进程.</li>
 </ul>
 <p>有了这些差别，其实就不难理解了</p>
 <h4 id="对于开发者来说"><a href="#对于开发者来说" class="headerlink" title="对于开发者来说"></a>对于开发者来说</h4><ul>
-<li>你在chrome里写js<strong>控制浏览器</strong></li>
-<li>Node.js让你用类似的方式，<strong>控制整个计算机</strong></li>
+<li>你在 chrome 里写 js <strong>控制浏览器</strong></li>
+<li> Node.js 让你用类似的方式，<strong>控制整个计算机</strong></li>
 </ul>
-<p>Node.js的真谛，也就是官方抽象的释义，我们完全可以在不断深入的过程中慢慢理解～</p>
+<p>Node.js 的真谛，也就是官方抽象的释义，我们完全可以在不断深入的过程中慢慢理解～</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/03/23/node/#more" rel="contents">
@@ -420,7 +420,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/23/rpc/" class="post-title-link" itemprop="url">使用Node.js逐步建立多路复用的RPC通道</a>
+            <a href="/2020/03/23/rpc/" class="post-title-link" itemprop="url">使用 Node.js 逐步建立多路复用的 RPC 通道</a>
         </h2>
 
         <div class="post-meta-container">
@@ -456,14 +456,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -474,13 +474,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>依托Nodejs使用 <code>Buffer</code>  <code>net</code>等模块逐步构建满足应用场景的RPC通道</p>
-<h1 id="1-RPC调用"><a href="#1-RPC调用" class="headerlink" title="1. RPC调用"></a>1. RPC调用</h1><p>RPC</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>依托 Nodejs 使用 <code>Buffer</code>  <code>net</code> 等模块逐步构建满足应用场景的 RPC 通道</p>
+<h1 id="1-RPC调用"><a href="#1-RPC调用" class="headerlink" title="1. RPC调用"></a>1. RPC 调用</h1><p>RPC</p>
 <p>全称 <code>Remote Procedure Call</code> 翻译成中文：远程过程调用</p>
 <p>emm.. 我只是个小前端..</p>
-<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1584877960225&amp;di=1beedaa2bf83dbc8d438dc36164af7d3&amp;imgtype=0&amp;src=http%3A%2F%2Fimg3.cache.netease.com%2Fphoto%2F0005%2F2013-02-20%2F8O5Q4R5K0AI90005.jpg" alt="image"></p>
-<h2 id="1-1-如何通俗的解释是RPC？"><a href="#1-1-如何通俗的解释是RPC？" class="headerlink" title="1.1 如何通俗的解释是RPC？"></a>1.1 如何通俗的解释是RPC？</h2><h3 id="1-1-1-本地过程调用"><a href="#1-1-1-本地过程调用" class="headerlink" title="1.1.1 本地过程调用"></a>1.1.1 本地过程调用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我现在在家里，我需要洗衣服，就把衣服扔到洗衣机洗了</span><br></pre></td></tr></table></figure>
-<h3 id="1-1-2-远程过程调用-RPC"><a href="#1-1-2-远程过程调用-RPC" class="headerlink" title="1.1.2 远程过程调用(RPC)"></a>1.1.2 远程过程调用(RPC)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我现在在逛街，我需要洗衣服，于是给在家里的男票打个哥电话，他把衣服扔到洗衣机洗了</span><br><span class="line"></span><br><span class="line">那么我就实现了RPC调用！！</span><br></pre></td></tr></table></figure>
+<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1584877960225&amp;di=1beedaa2bf83dbc8d438dc36164af7d3&amp;imgtype=0&amp;src=http://img3.cache.netease.com/photo/0005/2013-02-20/8O5Q4R5K0AI90005.jpg" alt="image"></p>
+<h2 id="1-1-如何通俗的解释是RPC？"><a href="#1-1-如何通俗的解释是RPC？" class="headerlink" title="1.1 如何通俗的解释是RPC？"></a>1.1 如何通俗的解释是 RPC？</h2><h3 id="1-1-1-本地过程调用"><a href="#1-1-1-本地过程调用" class="headerlink" title="1.1.1 本地过程调用"></a>1.1.1 本地过程调用</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我现在在家里，我需要洗衣服，就把衣服扔到洗衣机洗了</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="1-1-2-远程过程调用-RPC"><a href="#1-1-2-远程过程调用-RPC" class="headerlink" title="1.1.2 远程过程调用(RPC)"></a>1.1.2 远程过程调用 (RPC)</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我现在在逛街，我需要洗衣服，于是给在家里的男票打个哥电话，他把衣服扔到洗衣机洗了</span><br><span class="line"></span><br><span class="line">那么我就实现了RPC调用！！</span><br></pre></td></tr></tbody></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/03/23/rpc/#more" rel="contents">
@@ -646,7 +647,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/12/23/GraphQL/" class="post-title-link" itemprop="url">面向未来的API-GraphQL</a>
+            <a href="/2019/12/23/GraphQL/" class="post-title-link" itemprop="url">面向未来的 API-GraphQL</a>
         </h2>
 
         <div class="post-meta-container">
@@ -682,14 +683,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>6.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -706,15 +707,15 @@
 </ul>
 <p><img src="http://cdn.anruence.com/%E7%A3%90%E7%9F%B3%E6%95%B0%E6%8D%AE.png" alt="image"></p>
 <ul>
-<li>若干个不得不发的HTTP请求</li>
+<li>若干个不得不发的 HTTP 请求</li>
 </ul>
 <p><img src="http://cdn.anruence.com/graphql1.png" alt="image"></p>
-<p>发生这些，并不是前端er本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病<br>究其原因，是前端在数据层面没有主动权</p>
+<p>发生这些，并不是前端 er 本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病<br>究其原因，是前端在数据层面没有主动权</p>
 <p>针对但不限于以上种种<br>我们需要以前端的设计者和开发者的角度出发 设计新的数据查询方式</p>
-<p>Facebook工程师率先提出RESTful架构体系的替代方案</p>
+<p>Facebook 工程师率先提出 RESTful 架构体系的替代方案</p>
 <p>并且应用在了其应用中</p>
-<p><a href="https://www.youtube.com/watch?v=WxPtYJRjLL0&amp;t=2s" target="_blank" rel="noopener">Facebook 使用graphql重构他们的pc站</a></p>
-<p>接下来 让我们站在巨人的肩膀上，由浅至深聊聊被称之为面向未来的API的-GraphQL</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=WxPtYJRjLL0&amp;t=2s">Facebook 使用 graphql 重构他们的 pc 站</a></p>
+<p>接下来 让我们站在巨人的肩膀上，由浅至深聊聊被称之为面向未来的 API 的 - GraphQL</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/12/23/GraphQL/#more" rel="contents">
@@ -762,7 +763,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/10/24/vue/" class="post-title-link" itemprop="url">Vue开发中小技巧</a>
+            <a href="/2019/10/24/vue/" class="post-title-link" itemprop="url">Vue 开发中小技巧</a>
         </h2>
 
         <div class="post-meta-container">
@@ -789,14 +790,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>13k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -808,12 +809,12 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>记录日常开发中不常用的一些小技巧</p>
-<h1 id="require-context"><a href="#require-context" class="headerlink" title="require.context()"></a>require.context()</h1><p>1.场景:如页面需要导入多个组件,原始写法:</p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> titleCom <span class="keyword">from</span> <span class="string">'@/components/home/titleCom'</span></span><br><span class="line"><span class="keyword">import</span> bannerCom <span class="keyword">from</span> <span class="string">'@/components/home/bannerCom'</span></span><br><span class="line"><span class="keyword">import</span> cellCom <span class="keyword">from</span> <span class="string">'@/components/home/cellCom'</span></span><br><span class="line">components:&#123;titleCom,bannerCom,cellCom&#125;</span><br></pre></td></tr></table></figure>
-<p>2.这样就写了大量重复的代码,利用 require.context 可以写成</p>
-<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const<span class="built_in"> path</span> = require(<span class="string">'path'</span>)</span><br><span class="line">const files = require.<span class="keyword">context</span>(<span class="string">'@/components/home'</span>,<span class="built_in"> false</span>, /\.vue$/)</span><br><span class="line">const modules = &#123;&#125;</span><br><span class="line">files.keys().forEach<span class="built_in">(key</span> =&gt; &#123;</span><br><span class="line">  const<span class="built_in"> name</span> =<span class="built_in"> path</span>.basename<span class="built_in">(key</span>, <span class="string">'.vue'</span>)</span><br><span class="line">  modules<span class="built_in">[name</span>] = files<span class="built_in">(key</span>).<span class="keyword">default</span> || files<span class="built_in">(key</span>)</span><br><span class="line">&#125;)</span><br><span class="line">components:modules</span><br></pre></td></tr></table></figure>
-<p>API方法</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">实际上是 webpack 的方法,vue 工程一般基于 webpack,所以可以使用</span><br><span class="line"><span class="built_in">require</span>.context(<span class="built_in">directory</span>,useSubdirectories,regExp)</span><br><span class="line">接收三个参数:</span><br><span class="line"><span class="built_in">directory</span>：说明需要检索的目录</span><br><span class="line">useSubdirectories：是否检索子目录</span><br><span class="line">regExp: 匹配文件的正则表达式,一般是文件名</span><br></pre></td></tr></table></figure>
+<h1 id="require-context"><a href="#require-context" class="headerlink" title="require.context()"></a>require.context()</h1><p>1. 场景：如页面需要导入多个组件，原始写法:</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import titleCom from '@/components/home/titleCom'</span><br><span class="line">import bannerCom from '@/components/home/bannerCom'</span><br><span class="line">import cellCom from '@/components/home/cellCom'</span><br><span class="line">components:{titleCom,bannerCom,cellCom}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<p>2. 这样就写了大量重复的代码，利用 require.context 可以写成</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const path = require('path')</span><br><span class="line">const files = require.context('@/components/home', false, /\.vue$/)</span><br><span class="line">const modules = {}</span><br><span class="line">files.keys().forEach(key =&gt; {</span><br><span class="line">  const name = path.basename(key, '.vue')</span><br><span class="line">  modules[name] = files(key).default || files(key)</span><br><span class="line">})</span><br><span class="line">components:modules</span><br></pre></td></tr></tbody></table></figure>
+<p>API 方法</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">实际上是 webpack 的方法,vue 工程一般基于 webpack,所以可以使用</span><br><span class="line">require.context(directory,useSubdirectories,regExp)</span><br><span class="line">接收三个参数:</span><br><span class="line">directory：说明需要检索的目录</span><br><span class="line">useSubdirectories：是否检索子目录</span><br><span class="line">regExp: 匹配文件的正则表达式,一般是文件名</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/10/24/vue/#more" rel="contents">
@@ -897,14 +898,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>17k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>16 分钟</span>
     </span>
 </div>
 
@@ -915,7 +916,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><a href="https://juejin.im/post/5d566e82f265da03f77e653c" target="_blank" rel="noopener">掘金链接</a></p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><a target="_blank" rel="noopener" href="https://juejin.im/post/5d566e82f265da03f77e653c">掘金链接</a></p>
 <p>组件化思想并不是前端独有的，但却是前端技术的延伸</p>
 <p>随着三大框架崛起，前端组件化逐渐成为前端开发的迫切需求，一种主流，一种共识，它不仅提高开发效率，同时也降低了维组件内聚原则护成本<br>开发者们不需要再面对一堆晦涩难懂的代码，转而只需要关注以组件⽅式存在的代码⽚段</p>
 <p>这是一场新的挑战！</p>
@@ -928,7 +929,7 @@
 <li>一些感悟</li>
 <li>总结</li>
 </ul>
-<h1 id="一个面试题引发的思考"><a href="#一个面试题引发的思考" class="headerlink" title="一个面试题引发的思考"></a>一个面试题引发的思考</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">面试官通常会问 写过前端通用组件吗？</span><br></pre></td></tr></table></figure>
+<h1 id="一个面试题引发的思考"><a href="#一个面试题引发的思考" class="headerlink" title="一个面试题引发的思考"></a>一个面试题引发的思考</h1><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">面试官通常会问 写过前端通用组件吗？</span><br></pre></td></tr></tbody></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/07/29/part/#more" rel="contents">
@@ -1012,14 +1013,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>519</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -1030,7 +1031,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>理解react的diff算法</p>
+          <p>理解 react 的 diff 算法</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/04/01/diff/#more" rel="contents">
@@ -1078,7 +1079,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/31/urlrender/" class="post-title-link" itemprop="url">一个页面从输入url到加载完成 这个过程发生了什么</a>
+            <a href="/2019/03/31/urlrender/" class="post-title-link" itemprop="url">一个页面从输入 url 到加载完成 这个过程发生了什么</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1105,14 +1106,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -1124,9 +1125,9 @@
     
     <div class="post-body" itemprop="articleBody">
           <h4 id="先来了解以下-五层因特尔协议栈"><a href="#先来了解以下-五层因特尔协议栈" class="headerlink" title="先来了解以下 五层因特尔协议栈"></a>先来了解以下 五层因特尔协议栈</h4><ul>
-<li>应用层（dns http） DNS解析成ip并完成http请求发送</li>
-<li>传输层（tcp udp）三次握手四次挥手建立tcp链接</li>
-<li>网络层 （ip ARP） IP寻址</li>
+<li>应用层（dns http） DNS 解析成 ip 并完成 http 请求发送</li>
+<li>传输层（tcp udp）三次握手四次挥手建立 tcp 链接</li>
+<li>网络层 （ip ARP） IP 寻址</li>
 <li>数字链路层 将请求数据封装成帧</li>
 <li>物理层 利用物理介质传输比特流</li>
 </ul>
@@ -1177,7 +1178,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/26/this/" class="post-title-link" itemprop="url">你不知道的JS系列-this指向</a>
+            <a href="/2019/03/26/this/" class="post-title-link" itemprop="url">你不知道的 JS 系列 - this 指向</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1213,14 +1214,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>4.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -1231,7 +1232,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>this是js中最复杂的机制之一</p>
+          <p>this 是 js 中最复杂的机制之一</p>
 <blockquote>
 <p>任何足够先进的技术都和魔法无异  - Arthur C.Clarke</p>
 </blockquote>
@@ -1282,7 +1283,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/25/clone/" class="post-title-link" itemprop="url">你不知道的JS系列-理解JS中 赋值，浅拷贝，深拷贝</a>
+            <a href="/2019/03/25/clone/" class="post-title-link" itemprop="url">你不知道的 JS 系列 - 理解 JS 中 赋值，浅拷贝，深拷贝</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1318,14 +1319,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -1336,7 +1337,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>又回到了这个老生常谈，新生绝望的问题上，通常遇到这种大家都比较熟悉的问题，反而不知道怎么列大纲，怕不够深入也怕脱离主题～<br>emm..<br>此文系 不要再问我XX系列之 <font color="red">不要再问我JS Clone的问题了</font></p>
+          <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>又回到了这个老生常谈，新生绝望的问题上，通常遇到这种大家都比较熟悉的问题，反而不知道怎么列大纲，怕不够深入也怕脱离主题～<br>emm..<br>此文系 不要再问我 XX 系列之 <font color="red">不要再问我 JS Clone 的问题了</font></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/03/25/clone/#more" rel="contents">
@@ -1417,13 +1418,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动

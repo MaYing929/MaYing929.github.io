@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="require.js 出现背景：所有的javascript代码都在一个文件中，代码越来越多时必须分成多个文件，依次加载，问题：加载js的时候浏览器停止渲染，加载文件越多，网页的响应时间就越长，由于js之间有依赖关系，因此必须严格保证加载顺序，当依赖关系变的复杂时，代码的编写和维护都会变的异常困难  加载require.js  1234567891011&lt;script src&#x3D;&quot;js&#x2F;requ">
+  <meta name="description" content="require.js 出现背景：所有的 javascript 代码都在一个文件中，代码越来越多时必须分成多个文件，依次加载，问题：加载 js 的时候浏览器停止渲染，加载文件越多，网页的响应时间就越长，由于 js 之间有依赖关系，因此必须严格保证加载顺序，当依赖关系变的复杂时，代码的编写和维护都会变的异常困难   加载 require.js  1234567891011&lt;script src&#x3D;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js模块化编程系列（二）">
+<meta property="og:title" content="js 模块化编程系列（二）">
 <meta property="og:url" content="http://maying.ink/2017/04/24/js%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89require.js/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="require.js 出现背景：所有的javascript代码都在一个文件中，代码越来越多时必须分成多个文件，依次加载，问题：加载js的时候浏览器停止渲染，加载文件越多，网页的响应时间就越长，由于js之间有依赖关系，因此必须严格保证加载顺序，当依赖关系变的复杂时，代码的编写和维护都会变的异常困难  加载require.js  1234567891011&lt;script src&#x3D;&quot;js&#x2F;requ">
+<meta property="og:description" content="require.js 出现背景：所有的 javascript 代码都在一个文件中，代码越来越多时必须分成多个文件，依次加载，问题：加载 js 的时候浏览器停止渲染，加载文件越多，网页的响应时间就越长，由于 js 之间有依赖关系，因此必须严格保证加载顺序，当依赖关系变的复杂时，代码的编写和维护都会变的异常困难   加载 require.js  1234567891011&lt;script src&#x3D;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-04-23T16:00:00.000Z">
 <meta property="article:modified_time" content="2020-10-22T18:41:42.182Z">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title>js模块化编程系列（二） | 亦舒的海角</title>
+  <title>js 模块化编程系列（二） | 亦舒的海角</title>
   
 
 
@@ -305,7 +305,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          js模块化编程系列（二）
+          js 模块化编程系列（二）
         </h1>
 
         <div class="post-meta-container">
@@ -332,14 +332,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -351,32 +351,40 @@
     
     <div class="post-body" itemprop="articleBody">
         <p><strong>require.js</strong></p>
-<p>出现背景：所有的javascript代码都在一个文件中，代码越来越多时必须分成多个文件，依次加载，问题：加载js的时候浏览器停止渲染，加载文件越多，网页的响应时间就越长，由于js之间有依赖关系，因此必须严格保证加载顺序，当依赖关系变的复杂时，代码的编写和维护都会变的异常困难</p>
+<p>出现背景：所有的 javascript 代码都在一个文件中，代码越来越多时必须分成多个文件，依次加载，问题：加载 js 的时候浏览器停止渲染，加载文件越多，网页的响应时间就越长，由于 js 之间有依赖关系，因此必须严格保证加载顺序，当依赖关系变的复杂时，代码的编写和维护都会变的异常困难</p>
 <ol>
-<li>加载require.js</li>
+<li> 加载 require.js</li>
 </ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"js/require.js"</span> defer <span class="keyword">async</span>=<span class="string">'true'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="keyword">async</span>   表明这个文件需要异步加载</span><br><span class="line">在<span class="built_in">require</span>.js的基础上加载自己的 main.js</span><br><span class="line">&lt;script src=<span class="string">"require.js"</span> data-main=<span class="string">"js/main"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">ata-main:指定程序的主模块，这个人间会第一个被<span class="built_in">require</span>.js加载，由于<span class="built_in">require</span>.js默认的文件后缀名是js，所以可以把main.js 简写成main</span><br><span class="line"></span><br><span class="line"><span class="comment">//main.js</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>([<span class="string">'moduleA'</span>, <span class="string">'moduleB'</span>, <span class="string">'moduleC'</span>],   <span class="function"><span class="keyword">function</span> (<span class="params">moduleA, moduleB, moduleC</span>)</span>&#123;</span><br><span class="line">　　　　<span class="comment">// some code here</span></span><br><span class="line">　　&#125;)<span class="string">``</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src="js/require.js" defer async='true'&gt;&lt;/script&gt;</span><br><span class="line">async   表明这个文件需要异步加载</span><br><span class="line">在require.js的基础上加载自己的 main.js</span><br><span class="line">&lt;script src="require.js" data-main="js/main"&gt;&lt;/script&gt;</span><br><span class="line">ata-main:指定程序的主模块，这个人间会第一个被require.js加载，由于require.js默认的文件后缀名是js，所以可以把main.js 简写成main</span><br><span class="line"></span><br><span class="line">//main.js</span><br><span class="line"></span><br><span class="line">require(['moduleA', 'moduleB', 'moduleC'],   function (moduleA, moduleB, moduleC){</span><br><span class="line">　　　　// some code here</span><br><span class="line">　　})``</span><br></pre></td></tr></tbody></table></figure>
+
 <ol start="2">
-<li>模块的加载<br>当加载不同路径下的模块可以使用 require.config()可以对模块的加载进行自定义， require.config()就写在主模块(main.js)的头部，参数就是一个对象，这个对象的path属性指定各个模块的加载路径</li>
+<li>模块的加载<br>当加载不同路径下的模块可以使用 require.config () 可以对模块的加载进行自定义， require.config () 就写在主模块 (main.js) 的头部，参数就是一个对象，这个对象的 path 属性指定各个模块的加载路径 </li>
 </ol>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">　　<span class="selector-tag">require</span><span class="selector-class">.config</span>(&#123;</span><br><span class="line">　　　　<span class="attribute">paths</span>: &#123;</span><br><span class="line">　　　　　　<span class="string">"jquery"</span>: <span class="string">"lib/jquery.min"</span>,</span><br><span class="line">　　　　　　<span class="string">"underscore"</span>: <span class="string">"lib/underscore.min"</span>,</span><br><span class="line">　　　　　　<span class="string">"backbone"</span>: <span class="string">"lib/backbone.min"</span></span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;);</span><br><span class="line">　　</span><br><span class="line">　　另一种形式</span><br><span class="line">　　</span><br><span class="line">　　　<span class="selector-tag">require</span><span class="selector-class">.config</span>(&#123;</span><br><span class="line">　　　　<span class="attribute">baseUrl</span>: <span class="string">"js/lib"</span>,</span><br><span class="line">　　　　paths: &#123;</span><br><span class="line">　　　　　　<span class="string">"jquery"</span>: <span class="string">"jquery.min"</span>,</span><br><span class="line">　　　　　　<span class="string">"underscore"</span>: <span class="string">"underscore.min"</span>,</span><br><span class="line">　　　　　　<span class="string">"backbone"</span>: <span class="string">"backbone.min"</span></span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;);</span><br><span class="line">　　</span><br><span class="line">　　再或者</span><br><span class="line">　　　<span class="selector-tag">require</span><span class="selector-class">.config</span>(&#123;</span><br><span class="line">　　　　<span class="attribute">paths</span>: &#123;</span><br><span class="line">　　　　　　<span class="string">"jquery"</span>: <span class="string">"https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min"</span></span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">　　require.config({</span><br><span class="line">　　　　paths: {</span><br><span class="line">　　　　　　"jquery": "lib/jquery.min",</span><br><span class="line">　　　　　　"underscore": "lib/underscore.min",</span><br><span class="line">　　　　　　"backbone": "lib/backbone.min"</span><br><span class="line">　　　　}</span><br><span class="line">　　});</span><br><span class="line">　　</span><br><span class="line">　　另一种形式</span><br><span class="line">　　</span><br><span class="line">　　　require.config({</span><br><span class="line">　　　　baseUrl: "js/lib",</span><br><span class="line">　　　　paths: {</span><br><span class="line">　　　　　　"jquery": "jquery.min",</span><br><span class="line">　　　　　　"underscore": "underscore.min",</span><br><span class="line">　　　　　　"backbone": "backbone.min"</span><br><span class="line">　　　　}</span><br><span class="line">　　});</span><br><span class="line">　　</span><br><span class="line">　　再或者</span><br><span class="line">　　　require.config({</span><br><span class="line">　　　　paths: {</span><br><span class="line">　　　　　　"jquery": "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min"</span><br><span class="line">　　　　}</span><br><span class="line">　　});</span><br></pre></td></tr></tbody></table></figure>
+
 <ol start="3">
-<li>AMD模块的写法<br>require.js 加载的模块采用AMD规范<br>具体来说，就是模块必须采用特定的define()函数来定义，如果一个模块不依赖其他模块，那么可以直接定义在define函数中</li>
+<li>AMD 模块的写法<br>require.js 加载的模块采用 AMD 规范<br>具体来说，就是模块必须采用特定的 define () 函数来定义，如果一个模块不依赖其他模块，那么可以直接定义在 define 函数中 </li>
 </ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//math.js 定义了一个math模块</span></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> add = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">return</span> x+y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> &#123;</span><br><span class="line"> add:add</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">加载方法：</span><br><span class="line"></span><br><span class="line"><span class="comment">// main.js</span></span><br><span class="line">　　<span class="built_in">require</span>([<span class="string">'math'</span>], <span class="function"><span class="keyword">function</span> (<span class="params">math</span>)</span>&#123;</span><br><span class="line">　　　　alert(math.add(<span class="number">1</span>,<span class="number">1</span>));</span><br><span class="line">　　&#125;);</span><br><span class="line">　　</span><br><span class="line">　　如果这个模块还依赖其他模块，那么那么define()函数的第一个参数，必须是一个数组，指明该模块的依赖性。</span><br><span class="line">　　　define([<span class="string">'myLib'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">myLib</span>)</span>&#123;</span><br><span class="line">　　　　<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　　　myLib.doSomething();</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　　　<span class="keyword">return</span> &#123;</span><br><span class="line">　　　　　　foo : foo</span><br><span class="line">　　　　&#125;;</span><br><span class="line">　　&#125;);</span><br><span class="line">　　当<span class="built_in">require</span>()函数加载上面这个模块的时候，就会先加载myLib.js文件。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//math.js 定义了一个math模块</span><br><span class="line">define(function(){</span><br><span class="line">var add = function(){</span><br><span class="line">   return x+y;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line">return {</span><br><span class="line"> add:add</span><br><span class="line">}</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">加载方法：</span><br><span class="line"></span><br><span class="line">// main.js</span><br><span class="line">　　require(['math'], function (math){</span><br><span class="line">　　　　alert(math.add(1,1));</span><br><span class="line">　　});</span><br><span class="line">　　</span><br><span class="line">　　如果这个模块还依赖其他模块，那么那么define()函数的第一个参数，必须是一个数组，指明该模块的依赖性。</span><br><span class="line">　　　define(['myLib'], function(myLib){</span><br><span class="line">　　　　function foo(){</span><br><span class="line">　　　　　　myLib.doSomething();</span><br><span class="line">　　　　}</span><br><span class="line">　　　　return {</span><br><span class="line">　　　　　　foo : foo</span><br><span class="line">　　　　};</span><br><span class="line">　　});</span><br><span class="line">　　当require()函数加载上面这个模块的时候，就会先加载myLib.js文件。</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
 <ol start="3">
-<li>AMD模块的写法<br>加载非规范的模块<br>理论上 require.js加载的模块，必须是按照AMD规范、用define()函数定义的模块<br>加载非规范模块，必须先用require.config()方法定义它们的一些特征</li>
+<li>AMD 模块的写法<br>加载非规范的模块<br>理论上 require.js 加载的模块，必须是按照 AMD 规范、用 define () 函数定义的模块<br>加载非规范模块，必须先用 require.config () 方法定义它们的一些特征 </li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">eg：加载非AMD规范模块 underscore，backbone</span><br><span class="line">　　require.config(&#123;</span><br><span class="line">　　　　shim: &#123;</span><br><span class="line"></span><br><span class="line">　　　　　　<span class="string">'underscore'</span>:&#123;</span><br><span class="line">　　　　　　　　<span class="keyword">exports</span>: <span class="string">'_'</span></span><br><span class="line">　　　　　　&#125;,</span><br><span class="line">　　　　　　<span class="string">'backbone'</span>: &#123;</span><br><span class="line">　　　　　　　　deps: [<span class="string">'underscore'</span>, <span class="string">'jquery'</span>],</span><br><span class="line">　　　　　　　　<span class="keyword">exports</span>: <span class="string">'Backbone'</span></span><br><span class="line">　　　　　　&#125;</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;);</span><br><span class="line">　　</span><br><span class="line">　　shim属性：专门用来配置不兼容的模块。具体来说，每个模块要定义</span><br><span class="line">　　（<span class="number">1</span>）<span class="keyword">exports</span>值（输出的变量名），表明这个模块外部调用时的名称；</span><br><span class="line">　　（<span class="number">2</span>）deps数组，表明该模块的依赖性。</span><br><span class="line">　　</span><br><span class="line">　　eg：</span><br><span class="line">　　   jQuery的插件可以这样定义：</span><br><span class="line">　　　　shim: &#123;</span><br><span class="line">　　　　<span class="string">'jquery.scroll'</span>: &#123;</span><br><span class="line">　　　　　　deps: [<span class="string">'jquery'</span>],</span><br><span class="line">　　　　　　<span class="keyword">exports</span>: <span class="string">'jQuery.fn.scroll'</span></span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">eg：加载非AMD规范模块 underscore，backbone</span><br><span class="line">　　require.config({</span><br><span class="line">　　　　shim: {</span><br><span class="line"></span><br><span class="line">　　　　　　'underscore':{</span><br><span class="line">　　　　　　　　exports: '_'</span><br><span class="line">　　　　　　},</span><br><span class="line">　　　　　　'backbone': {</span><br><span class="line">　　　　　　　　deps: ['underscore', 'jquery'],</span><br><span class="line">　　　　　　　　exports: 'Backbone'</span><br><span class="line">　　　　　　}</span><br><span class="line">　　　　}</span><br><span class="line">　　});</span><br><span class="line">　　</span><br><span class="line">　　shim属性：专门用来配置不兼容的模块。具体来说，每个模块要定义</span><br><span class="line">　　（1）exports值（输出的变量名），表明这个模块外部调用时的名称；</span><br><span class="line">　　（2）deps数组，表明该模块的依赖性。</span><br><span class="line">　　</span><br><span class="line">　　eg：</span><br><span class="line">　　   jQuery的插件可以这样定义：</span><br><span class="line">　　　　shim: {</span><br><span class="line">　　　　'jquery.scroll': {</span><br><span class="line">　　　　　　deps: ['jquery'],</span><br><span class="line">　　　　　　exports: 'jQuery.fn.scroll'</span><br><span class="line">　　　　}</span><br><span class="line">　　}</span><br></pre></td></tr></tbody></table></figure>
+
 <ol start="4">
-<li><p>require插件<br>domready插件，可以让回调函数在页面DOM结构加载完成后再运行。</p>
+<li><p>require 插件<br>domready 插件，可以让回调函数在页面 DOM 结构加载完成后再运行。</p>
 <p>　</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>([<span class="string">'domready!'</span>], <span class="function"><span class="keyword">function</span> (<span class="params">doc</span>)</span>&#123;</span><br><span class="line">　　　　<span class="comment">// called once the DOM is ready</span></span><br><span class="line">　　&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">require(['domready!'], function (doc){</span><br><span class="line">　　　　// called once the DOM is ready</span><br><span class="line">　　});</span><br><span class="line">　　</span><br></pre></td></tr></tbody></table></figure>
+
+
 </li>
 </ol>
-<p>text和image插件，则是允许require.js加载文本和图片文件。</p>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">define([</span><br><span class="line">　　　　'text!review.txt',</span><br><span class="line">　　　　'image!cat.jpg'</span><br><span class="line">　　　　],</span><br><span class="line"></span><br><span class="line">　　　　function(<span class="name">review</span>,cat)&#123;</span><br><span class="line">　　　　　　console.log(<span class="name">review</span>)<span class="comment">;</span></span><br><span class="line">　　　　　　document.body.appendChild(<span class="name">cat</span>)<span class="comment">;</span></span><br><span class="line">　　　　&#125;</span><br><span class="line">　　)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>类似的插件还有json和mdown，用于加载json文件和markdown文件</p>
+<p>text 和 image 插件，则是允许 require.js 加载文本和图片文件。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">define([</span><br><span class="line">　　　　'text!review.txt',</span><br><span class="line">　　　　'image!cat.jpg'</span><br><span class="line">　　　　],</span><br><span class="line"></span><br><span class="line">　　　　function(review,cat){</span><br><span class="line">　　　　　　console.log(review);</span><br><span class="line">　　　　　　document.body.appendChild(cat);</span><br><span class="line">　　　　}</span><br><span class="line">　　);</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>类似的插件还有 json 和 mdown，用于加载 json 文件和 markdown 文件</p>
 
     </div>
 
@@ -411,13 +419,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/04/23/js%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="js模块化编程系列（一）">
-                  <i class="fa fa-chevron-left"></i> js模块化编程系列（一）
+                <a href="/2017/04/23/js%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="js 模块化编程系列（一）">
+                  <i class="fa fa-chevron-left"></i> js 模块化编程系列（一）
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2017/07/02/React%E9%99%B7%E9%98%B1/" rel="next" title="React陷阱">
-                  React陷阱 <i class="fa fa-chevron-right"></i>
+                <a href="/2017/07/02/React%E9%99%B7%E9%98%B1/" rel="next" title="React 陷阱">
+                  React 陷阱 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -478,13 +486,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -574,8 +582,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

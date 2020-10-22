@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="前段时间写了前端防刷逻辑 作此记录当时的需求   防刷逻辑1 24小时内 一个手机号只能提交三次 第四次提交的时候 提示 已提交成功 请耐心等待 400防刷逻辑2 24小时内 提交三个手机号 提交第四个时 提示 401">
+  <meta name="description" content="前段时间写了前端防刷逻辑 作此记录当时的需求   防刷逻辑 1 24 小时内 一个手机号只能提交三次 第四次提交的时候 提示 已提交成功 请耐心等待 400防刷逻辑 2 24 小时内 提交三个手机号 提交第四个时 提示 401">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端防刷实现">
 <meta property="og:url" content="http://maying.ink/2018/12/26/%E5%89%8D%E7%AB%AF%E9%98%B2%E5%88%B7/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="前段时间写了前端防刷逻辑 作此记录当时的需求   防刷逻辑1 24小时内 一个手机号只能提交三次 第四次提交的时候 提示 已提交成功 请耐心等待 400防刷逻辑2 24小时内 提交三个手机号 提交第四个时 提示 401">
+<meta property="og:description" content="前段时间写了前端防刷逻辑 作此记录当时的需求   防刷逻辑 1 24 小时内 一个手机号只能提交三次 第四次提交的时候 提示 已提交成功 请耐心等待 400防刷逻辑 2 24 小时内 提交三个手机号 提交第四个时 提示 401">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-12-26T13:40:40.000Z">
 <meta property="article:modified_time" content="2020-10-22T18:41:42.190Z">
@@ -340,14 +340,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>1 分钟</span>
     </span>
 </div>
 
@@ -361,15 +361,19 @@
         <p>前段时间写了前端防刷逻辑 作此记录<br>当时的需求</p>
 <hr>
 <blockquote>
-<p>防刷逻辑1 24小时内 一个手机号只能提交三次 第四次提交的时候 提示 已提交成功 请耐心等待 400<br>防刷逻辑2 24小时内 提交三个手机号 提交第四个时 提示 401</p>
+<p>防刷逻辑 1 24 小时内 一个手机号只能提交三次 第四次提交的时候 提示 已提交成功 请耐心等待 400<br>防刷逻辑 2 24 小时内 提交三个手机号 提交第四个时 提示 401</p>
 </blockquote>
 <a id="more"></a>
-<p><strong>步骤一 页面加载 获取cookie中当前的信息</strong></p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> componentDidMount() &#123;</span><br><span class="line">    <span class="comment">// 获取cookie里存的用户信息</span></span><br><span class="line">    let cookieSaveInfo = getCookie(COOKIE_CONFIG.FINANCIAL_SAVE_INFO) <span class="string">|| "</span>&#123;&#125;<span class="string">";</span></span><br><span class="line">    <span class="comment">//todo...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>步骤一 页面加载 获取 cookie 中当前的信息</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> componentDidMount() {</span><br><span class="line">    // 获取cookie里存的用户信息</span><br><span class="line">    let cookieSaveInfo = getCookie(COOKIE_CONFIG.FINANCIAL_SAVE_INFO) || "{}";</span><br><span class="line">    //todo...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <p><strong>点击保存按钮 防刷逻辑</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">saveInfo = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="keyword">const</span> &#123; userInfoFromCookie, setModal &#125; = <span class="keyword">this</span>;</span><br><span class="line">  </span><br><span class="line">   <span class="comment">// 获取手机号列表</span></span><br><span class="line">   <span class="keyword">let</span> phoneList = <span class="built_in">Object</span>.keys(userInfoFromCookie); <span class="comment">// ['12','21212','212']</span></span><br><span class="line">  </span><br><span class="line">   <span class="comment">// 获取当前存的手机号的个数</span></span><br><span class="line">   <span class="keyword">let</span> phoneListLength = phoneList.length;</span><br><span class="line">   <span class="comment">// 当前输入的存在手机号列表中</span></span><br><span class="line">   <span class="keyword">if</span> (phone <span class="keyword">in</span> userInfoFromCookie) &#123;</span><br><span class="line">       <span class="keyword">if</span> (userInfoFromCookie[phone] &gt;= <span class="number">3</span>) &#123;</span><br><span class="line">           <span class="comment">// 当前的手机号存在手机列表中 看当前是第几次 大于三次提示</span></span><br><span class="line">         </span><br><span class="line">          setModal(<span class="number">400</span>);</span><br><span class="line">          <span class="comment">//todo...</span></span><br><span class="line">           <span class="keyword">return</span>; <span class="comment">//防御式编程</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (phoneListLength &gt;= <span class="number">3</span>) &#123;</span><br><span class="line">       <span class="comment">// 如果当前列表中已经有三个不同的手机号 则提示401</span></span><br><span class="line">       setModal(<span class="number">401</span>);</span><br><span class="line">       <span class="keyword">return</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//可以发起请求</span></span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">saveInfo = () =&gt; {</span><br><span class="line">   const { userInfoFromCookie, setModal } = this;</span><br><span class="line">  </span><br><span class="line">   // 获取手机号列表</span><br><span class="line">   let phoneList = Object.keys(userInfoFromCookie); // ['12','21212','212']</span><br><span class="line">  </span><br><span class="line">   // 获取当前存的手机号的个数</span><br><span class="line">   let phoneListLength = phoneList.length;</span><br><span class="line">   // 当前输入的存在手机号列表中</span><br><span class="line">   if (phone in userInfoFromCookie) {</span><br><span class="line">       if (userInfoFromCookie[phone] &gt;= 3) {</span><br><span class="line">           // 当前的手机号存在手机列表中 看当前是第几次 大于三次提示</span><br><span class="line">         </span><br><span class="line">          setModal(400);</span><br><span class="line">          //todo...</span><br><span class="line">           return; //防御式编程</span><br><span class="line">       }</span><br><span class="line">   } else if (phoneListLength &gt;= 3) {</span><br><span class="line">       // 如果当前列表中已经有三个不同的手机号 则提示401</span><br><span class="line">       setModal(401);</span><br><span class="line">       return;</span><br><span class="line">   }</span><br><span class="line">   //可以发起请求</span><br><span class="line">   </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
 <p><strong>请求成功的回调</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> saveFunc = <span class="function">(<span class="params">resData</span>) =&gt;</span> &#123;</span><br><span class="line">    </span><br><span class="line">   <span class="keyword">let</span> thePhoneCount = userInfoFromCookie[phone] || <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">if</span> (resData.error_code === <span class="number">200</span>) &#123;</span><br><span class="line">   </span><br><span class="line">       <span class="comment">// 存cookie 规则 看下当前手机号在不在列表里 在的话 就更新次数 不在的数就设置这个key</span></span><br><span class="line">       <span class="keyword">if</span> (phone <span class="keyword">in</span> userInfoFromCookie) &#123;</span><br><span class="line">           userInfoFromCookie[phone] = thePhoneCount + <span class="number">1</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           userInfoFromCookie[phone] = thePhoneCount;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// cookie存储</span></span><br><span class="line">       setCookie(COOKIE_CONFIG.FINANCIAL_SAVE_INFO, <span class="built_in">JSON</span>.stringify(userInfoFromCookie), <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span>);</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> saveFunc = (resData) =&gt; {</span><br><span class="line">    </span><br><span class="line">   let thePhoneCount = userInfoFromCookie[phone] || 1;</span><br><span class="line">   if (resData.error_code === 200) {</span><br><span class="line">   </span><br><span class="line">       // 存cookie 规则 看下当前手机号在不在列表里 在的话 就更新次数 不在的数就设置这个key</span><br><span class="line">       if (phone in userInfoFromCookie) {</span><br><span class="line">           userInfoFromCookie[phone] = thePhoneCount + 1;</span><br><span class="line">       } else {</span><br><span class="line">           userInfoFromCookie[phone] = thePhoneCount;</span><br><span class="line">       }</span><br><span class="line">       // cookie存储</span><br><span class="line">       setCookie(COOKIE_CONFIG.FINANCIAL_SAVE_INFO, JSON.stringify(userInfoFromCookie), 24 * 60 * 60);</span><br><span class="line">   }</span><br><span class="line"> </span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
 
     </div>
 
@@ -468,13 +472,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -564,8 +568,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],

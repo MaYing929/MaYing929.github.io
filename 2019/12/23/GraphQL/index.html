@@ -24,12 +24,12 @@
     var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="开篇你有没有遇到以下问题  字段冗余    若干个不得不发的HTTP请求   发生这些，并不是前端er本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病究其原因，是前端在数据层面没有主动权 针对但不限于以上种种我们需要以前端的设计者和开发者的角度出发 设计新的数据查询方式 Facebook工程师率先提出RESTful架构体系的替代方案 并且应用在了其应用中 Facebook 使用graphql重">
+  <meta name="description" content="开篇你有没有遇到以下问题  字段冗余    若干个不得不发的 HTTP 请求   发生这些，并不是前端 er 本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病究其原因，是前端在数据层面没有主动权 针对但不限于以上种种我们需要以前端的设计者和开发者的角度出发 设计新的数据查询方式 Facebook 工程师率先提出 RESTful 架构体系的替代方案 并且应用在了其应用中 Facebook 使用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="面向未来的API-GraphQL">
+<meta property="og:title" content="面向未来的 API-GraphQL">
 <meta property="og:url" content="http://maying.ink/2019/12/23/GraphQL/index.html">
 <meta property="og:site_name" content="亦舒的海角">
-<meta property="og:description" content="开篇你有没有遇到以下问题  字段冗余    若干个不得不发的HTTP请求   发生这些，并不是前端er本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病究其原因，是前端在数据层面没有主动权 针对但不限于以上种种我们需要以前端的设计者和开发者的角度出发 设计新的数据查询方式 Facebook工程师率先提出RESTful架构体系的替代方案 并且应用在了其应用中 Facebook 使用graphql重">
+<meta property="og:description" content="开篇你有没有遇到以下问题  字段冗余    若干个不得不发的 HTTP 请求   发生这些，并不是前端 er 本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病究其原因，是前端在数据层面没有主动权 针对但不限于以上种种我们需要以前端的设计者和开发者的角度出发 设计新的数据查询方式 Facebook 工程师率先提出 RESTful 架构体系的替代方案 并且应用在了其应用中 Facebook 使用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://cdn.anruence.com/%E7%A3%90%E7%9F%B3%E6%95%B0%E6%8D%AE.png">
 <meta property="og:image" content="http://cdn.anruence.com/graphql1.png">
@@ -69,7 +69,7 @@
   };
 </script>
 
-  <title>面向未来的API-GraphQL | 亦舒的海角</title>
+  <title>面向未来的 API-GraphQL | 亦舒的海角</title>
   
 
 
@@ -229,7 +229,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%8E%E7%A1%AE%E6%9C%AC%E6%96%87%E7%9A%84%E8%BE%B9%E7%95%8C"><span class="nav-number">2.</span> <span class="nav-text">明确本文的边界</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E6%80%9D%E8%80%83RESTful"><span class="nav-number">3.</span> <span class="nav-text">重新思考RESTful</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E8%AF%89%E6%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">我的诉求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#what-GraphQL"><span class="nav-number">4.</span> <span class="nav-text">what GraphQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RESTful-amp-GraphQL"><span class="nav-number">5.</span> <span class="nav-text">RESTful &amp; GraphQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E8%8E%B7%E5%8F%96"><span class="nav-number">5.1.</span> <span class="nav-text">资源获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="nav-number">5.2.</span> <span class="nav-text">数据获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E4%BC%98%E7%82%B9"><span class="nav-number">5.3.</span> <span class="nav-text">GraphQL优点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GraphQL%E6%94%B9%E5%96%84RESTful"><span class="nav-number">6.</span> <span class="nav-text">GraphQL改善RESTful</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How-GraphQL"><span class="nav-number">7.</span> <span class="nav-text">How GraphQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%9A%84GraphQL%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.0.1.</span> <span class="nav-text">一个基础的GraphQL服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GraphQL%E6%9C%8D%E5%8A%A1-%E7%B1%BB%E5%9E%8B%EF%BC%88schema%EF%BC%89-%E8%A7%A3%E6%9E%90%E5%99%A8-%EF%BC%88resolve%EF%BC%89"><span class="nav-number">7.0.1.1.</span> <span class="nav-text">GraphQL服务 &#x3D; 类型（schema） + 解析器 （resolve）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E6%9F%A5%E8%AF%A2%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.1.</span> <span class="nav-text">GraphQL查询协议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GraphQL%E7%BB%84%E6%88%90%E9%93%BE%E8%B7%AF"><span class="nav-number">8.</span> <span class="nav-text">GraphQL组成链路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E8%B7%AF%E5%BE%84%E5%9B%BE"><span class="nav-number">8.1.</span> <span class="nav-text">资源路径图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="nav-number">8.2.</span> <span class="nav-text">服务端执行过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BB%E7%A2%8D%E4%BD%A0%E4%BD%BF%E7%94%A8GraphQL%E7%9A%84N%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text">阻碍你使用GraphQL的N个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E4%B8%80%E5%AE%9A%E8%A6%81%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9F"><span class="nav-number">9.1.</span> <span class="nav-text">GraphQL一定要操作数据库？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL-%E8%B7%9F-RESTful-api-%E6%98%AF%E5%AF%B9%E7%AB%8B%E7%9A%84%EF%BC%9F"><span class="nav-number">9.2.</span> <span class="nav-text">GraphQL 跟 RESTful api 是对立的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E4%B8%8D%E4%B8%80%E5%AE%9A%E9%9C%80%E8%A6%81Schema%EF%BC%88%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F%EF%BC%89%EF%BC%9F"><span class="nav-number">9.3.</span> <span class="nav-text">GraphQL不一定需要Schema（类型系统）？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL-%E4%B8%80%E5%AE%9A%E6%98%AF%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%EF%BC%9F"><span class="nav-number">9.4.</span> <span class="nav-text">GraphQL 一定是后端服务？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%B0%E6%9C%89%E5%BA%94%E7%94%A8%E7%9A%84%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">10.</span> <span class="nav-text">现有应用的接入方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E6%94%B9%E9%80%A0RESTful-Like%E6%A8%A1%E5%BC%8F"><span class="nav-number">10.1.</span> <span class="nav-text">暴力改造RESTful-Like模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E4%B8%BA%E4%B8%AD%E9%97%B4%E5%B1%82"><span class="nav-number">10.2.</span> <span class="nav-text">作为中间层</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GraphQL%E4%B8%8D%E8%B6%B3"><span class="nav-number">11.</span> <span class="nav-text">GraphQL不足</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8EGraphQL%E7%9A%84%E7%A4%BE%E5%8C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">12.</span> <span class="nav-text">基于GraphQL的社区解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Apollo"><span class="nav-number">12.1.</span> <span class="nav-text">Apollo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Apollo-Client"><span class="nav-number">12.1.1.</span> <span class="nav-text">Apollo-Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Apollo-Server"><span class="nav-number">12.1.2.</span> <span class="nav-text">Apollo-Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">12.1.3.</span> <span class="nav-text">错误处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="nav-number">12.1.4.</span> <span class="nav-text">模块化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7"><span class="nav-number">12.1.5.</span> <span class="nav-text">错误监控</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">13.</span> <span class="nav-text">小结</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%8E%E7%A1%AE%E6%9C%AC%E6%96%87%E7%9A%84%E8%BE%B9%E7%95%8C"><span class="nav-number">2.</span> <span class="nav-text">明确本文的边界</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E6%80%9D%E8%80%83RESTful"><span class="nav-number">3.</span> <span class="nav-text">重新思考 RESTful</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E8%AF%89%E6%B1%82"><span class="nav-number">3.1.</span> <span class="nav-text">我的诉求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#what-GraphQL"><span class="nav-number">4.</span> <span class="nav-text">what GraphQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RESTful-amp-GraphQL"><span class="nav-number">5.</span> <span class="nav-text">RESTful &amp; GraphQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E8%8E%B7%E5%8F%96"><span class="nav-number">5.1.</span> <span class="nav-text">资源获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96"><span class="nav-number">5.2.</span> <span class="nav-text">数据获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E4%BC%98%E7%82%B9"><span class="nav-number">5.3.</span> <span class="nav-text">GraphQL 优点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GraphQL%E6%94%B9%E5%96%84RESTful"><span class="nav-number">6.</span> <span class="nav-text">GraphQL 改善 RESTful</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How-GraphQL"><span class="nav-number">7.</span> <span class="nav-text">How GraphQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%9A%84GraphQL%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.0.1.</span> <span class="nav-text">一个基础的 GraphQL 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GraphQL%E6%9C%8D%E5%8A%A1-%E7%B1%BB%E5%9E%8B%EF%BC%88schema%EF%BC%89-%E8%A7%A3%E6%9E%90%E5%99%A8-%EF%BC%88resolve%EF%BC%89"><span class="nav-number">7.0.1.1.</span> <span class="nav-text">GraphQL 服务 &#x3D; 类型（schema） + 解析器 （resolve）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E6%9F%A5%E8%AF%A2%E5%8D%8F%E8%AE%AE"><span class="nav-number">7.1.</span> <span class="nav-text">GraphQL 查询协议</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GraphQL%E7%BB%84%E6%88%90%E9%93%BE%E8%B7%AF"><span class="nav-number">8.</span> <span class="nav-text">GraphQL 组成链路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E8%B7%AF%E5%BE%84%E5%9B%BE"><span class="nav-number">8.1.</span> <span class="nav-text">资源路径图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B"><span class="nav-number">8.2.</span> <span class="nav-text">服务端执行过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BB%E7%A2%8D%E4%BD%A0%E4%BD%BF%E7%94%A8GraphQL%E7%9A%84N%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text">阻碍你使用 GraphQL 的 N 个问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E4%B8%80%E5%AE%9A%E8%A6%81%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%9F"><span class="nav-number">9.1.</span> <span class="nav-text">GraphQL 一定要操作数据库？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL-%E8%B7%9F-RESTful-api-%E6%98%AF%E5%AF%B9%E7%AB%8B%E7%9A%84%EF%BC%9F"><span class="nav-number">9.2.</span> <span class="nav-text">GraphQL 跟 RESTful api 是对立的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL%E4%B8%8D%E4%B8%80%E5%AE%9A%E9%9C%80%E8%A6%81Schema%EF%BC%88%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F%EF%BC%89%EF%BC%9F"><span class="nav-number">9.3.</span> <span class="nav-text">GraphQL 不一定需要 Schema（类型系统）？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GraphQL-%E4%B8%80%E5%AE%9A%E6%98%AF%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1%EF%BC%9F"><span class="nav-number">9.4.</span> <span class="nav-text">GraphQL 一定是后端服务？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%B0%E6%9C%89%E5%BA%94%E7%94%A8%E7%9A%84%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">10.</span> <span class="nav-text">现有应用的接入方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E6%94%B9%E9%80%A0RESTful-Like%E6%A8%A1%E5%BC%8F"><span class="nav-number">10.1.</span> <span class="nav-text">暴力改造 RESTful-Like 模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E4%B8%BA%E4%B8%AD%E9%97%B4%E5%B1%82"><span class="nav-number">10.2.</span> <span class="nav-text">作为中间层</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GraphQL%E4%B8%8D%E8%B6%B3"><span class="nav-number">11.</span> <span class="nav-text">GraphQL 不足</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8EGraphQL%E7%9A%84%E7%A4%BE%E5%8C%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">12.</span> <span class="nav-text">基于 GraphQL 的社区解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Apollo"><span class="nav-number">12.1.</span> <span class="nav-text">Apollo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Apollo-Client"><span class="nav-number">12.1.1.</span> <span class="nav-text">Apollo-Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Apollo-Server"><span class="nav-number">12.1.2.</span> <span class="nav-text">Apollo-Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">12.1.3.</span> <span class="nav-text">错误处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="nav-number">12.1.4.</span> <span class="nav-text">模块化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%9B%91%E6%8E%A7"><span class="nav-number">12.1.5.</span> <span class="nav-text">错误监控</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">13.</span> <span class="nav-text">小结</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -324,7 +324,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          面向未来的API-GraphQL
+          面向未来的 API-GraphQL
         </h1>
 
         <div class="post-meta-container">
@@ -360,14 +360,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span></span>
+      <span>6.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>NaN:aN</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -384,142 +384,148 @@
 </ul>
 <p><img src="http://cdn.anruence.com/%E7%A3%90%E7%9F%B3%E6%95%B0%E6%8D%AE.png" alt="image"></p>
 <ul>
-<li>若干个不得不发的HTTP请求</li>
+<li>若干个不得不发的 HTTP 请求</li>
 </ul>
 <p><img src="http://cdn.anruence.com/graphql1.png" alt="image"></p>
-<p>发生这些，并不是前端er本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病<br>究其原因，是前端在数据层面没有主动权</p>
+<p>发生这些，并不是前端 er 本意，但是又要承担诸如页面渲染慢等副作用而被用户诟病<br>究其原因，是前端在数据层面没有主动权</p>
 <p>针对但不限于以上种种<br>我们需要以前端的设计者和开发者的角度出发 设计新的数据查询方式</p>
-<p>Facebook工程师率先提出RESTful架构体系的替代方案</p>
+<p>Facebook 工程师率先提出 RESTful 架构体系的替代方案</p>
 <p>并且应用在了其应用中</p>
-<p><a href="https://www.youtube.com/watch?v=WxPtYJRjLL0&amp;t=2s" target="_blank" rel="noopener">Facebook 使用graphql重构他们的pc站</a></p>
-<p>接下来 让我们站在巨人的肩膀上，由浅至深聊聊被称之为面向未来的API的-GraphQL</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=WxPtYJRjLL0&amp;t=2s">Facebook 使用 graphql 重构他们的 pc 站</a></p>
+<p>接下来 让我们站在巨人的肩膀上，由浅至深聊聊被称之为面向未来的 API 的 - GraphQL</p>
 <a id="more"></a>
-<h1 id="明确本文的边界"><a href="#明确本文的边界" class="headerlink" title="明确本文的边界"></a>明确本文的边界</h1><p>本文主要介绍接触GraphQL这段时间，觉得必须要掌握的一些核心 适合以下人群</p>
+
+<h1 id="明确本文的边界"><a href="#明确本文的边界" class="headerlink" title="明确本文的边界"></a>明确本文的边界</h1><p>本文主要介绍接触 GraphQL 这段时间，觉得必须要掌握的一些核心 适合以下人群</p>
 <ul>
-<li>完全没听说过GraphQL</li>
-<li>听说过GraphQL的读者，想深入了解一下</li>
-<li>想系统地学习GraphQL的读者</li>
-<li>正在调研GraphQL技术的读者</li>
+<li>完全没听说过 GraphQL</li>
+<li> 听说过 GraphQL 的读者，想深入了解一下</li>
+<li>想系统地学习 GraphQL 的读者</li>
+<li>正在调研 GraphQL 技术的读者</li>
 </ul>
-<p>帮助你对GraphQL建立一个统观全局的认知及原理性的解读</p>
+<p>帮助你对 GraphQL 建立一个统观全局的认知及原理性的解读</p>
 <p>你可能会得到以下解答</p>
 <ul>
-<li>重新思考RESTful</li>
+<li>重新思考 RESTful</li>
 <li>what GraphQL</li>
 <li>RESTful &amp; GraphQL</li>
 <li>how GraphQL</li>
-<li>GraphQL组成链路</li>
-<li>阻碍你使用GraphQL的N个问题</li>
+<li>GraphQL 组成链路</li>
+<li>阻碍你使用 GraphQL 的 N 个问题</li>
 <li>现有应用的接入方式</li>
-<li>GraphQL不足</li>
-<li>基于GraphQL的社区解决方案</li>
+<li> GraphQL 不足</li>
+<li>基于 GraphQL 的社区解决方案</li>
 <li>小结</li>
 </ul>
-<h1 id="重新思考RESTful"><a href="#重新思考RESTful" class="headerlink" title="重新思考RESTful"></a>重新思考RESTful</h1><ul>
+<h1 id="重新思考RESTful"><a href="#重新思考RESTful" class="headerlink" title="重新思考RESTful"></a>重新思考 RESTful</h1><ul>
 <li>接口数膨胀，需自行组合多个接口才能获取到完整的数据结构</li>
-<li>API文档更新不及时，联调基本靠猜</li>
-<li>客户端对接口数据类型校验</li>
+<li> API 文档更新不及时，联调基本靠猜</li>
+<li>客户端对接口数据类型校验 </li>
 </ul>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 除了服务端要校验客户端传来的参数，客户端自己也需要去校验服务端返回的参数</span><br><span class="line">- 比如客户端要的是数组，你有没有返回数组</span><br><span class="line">- 需要依赖类似出<span class="keyword">var</span> x = <span class="keyword">data</span>?(<span class="keyword">data</span>.obj?<span class="keyword">data</span>.obj.name:<span class="literal">null</span>):<span class="literal">null</span>兼容</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 除了服务端要校验客户端传来的参数，客户端自己也需要去校验服务端返回的参数</span><br><span class="line">- 比如客户端要的是数组，你有没有返回数组</span><br><span class="line">- 需要依赖类似出var x = data?(data.obj?data.obj.name:null):null兼容</span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
-<li>接口字段冗余，移动/PC需求无法满足</li>
+<li>接口字段冗余，移动 / PC 需求无法满足 </li>
 </ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>冗余数据的返回浪费了流量</span><br><span class="line"><span class="bullet">- </span>服务端决定有哪些数据获取方式，客户端只能挑选使用，如果数据过于冗余也只能默默接收再对数据进行处理</span><br><span class="line"><span class="bullet">- </span>而数据不能满足需求则需要请求更多的接口</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- 冗余数据的返回浪费了流量</span><br><span class="line">- 服务端决定有哪些数据获取方式，客户端只能挑选使用，如果数据过于冗余也只能默默接收再对数据进行处理</span><br><span class="line">- 而数据不能满足需求则需要请求更多的接口</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
 <li>前后端字段命名规范不一致，</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">依赖数据层逐量转换</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">依赖数据层逐量转换</span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
-<li>维护多版本接口</li>
+<li>维护多版本接口 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">任何的变动都会被视为一种破坏性的改变，而破坏性改变就需要更新API的版本</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">任何的变动都会被视为一种破坏性的改变，而破坏性改变就需要更新API的版本</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
 <h2 id="我的诉求"><a href="#我的诉求" class="headerlink" title="我的诉求"></a>我的诉求</h2><ol>
 <li>可不可以客户端要什么字段，服务端就给什么字段的值？</li>
 <li>可不可以定义一个返回数据格式与请求的数据格式的一个强类型的约束？</li>
-<li>能不能客户端可以问服务端要1、2、3这些数据，服务端一次给我返回就行？</li>
+<li>能不能客户端可以问服务端要 1、2、3 这些数据，服务端一次给我返回就行？</li>
 </ol>
-<p>GraphQL的出现就是为了解决RESTful的痛点</p>
-<h1 id="what-GraphQL"><a href="#what-GraphQL" class="headerlink" title="what GraphQL"></a>what GraphQL</h1><p><a href="http://graphql.org" target="_blank" rel="noopener">GraphQl官网</a></p>
-<p><a href="https://graphql.cn/" target="_blank" rel="noopener">GraphQL中文网</a></p>
+<p>GraphQL 的出现就是为了解决 RESTful 的痛点</p>
+<h1 id="what-GraphQL"><a href="#what-GraphQL" class="headerlink" title="what GraphQL"></a>what GraphQL</h1><p><a target="_blank" rel="noopener" href="http://graphql.org/">GraphQl 官网</a></p>
+<p><a target="_blank" rel="noopener" href="https://graphql.cn/">GraphQL 中文网</a></p>
 <blockquote>
-<p>它既是一种用于 API 的查询语言(规范) 也是一个满足你数据查询的运行时</p>
+<p>它既是一种用于 API 的查询语言 (规范) 也是一个满足你数据查询的运行时</p>
 </blockquote>
 <p>强类型可以在查询执行之前进行验证</p>
 <p>用于组织应用程序中数据的创建，读取，更新和删除（是的，CRUD）</p>
-<p>脑袋里巨大的问号❓ API怎么就可以查询呢？</p>
+<p>脑袋里巨大的问号❓ API 怎么就可以查询呢？</p>
 <p>这正是其强大之处</p>
 <blockquote>
 <p>ask exactly what you want.</p>
 </blockquote>
 <ul>
 <li>用已有的代码和技术来进行数据源管理</li>
-<li>对API数据提供了一套易于理解的完整描述</li>
-<li>非数据库查询语言，不是一门语言/框架 </li>
+<li>对 API 数据提供了一套易于理解的完整描述</li>
+<li>非数据库查询语言，不是一门语言 / 框架 </li>
 <li>不绑定任何的数据库或者存储引擎</li>
 <li>使得客户端能按需获取数据，无冗余</li>
-<li>让API更容易随着时间推移而演进</li>
-<li>GraphQL = Graph (图表化/可视化)+ QL (查询语言)</li>
-<li>是一种描述客户端如何向服务端请求数据的API语法</li>
+<li>让 API 更容易随着时间推移而演进</li>
+<li> GraphQL = Graph (图表化 / 可视化)+ QL (查询语言)</li>
+<li> 是一种描述客户端如何向服务端请求数据的 API 语法</li>
 </ul>
 <h1 id="RESTful-amp-GraphQL"><a href="#RESTful-amp-GraphQL" class="headerlink" title="RESTful &amp; GraphQL"></a>RESTful &amp; GraphQL</h1><h2 id="资源获取"><a href="#资源获取" class="headerlink" title="资源获取"></a>资源获取</h2><p><img src="http://cdn.anruence.com/rest.png" alt="image"></p>
 <ul>
-<li>RESTful 用不同URL来区分资源，GraphQL 用特有的类型区分资源</li>
-<li>获取相同资源REST API需要聚合多个接口</li>
-<li>获取相同资源GraphQL只需一次请求获取多组数据</li>
-<li>GraphQL更有效率更强大更灵活，对前端更友好</li>
+<li>RESTful 用不同 URL 来区分资源，GraphQL 用特有的类型区分资源</li>
+<li>获取相同资源 REST API 需要聚合多个接口</li>
+<li>获取相同资源 GraphQL 只需一次请求获取多组数据</li>
+<li> GraphQL 更有效率更强大更灵活，对前端更友好</li>
 </ul>
 <h2 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h2><p><img src="http://cdn.anruence.com/graphql%20%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96.png" alt="image"></p>
 <ul>
-<li>获取数据的方式由==这里有什么==向 ==你需要什么==转变 </li>
-<li>GraphQL可以简化理解成一个灵活的ajax接口</li>
+<li>获取数据的方式由 == 这里有什么 == 向 == 你需要什么 == 转变 </li>
+<li>GraphQL 可以简化理解成一个灵活的 ajax 接口</li>
 <li>客户端完全自主决定获取信息的内容，服务端负责精确的返回目标数据</li>
 </ul>
-<h2 id="GraphQL优点"><a href="#GraphQL优点" class="headerlink" title="GraphQL优点"></a>GraphQL优点</h2><ul>
-<li>请求你所要的数据，不多不少</li>
+<h2 id="GraphQL优点"><a href="#GraphQL优点" class="headerlink" title="GraphQL优点"></a>GraphQL 优点</h2><ul>
+<li>请求你所要的数据，不多不少 </li>
 </ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>向你的 API 发出一个 GraphQL 请求就能准确获得你想要的数据，不多不少。</span><br><span class="line"><span class="bullet">- </span>GraphQL 查询总是返回可预测的结果。使用 GraphQL 的应用可以工作得又快又稳，因为控制数据的是应用，而不是服务器。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- 向你的 API 发出一个 GraphQL 请求就能准确获得你想要的数据，不多不少。</span><br><span class="line">- GraphQL 查询总是返回可预测的结果。使用 GraphQL 的应用可以工作得又快又稳，因为控制数据的是应用，而不是服务器。</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="http://cdn.anruence.com/graphql-fetchdata.png" alt="image"></p>
 <ul>
-<li>获取多个资源，只需要一个请求</li>
+<li>获取多个资源，只需要一个请求 </li>
 </ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>GraphQL 查询不仅能够获得资源的属性，还能沿着资源间引用进一步查询</span><br><span class="line"><span class="bullet">- </span>典型的 REST API 请求多个资源时得载入多个 URL</span><br><span class="line"><span class="bullet">- </span>GraphQL 可以通过一次请求就获取你应用所需的所有数据</span><br><span class="line"><span class="bullet">- </span>即使是比较慢的移动网络连接下，使用 GraphQL 的应用也能表现得足够迅速。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- GraphQL 查询不仅能够获得资源的属性，还能沿着资源间引用进一步查询</span><br><span class="line">- 典型的 REST API 请求多个资源时得载入多个 URL</span><br><span class="line">- GraphQL 可以通过一次请求就获取你应用所需的所有数据</span><br><span class="line">- 即使是比较慢的移动网络连接下，使用 GraphQL 的应用也能表现得足够迅速。</span><br></pre></td></tr></tbody></table></figure>
 <p><img src="http://cdn.anruence.com/graphQL-huoqu.png" alt="image"></p>
 <ul>
 <li>描述所有可能的类型系统（强类型自身）</li>
 </ul>
 <p>强类型可以在查询执行之前进行验证</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>GraphQL API 基于类型和字段的方式进行组织，而非入口端点</span><br><span class="line"><span class="bullet">- </span>你可以通过一个单一入口端点得到你所有的数据能力</span><br><span class="line"><span class="bullet">- </span>GraphQL 使用类型来保证应用只请求可能的数据</span><br><span class="line"><span class="bullet">- </span>还提供了清晰的辅助性错误信息</span><br><span class="line"><span class="bullet">- </span>应用可以使用类型，而避免编写手动解析代码。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- GraphQL API 基于类型和字段的方式进行组织，而非入口端点</span><br><span class="line">- 你可以通过一个单一入口端点得到你所有的数据能力</span><br><span class="line">- GraphQL 使用类型来保证应用只请求可能的数据</span><br><span class="line">- 还提供了清晰的辅助性错误信息</span><br><span class="line">- 应用可以使用类型，而避免编写手动解析代码。</span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
-<li>强大的开发者工具</li>
+<li>强大的开发者工具 </li>
 </ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>代码即文档</span><br><span class="line"><span class="bullet">- </span>不用离开编辑器就能准确知道你可以从 API 中请求的数据</span><br><span class="line"><span class="bullet">- </span>发送查询之前就能高亮潜在问题，高亮代码智能提示</span><br><span class="line"><span class="bullet">- </span>提供了GraphiQL图形界面编写可测试的查询语句</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- 代码即文档</span><br><span class="line">- 不用离开编辑器就能准确知道你可以从 API 中请求的数据</span><br><span class="line">- 发送查询之前就能高亮潜在问题，高亮代码智能提示</span><br><span class="line">- 提供了GraphiQL图形界面编写可测试的查询语句</span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
-<li>无版本约束 平滑演进（<font color="red">GraphQL的设计精髓</font>）</li>
+<li>无版本约束 平滑演进（<font color="red">GraphQL 的设计精髓</font>）</li>
 </ul>
 <blockquote>
 <p>由于仅返回明确的请求数据，所以设计良好的「GraphQL API」不存在「接口突变」的情况，这是从「版本化」到「无版本」的一个明确转变！</p>
 </blockquote>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>给你的 GraphQL API 添加字段和类型而无需影响现有查询</span><br><span class="line"><span class="bullet">- </span>老旧的字段可以废弃，从工具中隐藏</span><br><span class="line"><span class="bullet">- </span>通过使用单一演进版本，GraphQL API 使得应用始终能够使用新的特性，并鼓励使用更加简洁、更好维护的服务端代码</span><br></pre></td></tr></table></figure>
-<h1 id="GraphQL改善RESTful"><a href="#GraphQL改善RESTful" class="headerlink" title="GraphQL改善RESTful"></a>GraphQL改善RESTful</h1><p>了解了GraphQL的一大堆特点，我们开篇的诉求解决了吗？</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- 给你的 GraphQL API 添加字段和类型而无需影响现有查询</span><br><span class="line">- 老旧的字段可以废弃，从工具中隐藏</span><br><span class="line">- 通过使用单一演进版本，GraphQL API 使得应用始终能够使用新的特性，并鼓励使用更加简洁、更好维护的服务端代码</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<h1 id="GraphQL改善RESTful"><a href="#GraphQL改善RESTful" class="headerlink" title="GraphQL改善RESTful"></a>GraphQL 改善 RESTful</h1><p>了解了 GraphQL 的一大堆特点，我们开篇的诉求解决了吗？</p>
 <p><img src="http://cdn.anruence.com/graphql99.png" alt="image"></p>
-<p>到这里 我们看到了GraphQL 原则上的可行性</p>
-<h1 id="How-GraphQL"><a href="#How-GraphQL" class="headerlink" title="How GraphQL"></a>How GraphQL</h1><p>接下来 趁热打铁 来聊聊怎么用GraphQL</p>
+<p>到这里 我们看到了 GraphQL 原则上的可行性</p>
+<h1 id="How-GraphQL"><a href="#How-GraphQL" class="headerlink" title="How GraphQL"></a>How GraphQL</h1><p>接下来 趁热打铁 来聊聊怎么用 GraphQL</p>
 <p><img src="http://cdn.anruence.com/graphql-banner.png" alt="image"></p>
 <p>官网上特别醒目的一张图，我们可以得到如下信息</p>
 <ul>
 <li>服务端定义好强类型的数据入参和返回的数据结构</li>
-<li>客户端发送一个带有查询语句（GraphQL查询协议）的请求，定义好返回数据的格式及类型</li>
-<li>返回符合客户端预期的Json字符串结果</li>
+<li>客户端发送一个带有查询语句（GraphQL 查询协议）的请求，定义好返回数据的格式及类型</li>
+<li>返回符合客户端预期的 Json 字符串结果</li>
 </ul>
-<font color="red">再通俗一点</font>
-
-<p>我们拥有UI，并且需要用数据填充它，因此我们向服务器进行查询<br>使用传统的REST API，我们的查询将以GET请求的形式出现 借助GraphQL，我们引入了一种用于请求数据的新语法</p>
-<h3 id="一个基础的GraphQL服务"><a href="#一个基础的GraphQL服务" class="headerlink" title="一个基础的GraphQL服务"></a>一个基础的GraphQL服务</h3><h4 id="GraphQL服务-类型（schema）-解析器-（resolve）"><a href="#GraphQL服务-类型（schema）-解析器-（resolve）" class="headerlink" title="GraphQL服务 = 类型（schema） + 解析器 （resolve）"></a>GraphQL服务 = 类型（schema） + 解析器 （resolve）</h4><p>明确以下知识点</p>
+<p><font color="red">再通俗一点</font></p>
+<p>我们拥有 UI，并且需要用数据填充它，因此我们向服务器进行查询<br>使用传统的 REST API，我们的查询将以 GET 请求的形式出现 借助 GraphQL，我们引入了一种用于请求数据的新语法</p>
+<h3 id="一个基础的GraphQL服务"><a href="#一个基础的GraphQL服务" class="headerlink" title="一个基础的GraphQL服务"></a>一个基础的 GraphQL 服务</h3><h4 id="GraphQL服务-类型（schema）-解析器-（resolve）"><a href="#GraphQL服务-类型（schema）-解析器-（resolve）" class="headerlink" title="GraphQL服务 = 类型（schema） + 解析器 （resolve）"></a>GraphQL 服务 = 类型（schema） + 解析器 （resolve）</h4><p>明确以下知识点</p>
 <ul>
-<li>为了发出GraphQL请求，我们需要有一个GraphQL服务器</li>
-<li>GraphQL服务器是附加了GraphQL模式的常规HTTP服务器</li>
+<li>为了发出 GraphQL 请求，我们需要有一个 GraphQL 服务器</li>
+<li> GraphQL 服务器是附加了 GraphQL 模式的常规 HTTP 服务器</li>
 <li>类型系统描述了数据的类型与结构，但它只是形状，不包含真正的数据</li>
-<li>通过编写Resolver函数，从而去获取真正的数据</li>
+<li>通过编写 Resolver 函数，从而去获取真正的数据</li>
 </ul>
 <p><img src="http://cdn.anruence.com/graphQL%20lizi.png" alt="image"></p>
 <ul>
@@ -530,65 +536,69 @@
 <li>按你所需请求你所需要的数据，解决了不同客户端不同的渲染需求</li>
 </ul>
 <p>是不是贼简单～</p>
-<p>不知道你没有注意到 上面我们提到了<font color="red">GraphQL查询协议</font></p>
-<h2 id="GraphQL查询协议"><a href="#GraphQL查询协议" class="headerlink" title="GraphQL查询协议"></a>GraphQL查询协议</h2><p>GraphQL有三种请求方式</p>
+<p>不知道你没有注意到 上面我们提到了<font color="red"> GraphQL 查询协议</font></p>
+<h2 id="GraphQL查询协议"><a href="#GraphQL查询协议" class="headerlink" title="GraphQL查询协议"></a>GraphQL 查询协议</h2><p>GraphQL 有三种请求方式</p>
 <ul>
-<li>query(请求)   </li>
-<li>mutation(修改)</li>
-<li>subscribe(订阅)</li>
+<li>query (请求)   </li>
+<li>mutation (修改)</li>
+<li>subscribe (订阅)</li>
 </ul>
-<p>GraphQL的核心依赖于简单的GET或POST请求来将数据往返于客户端，而GraphQL只是一个经过修饰的GET或POST请求，通过 <a href="https://myapp.com/graphql" target="_blank" rel="noopener">https://myapp.com/graphql</a><br>之类的URL发送到GraphQL服务器</p>
-<p>是的，虽然GraphQL确实引入了一些新的概念来组织数据进行交互，但在幕后，但GraphQL仍然依靠良好的HTTP请求来实现其神奇效果</p>
+<p>GraphQL 的核心依赖于简单的 GET 或 POST 请求来将数据往返于客户端，而 GraphQL 只是一个经过修饰的 GET 或 POST 请求，通过 <a target="_blank" rel="noopener" href="https://myapp.com/graphql">https://myapp.com/graphql</a><br>之类的 URL 发送到 GraphQL 服务器</p>
+<p>是的，虽然 GraphQL 确实引入了一些新的概念来组织数据进行交互，但在幕后，但 GraphQL 仍然依靠良好的 HTTP 请求来实现其神奇效果</p>
 <p>只需要为类型系统的字段编写函数，GraphQL 就能通过优化并发的方式来调用它们</p>
-<p>具体参照如上的demo，建议拷贝代码亲自感受一下</p>
-<h1 id="GraphQL组成链路"><a href="#GraphQL组成链路" class="headerlink" title="GraphQL组成链路"></a>GraphQL组成链路</h1><p>当然了 对于开发者来说，我们无非关注两点</p>
+<p>具体参照如上的 demo，建议拷贝代码亲自感受一下</p>
+<h1 id="GraphQL组成链路"><a href="#GraphQL组成链路" class="headerlink" title="GraphQL组成链路"></a>GraphQL 组成链路</h1><p>当然了 对于开发者来说，我们无非关注两点</p>
 <ul>
 <li>客户端做什么？</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">向服务端发送查询字符串</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">向服务端发送查询字符串</span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
 <li>服务端做什么？</li>
 </ul>
-<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">基于GraphQL构建类型系统 </span><br><span class="line">定义与<span class="keyword">Query</span>下字段对应的resolver</span><br><span class="line">可以在resolver获取真正的数据</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">基于GraphQL构建类型系统 </span><br><span class="line">定义与Query下字段对应的resolver</span><br><span class="line">可以在resolver获取真正的数据</span><br></pre></td></tr></tbody></table></figure>
+
+
 <h2 id="资源路径图"><a href="#资源路径图" class="headerlink" title="资源路径图"></a>资源路径图</h2><p><img src="http://cdn.anruence.com/ziyuanlujing.png" alt="image"></p>
 <p>客户端 Schema 本质上就是一段字符串，服务端如何识别并响应这段字符串？</p>
 <h2 id="服务端执行过程"><a href="#服务端执行过程" class="headerlink" title="服务端执行过程"></a>服务端执行过程</h2><p><img src="http://cdn.anruence.com/%E6%9C%8D%E5%8A%A1%E7%AB%AF.png" alt="image"></p>
-<p>拿到客户端字符串之后，依赖官方类库graphql-js,服务端具体执行经历三个阶段</p>
+<p>拿到客户端字符串之后，依赖官方类库 graphql-js, 服务端具体执行经历三个阶段</p>
 <ul>
-<li>解析：逐字符扫描，如果不符合服务端定义的AST规范，解析过程会直接跑出语法异常，当然了，是结构化报错</li>
-<li>校验：发起了查询，GraphQL会解析我们的查询语句，确保啊我们查询的结构是存在的，参数是足够的，类型是一致的，任何环节出了问题，都将返回错误信息</li>
-<li>执行：验证通过后，GraphqL会根据query语句包含的字段结构一一触发对应的Resolver函数，获取查询结果，也就是说 如果前端没有查询某个字段，就不会触发该字段对应的Resolver函数，也就不会产生对数据的获取行为</li>
+<li>解析：逐字符扫描，如果不符合服务端定义的 AST 规范，解析过程会直接跑出语法异常，当然了，是结构化报错</li>
+<li>校验：发起了查询，GraphQL 会解析我们的查询语句，确保啊我们查询的结构是存在的，参数是足够的，类型是一致的，任何环节出了问题，都将返回错误信息</li>
+<li>执行：验证通过后，GraphqL 会根据 query 语句包含的字段结构一一触发对应的 Resolver 函数，获取查询结果，也就是说 如果前端没有查询某个字段，就不会触发该字段对应的 Resolver 函数，也就不会产生对数据的获取行为</li>
 </ul>
-<p>注：如果Reaolver返回的数据结构，大于Schema里描绘的结构，那么多出来的部分会被忽略，这是一个合理的设计，我们可以通过控制Schema 来控制前端的数据访问权限，防止意外的将用户的隐私信息泄漏出去 </p>
-<h1 id="阻碍你使用GraphQL的N个问题"><a href="#阻碍你使用GraphQL的N个问题" class="headerlink" title="阻碍你使用GraphQL的N个问题"></a>阻碍你使用GraphQL的N个问题</h1><p>既然GraphQL那么方便，为啥没有大火呢？<br>结合了多篇文章，整理了若干了阻止你使用GraphQL的N个问题</p>
+<p>注：如果 Reaolver 返回的数据结构，大于 Schema 里描绘的结构，那么多出来的部分会被忽略，这是一个合理的设计，我们可以通过控制 Schema 来控制前端的数据访问权限，防止意外的将用户的隐私信息泄漏出去 </p>
+<h1 id="阻碍你使用GraphQL的N个问题"><a href="#阻碍你使用GraphQL的N个问题" class="headerlink" title="阻碍你使用GraphQL的N个问题"></a>阻碍你使用 GraphQL 的 N 个问题</h1><p>既然 GraphQL 那么方便，为啥没有大火呢？<br>结合了多篇文章，整理了若干了阻止你使用 GraphQL 的 N 个问题</p>
 <p>一起来看一看</p>
-<h2 id="GraphQL一定要操作数据库？"><a href="#GraphQL一定要操作数据库？" class="headerlink" title="GraphQL一定要操作数据库？"></a>GraphQL一定要操作数据库？</h2><ul>
-<li>数据提供方编写GraphQL Schema</li>
-<li>数据消费方编写GraphQL Query</li>
-<li>GraphQL只是关于schema和resolver的一一对应和调用，它并为对数据的获取方式和来源做任何假设</li>
+<h2 id="GraphQL一定要操作数据库？"><a href="#GraphQL一定要操作数据库？" class="headerlink" title="GraphQL一定要操作数据库？"></a>GraphQL 一定要操作数据库？</h2><ul>
+<li>数据提供方编写 GraphQL Schema</li>
+<li> 数据消费方编写 GraphQL Query</li>
+<li>GraphQL 只是关于 schema 和 resolver 的一一对应和调用，它并为对数据的获取方式和来源做任何假设</li>
 </ul>
-<h2 id="GraphQL-跟-RESTful-api-是对立的？"><a href="#GraphQL-跟-RESTful-api-是对立的？" class="headerlink" title="GraphQL 跟 RESTful api 是对立的？"></a>GraphQL 跟 RESTful api 是对立的？</h2><p>两者不仅不是对立的，还可以相互结合<br>事实上可以把Query 下的字段，理解为一个个 RESTful API</p>
-<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="type">Query</span> &#123;</span><br><span class="line">   hello: <span class="type">String</span>,</span><br><span class="line">   sayhi:<span class="type">String</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="GraphQL不一定需要Schema（类型系统）？"><a href="#GraphQL不一定需要Schema（类型系统）？" class="headerlink" title="GraphQL不一定需要Schema（类型系统）？"></a>GraphQL不一定需要Schema（类型系统）？</h2><ul>
+<h2 id="GraphQL-跟-RESTful-api-是对立的？"><a href="#GraphQL-跟-RESTful-api-是对立的？" class="headerlink" title="GraphQL 跟 RESTful api 是对立的？"></a>GraphQL 跟 RESTful api 是对立的？</h2><p>两者不仅不是对立的，还可以相互结合<br>事实上可以把 Query 下的字段，理解为一个个 RESTful API</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type Query {</span><br><span class="line">   hello: String,</span><br><span class="line">   sayhi:String</span><br><span class="line"> }</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="GraphQL不一定需要Schema（类型系统）？"><a href="#GraphQL不一定需要Schema（类型系统）？" class="headerlink" title="GraphQL不一定需要Schema（类型系统）？"></a>GraphQL 不一定需要 Schema（类型系统）？</h2><ul>
 <li>GraphQL Type System 是一个静态的类型系统，我们可以称之为静态类型 GraphQL</li>
-<li>此外，社区还有一种动态类型的 GraphQL 实践，它跟静态类型的 GraphQL 差别在于，没有了基于 Schema 的数据形状验证阶段，而是直接无脑地根据 query 查询语句里的字段，去触发 Resolver 函数，动态类型的 GraphQL 有一定的便利性，不过，它同时丧失了 GraphQL 的部分精髓</li>
+<li> 此外，社区还有一种动态类型的 GraphQL 实践，它跟静态类型的 GraphQL 差别在于，没有了基于 Schema 的数据形状验证阶段，而是直接无脑地根据 query 查询语句里的字段，去触发 Resolver 函数，动态类型的 GraphQL 有一定的便利性，不过，它同时丧失了 GraphQL 的部分精髓</li>
 </ul>
-<h2 id="GraphQL-一定是后端服务？"><a href="#GraphQL-一定是后端服务？" class="headerlink" title="GraphQL 一定是后端服务？"></a>GraphQL 一定是后端服务？</h2><p>尽管绝大多数 GraphQL，都以 server 的形式存在。 但它并没有限制在后端场景</p>
-<p> <a href="https://codesandbox.io/s/youthful-mestorf-r8s38" target="_blank" rel="noopener">在浏览器中运行</a> </p>
-<h1 id="现有应用的接入方式"><a href="#现有应用的接入方式" class="headerlink" title="现有应用的接入方式"></a>现有应用的接入方式</h1><h2 id="暴力改造RESTful-Like模式"><a href="#暴力改造RESTful-Like模式" class="headerlink" title="暴力改造RESTful-Like模式"></a>暴力改造RESTful-Like模式</h2><p>RESTful -&gt; GraphQL</p>
+<h2 id="GraphQL-一定是后端服务？"><a href="#GraphQL-一定是后端服务？" class="headerlink" title="GraphQL 一定是后端服务？"></a>GraphQL 一定是后端服务？</h2><p>尽管绝大多数 GraphQL，都以 server 的形式存在。&nbsp;但它并没有限制在后端场景</p>
+<p> <a target="_blank" rel="noopener" href="https://codesandbox.io/s/youthful-mestorf-r8s38">在浏览器中运行</a> </p>
+<h1 id="现有应用的接入方式"><a href="#现有应用的接入方式" class="headerlink" title="现有应用的接入方式"></a>现有应用的接入方式</h1><h2 id="暴力改造RESTful-Like模式"><a href="#暴力改造RESTful-Like模式" class="headerlink" title="暴力改造RESTful-Like模式"></a>暴力改造 RESTful-Like 模式</h2><p>RESTful -&gt; GraphQL</p>
 <ul>
 <li>就是简单粗暴的把 RESTful API 服务，替换成 GraphQL 实现。之前有多少 RESTful 服务，重构后就有多少 GraphQL 服务，</li>
-<li>默认情况下，面向两个 GraphQL 服务发起的查询是两次请求，而不是一次</li>
+<li>默认情况下，面向两个 GraphQL 服务发起的查询是两次请求，而不是一次 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">前端需要产品数据时，从之前调用产品相关的 RESTful API，变成查询产品相关的 GraphQL。不过，需要订单相关的数据时，可能要查询另一个 GraphQL 服务</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">前端需要产品数据时，从之前调用产品相关的 RESTful API，变成查询产品相关的 GraphQL。不过，需要订单相关的数据时，可能要查询另一个 GraphQL 服务</span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>它是一个简单的一对一关系</li>
 </ul>
 <p>收益甚微 选型失误</p>
-<h2 id="作为中间层"><a href="#作为中间层" class="headerlink" title="作为中间层"></a>作为中间层</h2><p>同样是API Gateway角色的GraphQL服务，在实现方式上有不同的分类 </p>
+<h2 id="作为中间层"><a href="#作为中间层" class="headerlink" title="作为中间层"></a>作为中间层</h2><p>同样是 API Gateway 角色的 GraphQL 服务，在实现方式上有不同的分类 </p>
 <ul>
 <li>1，传统意义上的后端服务（包含大量真实的数据操作和处理的 GraphQL）</li>
-<li>2，<font color="red">GraphQL as BFF</font>（转发接口请求，聚合数据结果的GraphQL）</li>
+<li>2，<font color="red">GraphQL as BFF</font>（转发接口请求，聚合数据结果的 GraphQL）</li>
 </ul>
 <p>我们今天主要讨论 第二种</p>
 <p><img src="http://cdn.anruence.com/%E6%8E%A5%E5%85%A5%E6%96%B9%E5%BC%8F.png" alt="image"></p>
@@ -599,64 +609,67 @@
 <li>既避免了前端需要一对多的问题，也解决了 API Gateway GraphQL 需要请求 RESTful 全量数据接口的内部冗余问题</li>
 </ul>
 <p><img src="http://cdn.anruence.com/airbnb.png" alt="image"></p>
-<p>将 GraphQL schemas转化为 Thhrift IDL，再统一操作底层数据</p>
+<p>将 GraphQL schemas 转化为 Thhrift IDL，再统一操作底层数据</p>
 <p><img src="http://cdn.anruence.com/%E5%BE%AE%E6%9C%8D%E5%8A%A1..png" alt="image"></p>
-<h1 id="GraphQL不足"><a href="#GraphQL不足" class="headerlink" title="GraphQL不足"></a>GraphQL不足</h1><ul>
+<h1 id="GraphQL不足"><a href="#GraphQL不足" class="headerlink" title="GraphQL不足"></a>GraphQL 不足</h1><ul>
 <li>改造成本：后端服务需要按领域进行重构</li>
 <li>存量大：迁移困难</li>
-<li>数据库性能</li>
+<li>数据库性能 </li>
 </ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>GraphQL 虽然解决将多个 HTTP 请求聚合成了一个请求，但是schema 会逐层解析方式递归获取全部数据</span><br><span class="line"><span class="bullet">- </span>前端请求少了但是query很多 数据库设计影响日后性能</span><br><span class="line"><span class="bullet">- </span>后端对前端改造无感知：前端修改了GraphQL的请求格式，可能会造成深层嵌套，对后端服务有较大影响</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- GraphQL 虽然解决将多个 HTTP 请求聚合成了一个请求，但是schema 会逐层解析方式递归获取全部数据</span><br><span class="line">- 前端请求少了但是query很多 数据库设计影响日后性能</span><br><span class="line">- 后端对前端改造无感知：前端修改了GraphQL的请求格式，可能会造成深层嵌套，对后端服务有较大影响</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>侵入性：前端利好，却需要服务端鼎力支持</li>
-<li>复杂性：学习成本高</li>
+<li>复杂性：学习成本高 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需要了解GraphQL一整套类型系统</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">需要了解GraphQL一整套类型系统</span><br></pre></td></tr></tbody></table></figure>
 <ul>
-<li>典型的N+1问题</li>
+<li>典型的 N+1 问题 </li>
 </ul>
-<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用REST API 是很容易评估 ，识别和解决<span class="built_in">N</span>+<span class="number">1</span>问题的</span><br><span class="line">使用GraphQL会使这个问题变得相对复杂</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用REST API 是很容易评估 ，识别和解决N+1问题的</span><br><span class="line">使用GraphQL会使这个问题变得相对复杂</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 <ul>
-<li>数据缓存问题</li>
+<li>数据缓存问题 </li>
 </ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">REST</span>强制使用具有缓存机制的HTTP协议 ，可以通过它 避免活回去多余资源</span><br><span class="line">GraphQL没有缓存机制，它把缓存的重任交给了用户</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REST强制使用具有缓存机制的HTTP协议 ，可以通过它 避免活回去多余资源</span><br><span class="line">GraphQL没有缓存机制，它把缓存的重任交给了用户</span><br></pre></td></tr></tbody></table></figure>
 <ul>
-<li>可见，整体来看，实际接入GraphQL并非易事，它只是一套规范，各种语言实现不一致，周边生态不够完善，需要后端配合改造，成本大，</li>
+<li>可见，整体来看，实际接入 GraphQL 并非易事，它只是一套规范，各种语言实现不一致，周边生态不够完善，需要后端配合改造，成本大，</li>
 <li>除此之外，还有各种错误处理，日志上报及缓存机制的处理办法良莠不齐</li>
 </ul>
-<p>正因如此，GraphQL很长一段时间还不能发挥其巨大作用</p>
+<p>正因如此，GraphQL 很长一段时间还不能发挥其巨大作用</p>
 <p>这一切 随着 Apollo 登场 正在逐步改善</p>
-<h1 id="基于GraphQL的社区解决方案"><a href="#基于GraphQL的社区解决方案" class="headerlink" title="基于GraphQL的社区解决方案"></a>基于GraphQL的社区解决方案</h1><h2 id="Apollo"><a href="#Apollo" class="headerlink" title="Apollo"></a>Apollo</h2><p>可以把GraphQL理解成NodeJS的http包，那么Apollo-server就类似于在前面基础上封装出来的框架</p>
-<h3 id="Apollo-Client"><a href="#Apollo-Client" class="headerlink" title="Apollo-Client"></a>Apollo-Client</h3><p>web，iOS，Android三端的实现</p>
-<h3 id="Apollo-Server"><a href="#Apollo-Server" class="headerlink" title="Apollo-Server"></a>Apollo-Server</h3><p>koa，express等NodeJsWeb的实现</p>
+<h1 id="基于GraphQL的社区解决方案"><a href="#基于GraphQL的社区解决方案" class="headerlink" title="基于GraphQL的社区解决方案"></a>基于 GraphQL 的社区解决方案</h1><h2 id="Apollo"><a href="#Apollo" class="headerlink" title="Apollo"></a>Apollo</h2><p>可以把 GraphQL 理解成 NodeJS 的 http 包，那么 Apollo-server 就类似于在前面基础上封装出来的框架</p>
+<h3 id="Apollo-Client"><a href="#Apollo-Client" class="headerlink" title="Apollo-Client"></a>Apollo-Client</h3><p>web，iOS，Android 三端的实现</p>
+<h3 id="Apollo-Server"><a href="#Apollo-Server" class="headerlink" title="Apollo-Server"></a>Apollo-Server</h3><p>koa，express 等 NodeJsWeb 的实现</p>
 <p>还提供了如下能力</p>
-<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>接口格式五花八门，错误处理也没有统一的方案，Apollo会将所有的错误内容格式化统一的错误信息，从此可以摆脱后端带来的束缚，方便我们在前端去处理。</p>
-<h3 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h3><p>借助GraphQL的makeExecutableSchema和mergeSchemas方法，能够按模块去编写类型定义及resolve，最后使用mergeSchemas将他们合并到一起</p>
-<h3 id="错误监控"><a href="#错误监控" class="headerlink" title="错误监控"></a>错误监控</h3><p>Apollo server提供formatError，formatResponse，能够细化到每一次请求，每一次错误的发生，方便我们去上报日志及错误</p>
+<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>接口格式五花八门，错误处理也没有统一的方案，Apollo 会将所有的错误内容格式化统一的错误信息，从此可以摆脱后端带来的束缚，方便我们在前端去处理。</p>
+<h3 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h3><p>借助 GraphQL 的 makeExecutableSchema 和 mergeSchemas 方法，能够按模块去编写类型定义及 resolve，最后使用 mergeSchemas 将他们合并到一起</p>
+<h3 id="错误监控"><a href="#错误监控" class="headerlink" title="错误监控"></a>错误监控</h3><p>Apollo server 提供 formatError，formatResponse，能够细化到每一次请求，每一次错误的发生，方便我们去上报日志及错误</p>
 <p>工作流程</p>
 <p><img src="http://cdn.anruence.com/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88wee.png" alt="image"></p>
 <p>接入架构设想</p>
 <p><img src="http://cdn.anruence.com/jiagoushaxiang.png" alt="image"></p>
 <ul>
-<li>通过复用现有的REST接口，做到无需后端配合改造</li>
-<li>在我们开发的项目里，由于会对接不同的后端团队，伴随着一些历史遗留问题，接口格式五花八门，错误处理也没有统一的方案，Apollo会将所有的错误内容格式化统一的错误信息，从此可以摆脱后端带来的束缚，方便我们在前端去处理</li>
-<li>在开发大型应用中，模块是是必不可少的。借助GraphQL的makeExecutableSchema和mergeSchemas方法，能够按模块去编写类型定义及resolve，最后使用mergeSchemas将他们合并到一起</li>
-<li>由于接入了node server，那么我们需要监控错误以及请求日志等内容，Apollo server提供formatError，formatResponse，能够细化到每一次请求，每一次错误的发生，方便我们去上报日志及错误</li>
+<li>通过复用现有的 REST 接口，做到无需后端配合改造</li>
+<li>在我们开发的项目里，由于会对接不同的后端团队，伴随着一些历史遗留问题，接口格式五花八门，错误处理也没有统一的方案，Apollo 会将所有的错误内容格式化统一的错误信息，从此可以摆脱后端带来的束缚，方便我们在前端去处理</li>
+<li>在开发大型应用中，模块是是必不可少的。借助 GraphQL 的 makeExecutableSchema 和 mergeSchemas 方法，能够按模块去编写类型定义及 resolve，最后使用 mergeSchemas 将他们合并到一起</li>
+<li>由于接入了 node server，那么我们需要监控错误以及请求日志等内容，Apollo server 提供 formatError，formatResponse，能够细化到每一次请求，每一次错误的发生，方便我们去上报日志及错误</li>
 </ul>
 <p>接入成果设想<br><img src="http://cdn.anruence.com/chengguoshexiang.png" alt="image"></p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><ul>
 <li><font color="red">更准确的获取你想要的数据</font> - 核心诉求</li>
-<li>控制数据的是应用而非服务器</li>
+<li>控制数据的是应用而非服务器 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在应用层对数据模型的抽象</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在应用层对数据模型的抽象</span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
-<li>将你需要的数据汇聚成数据网格</li>
+<li>将你需要的数据汇聚成数据网格 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">前端不能通过一次查询直接得到自己所需要的数据，Graphql的查询不仅指定了要查询的信息同时给出了期望的数据结构</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">前端不能通过一次查询直接得到自己所需要的数据，Graphql的查询不仅指定了要查询的信息同时给出了期望的数据结构</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
 <ul>
 <li>应对复杂场景的一种新思路 thinking in graph</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">设计 GraphQL接口更像是在建立资源与资源之间的关系，并最终得到一个单一内聚图的过程 GraphQL 给了我们一种基于「图」的设计思路</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">设计 GraphQL接口更像是在建立资源与资源之间的关系，并最终得到一个单一内聚图的过程 GraphQL 给了我们一种基于「图」的设计思路</span><br></pre></td></tr></tbody></table></figure>
+
 
     </div>
 
@@ -688,8 +701,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2019/10/24/vue/" rel="prev" title="Vue开发中小技巧">
-                  <i class="fa fa-chevron-left"></i> Vue开发中小技巧
+                <a href="/2019/10/24/vue/" rel="prev" title="Vue 开发中小技巧">
+                  <i class="fa fa-chevron-left"></i> Vue 开发中小技巧
                 </a>
             </div>
             <div class="post-nav-item">
@@ -755,13 +768,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">273k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">4:08</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
@@ -851,8 +864,8 @@ document.addEventListener('pjax:success', () => {
 NexT.utils.loadComments('#gitalk-container', () => {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
     var gitalk = new Gitalk({
-      clientID    : '1ade6ae310dee1a615bb',
-      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      clientID    : 'ad26a95c1fc965c4a6a0',
+      clientSecret: '448e023d8aa656ffa0a69216e567368ee9fe45b3',
       repo        : 'maying2020.github.io',
       owner       : 'maying2020',
       admin       : ['maying2020'],
