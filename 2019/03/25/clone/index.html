@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="开篇又回到了这个老生常谈，新生绝望的问题上，通常遇到这种大家都比较熟悉的问题，反而不知道怎么列大纲，怕不够深入也怕脱离主题～emm..此文系 不要再问我XX系列之 不要再问我JS Clone的问题了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你不知道的JS系列-理解JS中 赋值，浅拷贝，深拷贝">
+<meta property="og:url" content="http://maying.ink/2019/03/25/clone/index.html">
+<meta property="og:site_name" content="亦舒的海角">
+<meta property="og:description" content="开篇又回到了这个老生常谈，新生绝望的问题上，通常遇到这种大家都比较熟悉的问题，反而不知道怎么列大纲，怕不够深入也怕脱离主题～emm..此文系 不要再问我XX系列之 不要再问我JS Clone的问题了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://maying.ink/images/clone/clone1.png">
+<meta property="og:image" content="http://maying.ink/images/clone/qiankaobei2.png">
+<meta property="og:image" content="http://maying.ink/images/clone/deepclone.png">
+<meta property="og:image" content="http://maying.ink/images/clone/jsonquedian.png">
+<meta property="og:image" content="http://maying.ink/images/clone/jsonquedian.png">
+<meta property="article:published_time" content="2019-03-25T10:28:10.000Z">
+<meta property="article:modified_time" content="2020-10-22T18:41:42.181Z">
+<meta property="article:author" content="亦舒">
+<meta property="article:tag" content="clone">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://maying.ink/images/clone/clone1.png">
+
+
+<link rel="canonical" href="http://maying.ink/2019/03/25/clone/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>你不知道的JS系列-理解JS中 赋值，浅拷贝，深拷贝 | 亦舒的海角</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">亦舒的海角</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%AD%98%E5%9C%A8%E8%BF%99%E4%B8%89%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%9F%E4%B8%89%E8%80%85%E6%9C%89%E4%BD%95%E5%B7%AE%E5%BC%82"><span class="nav-number">2.</span> <span class="nav-text">为什么会存在这三种情况？三者有何差异</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%BC%82%EF%BC%88%E5%A0%86%E5%92%8C%E6%A0%88%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">差异（堆和栈）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E5%8F%AF%E8%A1%8C%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.1.</span> <span class="nav-text">目前可行的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E8%A6%81%E4%BD%A0%E8%87%AA%E5%B7%B1%E5%AE%9E%E7%8E%B0%E5%91%A2"><span class="nav-number">2.1.2.</span> <span class="nav-text">如果要你自己实现呢</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="nav-number">2.2.</span> <span class="nav-text">理解深拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E5%8F%AF%E8%A1%8C%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">目前可行的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E8%A6%81%E4%BD%A0%E8%87%AA%E5%B7%B1%E5%AE%9E%E7%8E%B0%E5%91%A2-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">如果要你自己实现呢</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">亦舒</p>
+  <div class="site-description" itemprop="description">知识带来自由，我等风也等你 🍂</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/maying2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;maying2020" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maxiaoying929@gmail.com" title="E-Mail → mailto:maxiaoying929@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://weibo.com/3640193250/profile?topnav=1&wvr=6" title="Weibo → http:&#x2F;&#x2F;weibo.com&#x2F;3640193250&#x2F;profile?topnav&#x3D;1&amp;wvr&#x3D;6" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/maying2020" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://maying.ink/2019/03/25/clone/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="亦舒">
+      <meta itemprop="description" content="知识带来自由，我等风也等你 🍂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="亦舒的海角">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          你不知道的JS系列-理解JS中 赋值，浅拷贝，深拷贝
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-25 18:28:10" itemprop="dateCreated datePublished" datetime="2019-03-25T18:28:10+08:00">2019-03-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-23 02:41:42" itemprop="dateModified" datetime="2020-10-23T02:41:42+08:00">2020-10-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span></span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>NaN:aN</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>又回到了这个老生常谈，新生绝望的问题上，通常遇到这种大家都比较熟悉的问题，反而不知道怎么列大纲，怕不够深入也怕脱离主题～<br>emm..<br>此文系 不要再问我XX系列之 <font color="red">不要再问我JS Clone的问题了</font></p>
+<a id="more"></a>
+<h2 id="为什么会存在这三种情况？三者有何差异"><a href="#为什么会存在这三种情况？三者有何差异" class="headerlink" title="为什么会存在这三种情况？三者有何差异"></a>为什么会存在这三种情况？三者有何差异</h2><p><code>clone</code>本来很简单，只是因为JS中不同的数据类型存储方式(<strong>堆和栈</strong>)的差异，我们才会觉得它貌似有点‘复杂’</p>
+<p><img src="/images/clone/clone1.png" alt="clone1"></p>
+<p>基本类型和引用类型的差异如上图所示了<br>它们共同的目标就是<font color="red">以一个对象为原型clone出另外一个新对象，因为自身的问题产生一些副作用，三者的差异其实就体现在副作用的差异上</font></p>
+<h3 id="差异（堆和栈）"><a href="#差异（堆和栈）" class="headerlink" title="差异（堆和栈）"></a>差异（堆和栈）</h3><ul>
+<li>栈（stack）为自动分配的内存空间，它由系统自动释放</li>
+<li>而堆（heap）则是动态分配的内存，大小不定也不会自动释放</li>
+</ul>
+<hr>
+<font color="red">基础类型：</font> 值存放在栈中，<strong>比较是值的比较</strong><br><font color="red">引用类型：</font> 值存放在堆中，变量实际上是一个存放在栈内存的指针，这个指针指向堆内存中的地址。每个空间大小不一样，要根据情况开进行特定的分配，<strong>引用类型的比较是引用的比较</strong><br><br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var person1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">var person2 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">console.log(a === b); <span class="comment">// false</span></span><br></pre></td></tr></table></figure><br><br>### 赋值<br><br>赋值的概念 即使刚入行也不陌生，每天都在用的<code>&#39;=&#39;</code><br><br>#### 原理<br><br><em> 基本类型：在内存中新开辟一段栈内存，然后再把再将值赋值到新的栈中,是两个独立相互不影响的变量
+</em> 引用类型：赋值是传址，是对象保存在栈中的地址的赋值，这样的话两个变量就指向堆内存的同一个对象，因此两者之间操作互相有影响<br><br>#### Demo<br><br><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">var obj1 = &#123;</span><br><span class="line">  name:<span class="symbol">'maying</span>',</span><br><span class="line">  age:<span class="number">22</span>,</span><br><span class="line">  sex:<span class="string">'女'</span>,</span><br><span class="line">  language : [1,[2,3],[4,5],[9,0]]</span><br><span class="line">&#125;</span><br><span class="line">var sringD = <span class="symbol">'pre</span>';</span><br><span class="line">var obj3 = sringD;</span><br><span class="line">sringD = <span class="symbol">'post</span>';</span><br><span class="line"></span><br><span class="line">var obj2 = obj1;</span><br><span class="line">obj1.name = <span class="symbol">'gaile</span>',</span><br><span class="line">obj1.language[<span class="number">0</span>] = <span class="symbol">'jjj</span>'</span><br><span class="line">console.log(<span class="symbol">'obj1</span>',obj1)</span><br><span class="line">       /*</span><br><span class="line">        &#123;</span><br><span class="line">            age: <span class="number">22</span></span><br><span class="line">            language: (<span class="number">4</span>) [<span class="string">"jjj"</span>, <span class="keyword">Array</span>(<span class="number">2</span>), <span class="keyword">Array</span>(<span class="number">2</span>), <span class="keyword">Array</span>(<span class="number">2</span>)]</span><br><span class="line">            name: <span class="string">"gaile"</span></span><br><span class="line">            sex: <span class="string">"女"</span></span><br><span class="line">        &#125;</span><br><span class="line">       */</span><br><span class="line">console.log(<span class="symbol">'obj2</span>',obj2)</span><br><span class="line">        /*</span><br><span class="line">            age: <span class="number">22</span></span><br><span class="line">            language: (<span class="number">4</span>) [<span class="string">"jjj"</span>, <span class="keyword">Array</span>(<span class="number">2</span>), <span class="keyword">Array</span>(<span class="number">2</span>), <span class="keyword">Array</span>(<span class="number">2</span>)]</span><br><span class="line">            name: <span class="string">"gaile"</span></span><br><span class="line">            sex: <span class="string">"女"</span></span><br><span class="line">        */</span><br><span class="line">console.log(<span class="symbol">'sringD</span>',sringD) //post</span><br><span class="line">console.log(<span class="symbol">'obj3</span>',obj3) //pre</span><br></pre></td></tr></table></figure><br><br>### 理解浅拷贝<br><br>之前的很多年，我认为<strong>赋值差不多等于浅拷贝</strong><br>写个小demo 发现它们之间的差异<br><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj2 = obj1;</span><br><span class="line"><span class="keyword">var</span> obj3 = &#123;...obj1&#125;;</span><br><span class="line">obj1.name = <span class="string">'gaile'</span>,</span><br><span class="line">obj1.language[<span class="number">0</span>] = <span class="string">'jjj'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'obj1'</span>,obj1)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'obj2'</span>,obj2)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'obj3'</span>,obj3)</span><br></pre></td></tr></table></figure><br><br><img src="/images/clone/qiankaobei2.png" alt="qiankaobei2"><br>赋值对象，是将对象指针直接赋值给另一个变量<br>浅拷贝，是重新创建了新对象，所以你更改<code>obj1.name</code>的时候不会影响到它,但是改变引用类型时就不能幸免了<br><br><strong>所谓的浅拷贝就是：</strong><br><br><em> 当对简单的数据类型进行赋值的时候，其实就是直接在栈中新开辟一个地方专门来存储一样的值
+</em> 当对引用类型进行浅拷贝，后面的对象和前面的对象在第一层数据结构中指向同一个堆地址，但是如果前面的数据不止有一层（<font color="red">属性值是一个指向对象的引用只拷贝那个引用值</font>），类似<br><br><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language : <span class="comment">[1,<span class="comment">[2,3]</span>,<span class="comment">[4,5]</span>,<span class="comment">[9,0]</span>]</span></span><br></pre></td></tr></table></figure><br><br><strong>内部的子对象的指针还是同一个地址</strong><br><br>如果要实现一直往下复制 就引出了接下来要说的<font color="red">深拷贝</font>
+
+<p><strong>结论：浅复制要比复制来的深刻一点，至少它开辟了一个新对象，一块儿新的堆内存</strong></p>
+<h4 id="目前可行的实现方式"><a href="#目前可行的实现方式" class="headerlink" title="目前可行的实现方式"></a>目前可行的实现方式</h4><p>站在巨人的肩膀上，我们可以轻松实现浅拷贝</p>
+<ul>
+<li>数组的浅拷贝</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. <span class="selector-tag">b</span> = [...a]</span><br><span class="line"><span class="number">2</span>. <span class="selector-tag">b</span> = <span class="selector-tag">a</span>.slice(<span class="number">0</span>) / []<span class="selector-class">.slice</span><span class="selector-class">.call</span>(<span class="selector-tag">a</span>,<span class="number">0</span>)</span><br><span class="line"><span class="number">3</span>. <span class="selector-tag">b</span> = <span class="selector-tag">a</span>.concat() / []<span class="selector-class">.concat</span><span class="selector-class">.call</span>(a)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对象的浅拷贝</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. <span class="selector-tag">b</span> = Object.assign(&#123;&#125;,a)</span><br><span class="line"><span class="number">2</span>. <span class="selector-tag">b</span> = &#123;...a&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="如果要你自己实现呢"><a href="#如果要你自己实现呢" class="headerlink" title="如果要你自己实现呢"></a>如果要你自己实现呢</h4><p>原理：遍历对象的每个属性进行逐个拷贝</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy</span></span>(obj) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!obj || typeof obj !== <span class="string">'object'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> <span class="keyword">new</span><span class="type">Obj</span> = obj.constructor === <span class="keyword">Array</span> ? [] : <span class="type"></span>&#123;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">       <span class="keyword">if</span>(obj.hasOwnProperty(key))&#123;</span><br><span class="line">          <span class="keyword">new</span><span class="type">Obj</span>[key] = obj[key]</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span><span class="type">Obj</span></span><br><span class="line"><span class="type"></span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="理解深拷贝"><a href="#理解深拷贝" class="headerlink" title="理解深拷贝"></a>理解深拷贝</h3><p>深拷贝的意义，就是完全复制，如果你读了上文，应该就没有什么疑问了</p>
+<p>将a对象复制一份给对象b，不管a中的数据结构嵌套有多深，当改变a对象中的任意深度的某个值后，b中的该值不会受任何影响</p>
+<h4 id="目前可行的实现方式-1"><a href="#目前可行的实现方式-1" class="headerlink" title="目前可行的实现方式"></a>目前可行的实现方式</h4><ul>
+<li><code>JSON.stringify()`</code>和JSON.parse()`的混合配对使用 </li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj4 = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(obj1)) </span><br><span class="line"></span><br><span class="line">obj1.name=<span class="string">'yishu'</span>,</span><br><span class="line"></span><br><span class="line">obj1.language[<span class="number">1</span>] = [<span class="string">"二"</span>,<span class="string">"三"</span>];</span><br><span class="line">obj4.language[<span class="number">2</span>] = [<span class="string">"四"</span>,<span class="string">"五"</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj1);   </span><br><span class="line"><span class="built_in">console</span>.log(obj4);</span><br></pre></td></tr></table></figure>
+<p><img src="/images/clone/deepclone.png" alt="deepclone"><br><code>obj1</code>,<code>obj4</code> 是两个独立的对象，更改数据互不影响，达到了我们要的目的</p>
+<p><strong>它粗暴，有用，但是也有缺点</strong></p>
+<ol>
+<li><code>在JSON.stringify()</code>做序列化时，<code>undefined</code>、<code>function</code>以及<code>symbol</code>值，会被忽略</li>
+</ol>
+<p>例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a: &#123;<span class="attr">b</span>: <span class="string">'old'</span>&#125;, </span><br><span class="line">  c:<span class="literal">undefined</span>, </span><br><span class="line">  d: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">  e:  <span class="built_in">Symbol</span>(<span class="string">''</span>)</span><br><span class="line"> &#125;</span><br><span class="line"><span class="keyword">var</span> newObj = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(obj))</span><br><span class="line">newObj.a.b = <span class="string">'new'</span></span><br><span class="line"><span class="built_in">console</span>.log(obj)</span><br><span class="line"><span class="built_in">console</span>.log(newObj)</span><br></pre></td></tr></table></figure>
+<p>结果<br><img src="/images/clone/jsonquedian.png" alt="jsonquedian"></p>
+<h4 id="如果要你自己实现呢-1"><a href="#如果要你自己实现呢-1" class="headerlink" title="如果要你自己实现呢"></a>如果要你自己实现呢</h4><p>原理：使用递归，遍历每一个对象属性进行拷贝</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  a: &#123;<span class="attr">b</span>: <span class="string">'old'</span>&#125;, </span><br><span class="line">  c:<span class="literal">undefined</span>, </span><br><span class="line">  d: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">  e:  <span class="built_in">Symbol</span>(<span class="string">''</span>)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!obj || <span class="keyword">typeof</span> obj !== <span class="string">'object'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> newObj = obj.constructor === <span class="built_in">Array</span> ? [] : &#123;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="keyword">if</span> (obj.hasOwnProperty(key)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> obj[key] === <span class="string">'object'</span> &amp;&amp; obj[key]) &#123;</span><br><span class="line">        newObj[key] = copy(obj[key])</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        newObj[key] = obj[key]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newObj</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> newObj = copy(obj)</span><br><span class="line">newObj.a.b = <span class="string">'new'</span></span><br><span class="line"><span class="built_in">console</span>.log(obj)</span><br><span class="line"><span class="built_in">console</span>.log(newObj)</span><br></pre></td></tr></table></figure>
+<p><img src="/images/clone/jsonquedian.png" alt="jsonquedian"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>赋值：引用复制 执向同一个对象</li>
+<li>浅拷贝 ：生成一个新对象，只能拷贝一层，当属性值是一个指向对象的引用只拷贝那个引用值</li>
+<li>深拷贝：完全拷贝，前后对象没有任何关系</li>
+</ul>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://www.zhihu.com/question/23031215" target="_blank" rel="noopener">https://www.zhihu.com/question/23031215</a><br><a href="https://segmentfault.com/a/1190000018204798" target="_blank" rel="noopener">https://segmentfault.com/a/1190000018204798</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>您的支持将鼓励我继续创作 笔芯</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/uploads/weixin.jpeg" alt="亦舒 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/uploads/zhifubao.jpeg" alt="亦舒 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/clone/" rel="tag"># clone</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/25/actionScope/" rel="prev" title="你不知道的JS系列-作用域、变量提升、闭包">
+                  <i class="fa fa-chevron-left"></i> 你不知道的JS系列-作用域、变量提升、闭包
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/26/this/" rel="next" title="你不知道的JS系列-this指向">
+                  你不知道的JS系列-this指向 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦舒</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">NaNm</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">NaN:aN</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '1ade6ae310dee1a615bb',
+      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      repo        : 'maying2020.github.io',
+      owner       : 'maying2020',
+      admin       : ['maying2020'],
+      id          : '56bb2961e229878e9fc46ed26edd4ea4',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

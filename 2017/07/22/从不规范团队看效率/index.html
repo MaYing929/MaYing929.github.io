@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="标题好像是句废话，”不规范” 何谈 效率 呢？   何为效率 从产品看效率 从UI看效率 从开发看效率 从测试看效率       何为效率？ 百度百科上大概是这么定义的:是指在给定投入和技术等条件下，最有效地使用资源以满足设定的愿望和需要的评价方式 对我来说最直观的判断方式就是  项目是否有延期 线上是否有bug  效率有多重要？  大部分的电子厂工资都是按件计费的，多劳多得，单位时间产出与收入能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从不规范生产套路看效率">
+<meta property="og:url" content="http://maying.ink/2017/07/22/%E4%BB%8E%E4%B8%8D%E8%A7%84%E8%8C%83%E5%9B%A2%E9%98%9F%E7%9C%8B%E6%95%88%E7%8E%87/index.html">
+<meta property="og:site_name" content="亦舒的海角">
+<meta property="og:description" content="标题好像是句废话，”不规范” 何谈 效率 呢？   何为效率 从产品看效率 从UI看效率 从开发看效率 从测试看效率       何为效率？ 百度百科上大概是这么定义的:是指在给定投入和技术等条件下，最有效地使用资源以满足设定的愿望和需要的评价方式 对我来说最直观的判断方式就是  项目是否有延期 线上是否有bug  效率有多重要？  大部分的电子厂工资都是按件计费的，多劳多得，单位时间产出与收入能">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://oucjferwh.bkt.clouddn.com/wunai.jpg">
+<meta property="og:image" content="http://oucjferwh.bkt.clouddn.com/tuxie.jpeg">
+<meta property="article:published_time" content="2017-07-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-10-22T18:41:42.189Z">
+<meta property="article:author" content="亦舒">
+<meta property="article:tag" content="杂谈">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://oucjferwh.bkt.clouddn.com/wunai.jpg">
+
+
+<link rel="canonical" href="http://maying.ink/2017/07/22/%E4%BB%8E%E4%B8%8D%E8%A7%84%E8%8C%83%E5%9B%A2%E9%98%9F%E7%9C%8B%E6%95%88%E7%8E%87/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从不规范生产套路看效率 | 亦舒的海角</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">亦舒的海角</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">亦舒</p>
+  <div class="site-description" itemprop="description">知识带来自由，我等风也等你 🍂</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/maying2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;maying2020" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maxiaoying929@gmail.com" title="E-Mail → mailto:maxiaoying929@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://weibo.com/3640193250/profile?topnav=1&wvr=6" title="Weibo → http:&#x2F;&#x2F;weibo.com&#x2F;3640193250&#x2F;profile?topnav&#x3D;1&amp;wvr&#x3D;6" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/maying2020" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://maying.ink/2017/07/22/%E4%BB%8E%E4%B8%8D%E8%A7%84%E8%8C%83%E5%9B%A2%E9%98%9F%E7%9C%8B%E6%95%88%E7%8E%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="亦舒">
+      <meta itemprop="description" content="知识带来自由，我等风也等你 🍂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="亦舒的海角">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从不规范生产套路看效率
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-07-22 00:00:00" itemprop="dateCreated datePublished" datetime="2017-07-22T00:00:00+08:00">2017-07-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-23 02:41:42" itemprop="dateModified" datetime="2020-10-23T02:41:42+08:00">2020-10-23</time>
+      </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span></span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>NaN:aN</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>标题好像是句废话，”不规范” 何谈 <font face="STCAIYUN" color="red" size="5">效率</font> 呢？</p>
+<p><img src="http://oucjferwh.bkt.clouddn.com/wunai.jpg" alt></p>
+<ol>
+<li><font face="STCAIYUN" color="#83933b" size="4">何为效率</font></li>
+<li><font face="STCAIYUN" color="#83933b" size="4">从产品看效率</font></li>
+<li><font face="STCAIYUN" color="#83933b" size="4">从UI看效率</font></li>
+<li><font face="STCAIYUN" color="#83933b" size="4">从开发看效率</font></li>
+<li><font face="STCAIYUN" color="#83933b" size="4">从测试看效率 </font>
+
+
+
+</li>
+</ol>
+<p><strong>何为效率？</strong></p>
+<p><a href="https://baike.baidu.com/item/%E6%95%88%E7%8E%87/868847?fr=aladdin" target="_blank" rel="noopener">百度百科</a>上大概是这么定义的:是指在给定投入和技术等条件下，<font face="STCAIYUN" color="red" size="4">最有效地</font>使用资源以满足设定的愿望和需要的评价方式</p>
+<p>对我来说最直观的判断方式就是  <font face="STCAIYUN" color="red" size="4">项目是否有延期 线上是否有bug</font></p>
+<ul>
+<li><font face="STCAIYUN" color="darkorange" size="4">效率有多重要？</font>
+
+<p>大部分的电子厂工资都是按件计费的，多劳多得，单位时间产出与收入能正比，所以工人们都非常努力 这是自发性行为 所以也是最任怨的。</p>
+<p>对我而言 效率能带来好心情 好状态以及好的生活态 废话 大家都一样 –  </p>
+</li>
+</ul>
+<p><strong>从产品看效率</strong><br>一款产品的成功与否 有多方便的决定因素 产品最终都是面向用户的 一个不能为用户创造价值的产品应该是没有使用价值的，产品本就是提升效率的一种方式</p>
+<p>那么 接下来  我要开始吐槽了</p>
+<font face="STCAIYUN" color="darkorange" size="4">如果产品需求不明确或者需求不完整  项目要不要开始做？</font><br>一般来说 不要 绝对不要 除非是两个完全不相干的模块 昂 基本也不太可能<br>但是尼 为了所谓的工期 产品大大一般会这么说  做呗  先做着  我这么单（wu）纯（nai）的 每次都被套路住🤡 然后后来计算工时的时候 ： 哦 你不是从那个什么什么时候就开始了吗？👐🏽<br>这还不是最主要的，毕竟 时间就像海绵里的水 挤一挤总会有的😂<br><br>最主要的当然是<font face="STCAIYUN" color="red" size="4">改需求</font>啦 这大概是所有产品最擅长的<br><br>这两者本质上是没有矛盾的，只不过产品更多的以目标为导向，需求只是手段，而对开发来说 技术是手段 需求是目标 只不过产品更容易主观，比如需求，比如说功能，比如说交互，这些都受到个人经验，眼界，学识很大影响。朝三暮四，朝令夕改，是常有的事情。<br><br><strong>说真的</strong><br>产品的功能、质量、发布时间和需要投入的资源这四者不能都是封闭条件，否则可能无解<br><br>而且现在的产品很是聪明啊 需求给了，开始做了,做到最后发现这种情况下不是很合理，简单啊 改呗 反正做到这里我逻辑也捋清楚了，也知道该咋办了<font face="STCAIYUN" color="#83933b" size="3">产品默想到</font>
+
+<p>呃.. 这两天刚遇到个类似的情况 哦 不好意思，是<font face="STCAIYUN" color="red" size="5">经常遇到</font>，提测一周也测了<font face="STCAIYUN" color="red" size="5">一周</font>了，代码上体验版（预上线）了</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">产品：咦？这块不是那样儿的吗？怎么是这样的？</span><br><span class="line"></span><br><span class="line">开发：？ 前两天不是专门讨论过这个问题吗，这个就是这样儿的！</span><br><span class="line"></span><br><span class="line">产品：哦？是吗？ 但是这样儿看起来好诡异啊！就应该是那样儿的 改一下吧</span><br><span class="line"></span><br><span class="line">开发：<span class="string">...</span>当初接口设计的就是这样儿的，怎么不早说？这都要上线啦！😩</span><br><span class="line"></span><br><span class="line">产品：<span class="string">"之前流程没走通 不太清楚这块儿的逻辑，现在改一下吧"</span> 然后就走了</span><br><span class="line"></span><br><span class="line">开发：<span class="string">...</span></span><br></pre></td></tr></table></figure>
+<p>还有就是<strong>排期</strong></p>
+<p>产品经常这么一句话：因为我们的上线时间是XX号 测试需要 XX天 所以 开发排下期吧 ？</p>
+<p>…..</p>
+<p>排完期之后..</p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">产品：昂昂，你这儿不行啊 时间太长了 能不能缩短点</span><br><span class="line"></span><br><span class="line">开发：我按工时算的 每一项 都列出来了 不会差太多</span><br><span class="line"></span><br><span class="line">产品：这不行啊 因为我们要XX提审 测试需要XX天 所以你必须 XX天提测</span><br><span class="line"></span><br><span class="line">开发：这等于 XX 天的工期 你给我压到 XX／<span class="number">2</span> 天</span><br><span class="line"></span><br><span class="line">产品：嘿嘿😉</span><br><span class="line"></span><br><span class="line">开发：...</span><br><span class="line"></span><br><span class="line">开发OS：<span class="string">"赶紧开发 为了给测试腾时间😂😭🙈，尼萌给开发时间充足了 问题自然就会少很多好吗 测试好像是最重要的噻"</span></span><br></pre></td></tr></table></figure>
+<p>百度过类似的问题 最好的办法<font face="STCAIYUN" color="red" size="3">是让产品也学会基础的编程，了解每一个实现都是需要耗费资源的，这样才能基于对有限资源的理解，做出更谨慎的规划。</font></p>
+<font face="STCAIYUN" color="#83933b" size="3">然而，这基本不可能，所以..</font>
+
+<p>实际上 那些<font face="STCAIYUN" color="#83933b" size="4">非常紧急</font>的需求，这么一搞成了拖延的第一个关键点<br><br></p>
+<p><img src="http://oucjferwh.bkt.clouddn.com/tuxie.jpeg" alt="tuxie"></p>
+<p><strong>从UI看效率</strong></p>
+<p>呃 . 对于用户来说 一个产品能不能吸引到你，最浅显也最重要的是<font face="STCAIYUN" color="red" size="5">眼缘</font>，说俗气点就是颜值<br>而且 UI链接 产品与开发 自然也是马虎不得的 深刻理解原型的精髓 然后利用智慧的小脑瓜设计成用户想要的样子，上面说了 他们最重要的工作是 <font face="STCAIYUN" color="red" size="5">深刻理解原型的精髓</font>，因为 对于<font face="STCAIYUN" color="#83933b" size="4">美</font>，设计师总是有不一样的定义，就比如 <font face="STCAIYUN" color="gold" size="4">情人眼里出西施</font></p>
+<p>非常不幸 我们UI也是必须要吐槽的对象</p>
+<p>直接上日常</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">开发：设计小哥，对比原型 是不是缺了一张图</span><br><span class="line"></span><br><span class="line">设计：？</span><br><span class="line"></span><br><span class="line">开发：搜索中状态</span><br><span class="line"></span><br><span class="line">设计：沉默</span><br><span class="line"></span><br><span class="line">产品：哦 那个不就是在未搜索的状态基础上把导航去掉吗？还用出图吗？</span><br><span class="line"></span><br><span class="line">一分钟后～～</span><br><span class="line"></span><br><span class="line">设计：突然扔出来一张图  <span class="meta">@开发:好了</span></span><br><span class="line"></span><br><span class="line">开发：瞅了一眼 <span class="meta">@设计：嗯</span> ？不是这样儿的吧</span><br><span class="line"></span><br><span class="line">设计：？</span><br><span class="line"></span><br><span class="line">开发：把产品的话 <span class="meta">@设计：“哦</span> 那个不就是在未搜索的状态基础上把导航去掉吗？还用出图吗？”</span><br><span class="line"></span><br><span class="line">设计：沉默</span><br><span class="line"></span><br><span class="line">两分钟后～～</span><br><span class="line"></span><br><span class="line">设计：扔出来一张图 呐 上传了</span><br><span class="line"></span><br><span class="line">开发：嗯 现在才是对的</span><br><span class="line"></span><br><span class="line">设计：嗯</span><br></pre></td></tr></table></figure>
+<p>类似的事情简直日常</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">上午～</span><br><span class="line"></span><br><span class="line">产品：今天周五 需要把UI提的问题都改完</span><br><span class="line"></span><br><span class="line">开发：ok</span><br><span class="line"></span><br><span class="line">设计：ok</span><br><span class="line"></span><br><span class="line">下午～</span><br><span class="line"></span><br><span class="line">开发：什么时候有空，当面改</span><br><span class="line"></span><br><span class="line">设计：嗯</span><br><span class="line"></span><br><span class="line">下午四点～</span><br><span class="line"></span><br><span class="line">开发：什么时候有空</span><br><span class="line"></span><br><span class="line">设计：现在过去</span><br><span class="line"></span><br><span class="line">开发：嗯</span><br><span class="line"></span><br><span class="line">改了大概有两个之后 设计被叫走</span><br><span class="line"></span><br><span class="line">又过了一个小时～</span><br><span class="line"></span><br><span class="line">开发：快下班了 啥时候改尼</span><br><span class="line"></span><br><span class="line">设计：今天比较忙 现在可以开始了</span><br><span class="line"></span><br><span class="line">开发： 嗯？我看了一下 你拿到的不是最新版吧 好些问题现在不能复现了</span><br><span class="line"></span><br><span class="line">设计：哦</span><br><span class="line"></span><br><span class="line">一个小时之后</span><br><span class="line"></span><br><span class="line">开发：改完了 我下班了啊 今天有点事儿</span><br><span class="line"></span><br><span class="line">设计：嗯 好的 下班吧</span><br><span class="line"></span><br><span class="line">开发 走了</span><br><span class="line"></span><br><span class="line">两个小时后 忙完 开发都到家了～～</span><br><span class="line"></span><br><span class="line">产品：<span class="meta">@开发：在哪里呢</span> 啥时候回来</span><br><span class="line"></span><br><span class="line">开发：？我到家了啊</span><br><span class="line"></span><br><span class="line">产品：你咋走了？设计小哥还在等你呢</span><br><span class="line"></span><br><span class="line">开发：？我走的时候跟他说了啊 他知道啊</span><br><span class="line"></span><br><span class="line">产品：我不是说了今天要改完吗 设计review了 还有一点问题</span><br><span class="line"></span><br><span class="line">开发：... 那我明天去加班吧</span><br><span class="line"></span><br><span class="line">第二天，到公司之后</span><br><span class="line"></span><br><span class="line">开发：在群里<span class="meta">@设计</span><span class="meta">@产品</span> ：这个只有截图看不出来哪有问题噻</span><br><span class="line"></span><br><span class="line">设计：沉默</span><br><span class="line"></span><br><span class="line">产品：沉默</span><br><span class="line"></span><br><span class="line">开发：...</span><br></pre></td></tr></table></figure>
+<p><strong>从开发看效率</strong></p>
+<p>开发效率无疑存在于两方面</p>
+<p>强健的框架支撑与准确的拆分估期</p>
+<p>一般情况下是不会延期的 也算是这几个环节当中最可控的</p>
+<p><strong>从测试看效率</strong></p>
+<p>你理解一个开发只用了一天的功能测试测了四天的心情吗</p>
+<p>你理解一个开发用了一周 测试用了9个工作日的心痛吗</p>
+<p>🙊</p>
+<p>结语：💊</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>您的支持将鼓励我继续创作 笔芯</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/uploads/weixin.jpeg" alt="亦舒 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/uploads/zhifubao.jpeg" alt="亦舒 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9D%82%E8%B0%88/" rel="tag"># 杂谈</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/07/19/%E5%BC%80%E5%8F%91%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" rel="prev" title="微信小程序开发常见问题">
+                  <i class="fa fa-chevron-left"></i> 微信小程序开发常见问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/07/31/%E8%AE%B0%E6%A2%A6/" rel="next" title="记梦一">
+                  记梦一 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦舒</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">NaNm</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">NaN:aN</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '1ade6ae310dee1a615bb',
+      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      repo        : 'maying2020.github.io',
+      owner       : 'maying2020',
+      admin       : ['maying2020'],
+      id          : '7588f64da56e50c71fafa37720eb73d7',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

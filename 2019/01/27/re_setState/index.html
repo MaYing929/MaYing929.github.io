@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="开篇要说React设计体现了响应式编程思想  UI&#x3D;f(state)   程墨Morgan的总结真是恰到好处 state于React很重要，setState作为管理state的重要方法自然也是头等公民 当然了，如果只是简单用法，API足够了，你知道如何设置，如何更新，或许能解决眼前的需求，但是需求稍微复杂一点，可能会被动陷入setState怪圈 在哪里跌倒就把哪里买下来，被坑了之后，痛定思痛决定研">
+<meta property="og:type" content="article">
+<meta property="og:title" content="揭秘setState机制">
+<meta property="og:url" content="http://maying.ink/2019/01/27/re_setState/index.html">
+<meta property="og:site_name" content="亦舒的海角">
+<meta property="og:description" content="开篇要说React设计体现了响应式编程思想  UI&#x3D;f(state)   程墨Morgan的总结真是恰到好处 state于React很重要，setState作为管理state的重要方法自然也是头等公民 当然了，如果只是简单用法，API足够了，你知道如何设置，如何更新，或许能解决眼前的需求，但是需求稍微复杂一点，可能会被动陷入setState怪圈 在哪里跌倒就把哪里买下来，被坑了之后，痛定思痛决定研">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://maying.ink/images/setState/setState__.jpg">
+<meta property="og:image" content="http://maying.ink/images/setState/trace.png">
+<meta property="og:image" content="http://maying.ink/images/setState/pre11.png">
+<meta property="og:image" content="http://maying.ink/images/setState/sasas.png">
+<meta property="og:image" content="http://maying.ink/images/setState/state_delay.png">
+<meta property="og:image" content="http://maying.ink/images/setState/sssswww.png">
+<meta property="og:image" content="http://maying.ink/images/setState/post0.png">
+<meta property="og:image" content="http://maying.ink/images/setState/ui.png">
+<meta property="og:image" content="http://maying.ink/images/setState/component_state.png">
+<meta property="og:image" content="http://maying.ink/images/setState/gouzihanshu.jpg">
+<meta property="og:image" content="http://maying.ink/images/setState/did.png">
+<meta property="og:image" content="http://maying.ink/images/setState/2121233434.png">
+<meta property="og:image" content="http://maying.ink/images/setState/js.png">
+<meta property="og:image" content="http://maying.ink/images/setState/js0setState.jpg">
+<meta property="og:image" content="http://maying.ink/images/setState/js_xzs.png">
+<meta property="og:image" content="http://maying.ink/images/setState/js999.png">
+<meta property="og:image" content="http://maying.ink/images/setState/setTimeout.png">
+<meta property="og:image" content="http://maying.ink/images/setState/render.png">
+<meta property="og:image" content="http://maying.ink/images/setState/fn_state.png">
+<meta property="og:image" content="http://maying.ink/images/setState/xunhuan.jpg">
+<meta property="article:published_time" content="2019-01-27T11:34:45.000Z">
+<meta property="article:modified_time" content="2020-10-22T18:41:42.185Z">
+<meta property="article:author" content="亦舒">
+<meta property="article:tag" content="setState">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://maying.ink/images/setState/setState__.jpg">
+
+
+<link rel="canonical" href="http://maying.ink/2019/01/27/re_setState/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>揭秘setState机制 | 亦舒的海角</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">亦舒的海角</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%87%BA%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">引出问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">解决问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8setState%E6%9B%B4%E6%96%B0state%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E4%BF%AE%E6%94%B9%EF%BC%9F"><span class="nav-number">3.1.</span> <span class="nav-text">1. 为什么要用setState更新state不能直接修改？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-setState%E6%98%AF%E5%90%8C%E6%AD%A5%E7%9A%84%E8%BF%98%E6%98%AF%E5%BC%82%E6%AD%A5%E7%9A%84%EF%BC%9F"><span class="nav-number">3.2.</span> <span class="nav-text">2. setState是同步的还是异步的？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%B8%80%EF%BC%88%E5%90%88%E6%88%90%E4%BA%8B%E4%BB%B6%E4%B8%AD%E8%B0%83%E7%94%A8setState%EF%BC%89"><span class="nav-number">3.2.1.</span> <span class="nav-text">场景一（合成事件中调用setState）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E4%BA%8C%EF%BC%88%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%B8%AD%E8%B0%83%E7%94%A8setState%EF%BC%89"><span class="nav-number">3.2.2.</span> <span class="nav-text">场景二（生命周期中调用setState）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-setState%E5%8F%AF%E4%BB%A5%E5%8F%98%E6%88%90%E5%90%8C%E6%AD%A5%E6%9B%B4%E6%96%B0%E5%90%97%EF%BC%9F-%E5%A6%82%E6%9E%9C%E5%8F%AF%E4%BB%A5%E7%9A%84%E8%AF%9D-%E6%80%8E%E4%B9%88%E5%81%9A%E6%89%8D%E8%83%BD%E8%8E%B7%E5%8F%96%E6%9C%80%E6%96%B0%E7%9A%84%E5%80%BC%EF%BC%9F"><span class="nav-number">3.3.</span> <span class="nav-text">3. setState可以变成同步更新吗？ 如果可以的话 怎么做才能获取最新的值？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E5%8E%9F%E7%94%9F%E4%BA%8B%E4%BB%B6%E4%B8%AD%E8%B0%83%E7%94%A8setState%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.1.</span> <span class="nav-text">在原生事件中调用setState函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8setState%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.2.</span> <span class="nav-text">利用setState回调函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setTimeout%E7%AD%89%E5%BC%82%E6%AD%A5%E6%93%8D%E4%BD%9C%E4%B8%AD%E8%B0%83%E7%94%A8setState%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.3.</span> <span class="nav-text">setTimeout等异步操作中调用setState函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%87%BD%E6%95%B0%E5%BC%8FsetState%E7%94%A8%E6%B3%95"><span class="nav-number">3.4.</span> <span class="nav-text">4. 函数式setState用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%89%8B%E5%8A%A8%E9%81%BF%E5%85%8DsetState%E7%9A%84%E4%B8%8D%E5%BD%93%E8%B0%83%E7%94%A8%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">3.5.</span> <span class="nav-text">4. 手动避免setState的不当调用带来的性能问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">亦舒</p>
+  <div class="site-description" itemprop="description">知识带来自由，我等风也等你 🍂</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/maying2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;maying2020" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maxiaoying929@gmail.com" title="E-Mail → mailto:maxiaoying929@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://weibo.com/3640193250/profile?topnav=1&wvr=6" title="Weibo → http:&#x2F;&#x2F;weibo.com&#x2F;3640193250&#x2F;profile?topnav&#x3D;1&amp;wvr&#x3D;6" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/maying2020" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://maying.ink/2019/01/27/re_setState/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="亦舒">
+      <meta itemprop="description" content="知识带来自由，我等风也等你 🍂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="亦舒的海角">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          揭秘setState机制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-27 19:34:45" itemprop="dateCreated datePublished" datetime="2019-01-27T19:34:45+08:00">2019-01-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-23 02:41:42" itemprop="dateModified" datetime="2020-10-23T02:41:42+08:00">2020-10-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">react</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span></span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>NaN:aN</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>要说<code>React</code>设计体现了响应式编程思想</p>
+<blockquote>
+<p>UI=f(state) </p>
+</blockquote>
+<p><a href="https://www.zhihu.com/people/morgancheng/activities" target="_blank" rel="noopener">程墨Morgan</a>的总结真是恰到好处</p>
+<p><code>state</code>于<code>React</code>很重要，<code>setState</code>作为管理<code>state</code>的重要方法自然也是头等公民</p>
+<p>当然了，如果只是简单用法，API足够了，你知道如何设置，如何更新，或许能解决眼前的需求，但是需求稍微复杂一点，可能会被动陷入<code>setState</code>怪圈</p>
+<p>在哪里跌倒就把哪里买下来，被坑了之后，痛定思痛决定研究下<code>setState</code>怪象，最后发现 react真是博大精深</p>
+<font color="red">文章太太太长了，不太感兴趣的话，可以拉到最后总结，也能避免入坑</font>
+
+<a id="more"></a>
+<h2 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h2><p><strong>如果面试官问你</strong></p>
+<ol>
+<li>setState 是同步的还是异步的？</li>
+<li>它可能是同步的吗？如果可能的话如何实现同步更新state？</li>
+</ol>
+<p>如果是看这篇文章之前 我的答案可能是这样儿</p>
+<ol>
+<li>它是异步的 不能立马拿到结果</li>
+<li>emm….</li>
+</ol>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><!--最好的方式就是带着疑问看源码（基于版本<font color="red">16.4.1</font>），相信我 调试大法好-->
+<p>可能会有疑问的几个问题.</p>
+<h3 id="1-为什么要用setState更新state不能直接修改？"><a href="#1-为什么要用setState更新state不能直接修改？" class="headerlink" title="1. 为什么要用setState更新state不能直接修改？"></a>1. 为什么要用setState更新state不能直接修改？</h3><p>先更正一个观点 是可以通过<code>this.state</code>对象修改state的 也确实能改变状态，但是不能驱动ui更新（不走render）那.. 有什么意义</p>
+<h3 id="2-setState是同步的还是异步的？"><a href="#2-setState是同步的还是异步的？" class="headerlink" title="2. setState是同步的还是异步的？"></a>2. setState是同步的还是异步的？</h3><p>setState是同步执行的 但是state并不一定会同步更新（异步更新）,这是结论</p>
+<p>针对这个问题 让我们带着问题去源码（基于版本<font color="red">16.4.1</font>）中寻找答案</p>
+<hr>
+<h4 id="场景一（合成事件中调用setState）"><a href="#场景一（合成事件中调用setState）" class="headerlink" title="场景一（合成事件中调用setState）"></a><font color="green"><strong>场景一（合成事件中调用setState）</strong></font></h4><p>点击按钮实现加一的操作</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">on</span>Click = ()=&gt; &#123;</span><br><span class="line">   this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">       val: this.<span class="keyword">state</span>.val + <span class="number">1</span></span><br><span class="line">   &#125;)</span><br><span class="line">   console.<span class="keyword">log</span>('<span class="keyword">on</span>Click', this.<span class="keyword">state</span>.val);</span><br><span class="line"> &#125;</span><br><span class="line"> ...</span><br><span class="line"> render()&#123;</span><br><span class="line">console.<span class="keyword">log</span>('render', this.<span class="keyword">state</span>.val);</span><br><span class="line"> <span class="variable">&lt;button onClick=&#123;this.onClick&#125;&gt;</span>加<span class="number">1</span>&lt;/button&gt;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>首先 这是<font color="red">合成事件</font>中操作<code>state</code>,</p>
+<p><strong>了解什么是合成事件？</strong></p>
+<blockquote>
+<p>react为了解决跨平台，兼容性问题，自己封装了一套事件机制，代理了原生的事件，像在jsx中常见的onClick、onChange这些都是合成事件</p>
+</blockquote>
+<p>盯着这张网络盗图，画的完全符合我的预期，先有个概览，下文会跟踪解释</p>
+<p><img src="/images/setState/setState__.jpg" alt="setState的更新过程"></p>
+<p>当你点击<code>onClick</code>时</p>
+<ul>
+<li>第一阶段 （对合成事件的前期处理）</li>
+</ul>
+<p>react会在正式<code>setState</code>前执行一堆pre钩子函数(<font color="red">大部分都不需要关心</font>),你可以在chrome调试台或者<code>console.trace()</code>追踪到<br>像这样儿👇<br><img src="/images/setState/trace.png" alt="trace"><br>这些都是react的前期处理 这个过程你只需要关心👇</p>
+<p><img src="/images/setState/pre11.png" alt="pre钩子"></p>
+<p>得到的信息<br>isBatchingUpdates默认为false,在这里(某一个pre钩子函数中被置为true了)，划重点，以后要考的 此时程序走的是<font color="red">try分支</font></p>
+<p>至此，前期处理结束</p>
+<ul>
+<li>第二阶段（setState事件的处理）</li>
+</ul>
+<p>红框部分是<code>setState</code>逻辑的调用栈，执行到<code>requestWork</code>方法时会二次判断 如下图👇<br><img src="/images/setState/sasas.png" alt="sasas"></p>
+<p>二阶段完</p>
+<ul>
+<li>第三阶段（重置post钩子,更新state 渲染ui操作）</li>
+</ul>
+<p>接上文，那么我想知道它会return到哪里呢<br>通过追踪发现 会走你主进程里的<code>console</code>语句<br><img src="/images/setState/state_delay.png" alt="state延迟更新"><br><strong>这也就是为什么说setState更异步的</strong><br>上文中提到我们现在仍然处在try分支中，而在 finally 中才会更新<code>state</code>并且渲染到UI上，此时我们得到的仍然是<code>更新前的 state</code> 值，这就导致了<code>所谓的&quot;异步&quot;</code>,为什么要用<code>&quot;&quot;</code>号,因为这并不是我们的本意，是<code>react为了性能着想私自做的处理</code></p>
+<hr>
+<p>接着往下走：<br><img src="/images/setState/sssswww.png" alt="ssssww"><br>最终还会走到这个方法<br>这个方法里面有个 try finally 语法, 到这里 我们知道了原来return到了这个fn<br>继续👇<br><img src="/images/setState/post0.png" alt="post钩子"><br><img src="/images/setState/ui.png" alt="ui"></p>
+<p>render之后 合成事件中setState的逻辑就结束了</p>
+<hr>
+<h4 id="场景二（生命周期中调用setState）"><a href="#场景二（生命周期中调用setState）" class="headerlink" title="场景二（生命周期中调用setState）"></a><font color="green"><strong>场景二（生命周期中调用setState）</strong></font></h4><p>实际上与场景一只在第一阶段不同（没有对合成事件的各种处理）我们可能想在不同的生命周期中聊下state的更新状况</p>
+<p>我们照例先来个小demo 再来分析为什么会有这样儿的结果</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">state</span> = &#123;</span><br><span class="line">   val:<span class="number">0</span>,</span><br><span class="line">   name:'yishu',</span><br><span class="line">   age:<span class="number">18</span></span><br><span class="line">&#125;</span><br><span class="line"> componentWillMount()&#123;</span><br><span class="line">      this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">      console.<span class="keyword">log</span>('componentWillMount第一次输出',this.<span class="keyword">state</span>.val)</span><br><span class="line">      this.<span class="built_in">set</span>State(&#123;val:this.<span class="keyword">state</span>.val+<span class="number">1</span>&#125;);</span><br><span class="line">      console.<span class="keyword">log</span>('componentWillMount第二次输出',this.<span class="keyword">state</span>.val)</span><br><span class="line">    &#125;</span><br><span class="line">     componentDidMount()&#123;</span><br><span class="line">      this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">            val: this.<span class="keyword">state</span>.val + <span class="number">1</span>,</span><br><span class="line">            name:'🐶'</span><br><span class="line">        &#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidMount第一次执行', this.<span class="keyword">state</span>.val)</span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">            val: this.<span class="keyword">state</span>.val + <span class="number">1</span>,</span><br><span class="line">            name:'🐱',</span><br><span class="line">            age:<span class="number">81</span></span><br><span class="line">        &#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidMount第二次输出', this.<span class="keyword">state</span>.val)</span><br><span class="line">     &#125;</span><br><span class="line">     </span><br><span class="line">     componentDidUpdate()&#123;</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidUpdate执行',this.<span class="keyword">state</span>.val)</span><br><span class="line">    &#125;</span><br><span class="line">render()&#123;</span><br><span class="line">      if(this.<span class="keyword">state</span>.val !==<span class="number">0</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>('render执行',this.<span class="keyword">state</span>)</span><br><span class="line">        &#125;</span><br><span class="line">  <span class="variable">&lt;p&gt;</span>当前的值:&#123;this.<span class="keyword">state</span>.val&#125;&lt;/p&gt;</span><br><span class="line">  <span class="variable">&lt;p&gt;</span>你的名字:&#123;this.<span class="keyword">state</span>.name&#125;&lt;/p&gt;</span><br><span class="line">  <span class="variable">&lt;p&gt;</span>芳龄:&#123;this.<span class="keyword">state</span>.age&#125;&lt;/p&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接给出结果</p>
+<p><img src="/images/setState/component_state.png" alt="component_state"><br>其实经过各种API的熏陶，不运行也能知道结果,既然摊开来讲，就比较想知道为什么。</p>
+<p>按照流程 ，先来一张调用栈鸟瞰图（网图）</p>
+<p><img src="/images/setState/gouzihanshu.jpg" alt="钩子函数中setState的调用栈"><br>还是三个阶段</p>
+<ul>
+<li><p>第一阶段<br><img src="/images/setState/did.png" alt="did"></p>
+</li>
+<li><p>第二阶段<br><img src="/images/setState/2121233434.png" alt="2121233434"><br>到现在就比较清晰了，与场景一不同的是 走的是<code>requestWork</code>中的第一个<code>if</code>分支,场景一（第二个if分支）不管哪种情况 结果都是一致的 那就是不会走到下面的同步更新分支 并且 两种情况都还只是在<strong>try</strong>模块中执行 再往下的流程参考场景一</p>
+</li>
+<li><p>第三阶段<br>同场景一</p>
+</li>
+</ul>
+<p>关于这一场景 背着</p>
+<font color="red"><code>render</code>之前的生命周期拿到的都是更新之前的值，render之后执行的才能拿到最新的值 比如 <code>componentDidUpdate</code></font>
+
+<hr>
+<h3 id="3-setState可以变成同步更新吗？-如果可以的话-怎么做才能获取最新的值？"><a href="#3-setState可以变成同步更新吗？-如果可以的话-怎么做才能获取最新的值？" class="headerlink" title="3. setState可以变成同步更新吗？ 如果可以的话 怎么做才能获取最新的值？"></a>3. setState可以变成同步更新吗？ 如果可以的话 怎么做才能获取最新的值？</h3><p>面试官这么问的话 通常都是可以 😂<br>那我们如何做<br>实践中一般每个人都有一到两种解决方案，这里列举中处理方案 并将在下面的文章中深入研究 为什么 它 可以.</p>
+<ul>
+<li>在<strong>原生事件</strong>中调用<code>setState</code>函数</li>
+<li>利用setState回调函数</li>
+<li>setTimeout等异步操作中调用<code>setState</code>函数</li>
+<li>最近刚被种草的函数式setstate用法</li>
+<li>componentDidUpdate中获取</li>
+</ul>
+<p>名词释义：<br><strong>原生事件</strong>：指非react合成事件，原生自带的事件监听 <code>addEventListener</code> ，或者也可以用原生<code>js、jq</code>直接 <code>document.querySelector().onclick</code> 这种绑定事件的形式</p>
+<hr>
+<h4 id="在原生事件中调用setState函数"><a href="#在原生事件中调用setState函数" class="headerlink" title="在原生事件中调用setState函数"></a>在<strong>原生事件</strong>中调用<code>setState</code>函数</h4><p>一个小demo</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">state</span> = &#123;</span><br><span class="line">   val:<span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line">componentDidMount = () =&gt;&#123;</span><br><span class="line"> document.querySelector('<span class="comment">#btn-raw').addEventListener('click', this.onClick);</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">on</span>Click = ()=&gt; &#123;</span><br><span class="line">   this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">       val: this.<span class="keyword">state</span>.val + <span class="number">1</span></span><br><span class="line">   &#125;);</span><br><span class="line">   console.<span class="keyword">log</span>('<span class="keyword">on</span>Click', this.<span class="keyword">state</span>.val);</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line">render()&#123;</span><br><span class="line"> if(this.<span class="keyword">state</span>.val !==<span class="number">0</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>('render执行',this.<span class="keyword">state</span>)</span><br><span class="line">        &#125;</span><br><span class="line"> <span class="variable">&lt;button id="btn-raw"&gt;</span>Increment &lt;/button&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果<br><img src="/images/setState/js.png" alt="js"><br>意料之中</p>
+<p>按理来说还需要张鸟瞰图 在这里 👇</p>
+<p><img src="/images/setState/js0setState.jpg" alt="原生事件的setState"></p>
+<p>其实应该已经挺清晰了，我们还是在调试器里走一下</p>
+<ul>
+<li>第一阶段（setState逻辑之前的处理）</li>
+</ul>
+<p><img src="/images/setState/js_xzs.png" alt="js_xzs"><br>画风突变，调用栈内不再执行一堆看不懂的pre钩子函数了<br>简单的理解为 用原生事件调用时 不受react控制了 也就没办法针对它执行一堆函数，直接走setState的逻辑了</p>
+<ul>
+<li>第二阶段（setState执行逻辑）</li>
+</ul>
+<p><img src="/images/setState/js999.png" alt="js999"></p>
+<p>走了第三个<code>if</code>分支 同步更新了（执行了render 再在click函数中打印的 所以拿到了最新值）</p>
+<ul>
+<li>第三阶段</li>
+</ul>
+<p>参考场景一</p>
+<hr>
+<h4 id="利用setState回调函数"><a href="#利用setState回调函数" class="headerlink" title="利用setState回调函数"></a>利用setState回调函数</h4><p>API就不多说了</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">       val:this.<span class="keyword">state</span>.val + <span class="number">1</span></span><br><span class="line">        &#125;,()=&gt;&#123;</span><br><span class="line">          console.<span class="keyword">log</span>('cllback',this.<span class="keyword">state</span>.val);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>原理：回调函数被调用的时候，其实render函数已经被调用过了 参考<code>demo</code>的执行结果</p>
+<hr>
+<h4 id="setTimeout等异步操作中调用setState函数"><a href="#setTimeout等异步操作中调用setState函数" class="headerlink" title="setTimeout等异步操作中调用setState函数"></a>setTimeout等异步操作中调用<code>setState</code>函数</h4><p>实际上 这并不是一个单独的场景，你可以在合成事件中 调用 <code>setTimeout</code> ，可以在生命周期中调用 <code>setTimeout</code> ，也可以在原生事件<code>setTimeout</code>，但是不管是哪个场景下，基于 <code>event loop</code>的模型下， setTimeout 中里去 setState 总能拿到最新的state值</p>
+<p>一个demo 👇</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">this.<span class="keyword">state</span> = &#123;</span><br><span class="line">       val:<span class="number">0</span>,</span><br><span class="line">       name:'yishu',</span><br><span class="line">       age:<span class="number">18</span></span><br><span class="line">   &#125;</span><br><span class="line">       componentDidMount()&#123;</span><br><span class="line">        // // debugger;</span><br><span class="line">        // // 生命周期中调用---------------</span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">            val: this.<span class="keyword">state</span>.val + <span class="number">1</span>,</span><br><span class="line">            name:'🐶'</span><br><span class="line">        &#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidMount第一次执行', this.<span class="keyword">state</span>.val)</span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">            val: this.<span class="keyword">state</span>.val + <span class="number">1</span>,</span><br><span class="line">            name:'🐱',</span><br><span class="line">            age:<span class="number">81</span></span><br><span class="line">        &#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidMount第二次输出', this.<span class="keyword">state</span>.val)</span><br><span class="line"></span><br><span class="line">        <span class="built_in">set</span>Timeout(() =&gt; &#123;</span><br><span class="line">            console.<span class="keyword">log</span>('开始<span class="built_in">set</span>Timeout', this.<span class="keyword">state</span>.val)</span><br><span class="line">            this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">                val: this.<span class="keyword">state</span>.val + <span class="number">1</span></span><br><span class="line">            &#125;);</span><br><span class="line">            console.<span class="keyword">log</span>('<span class="built_in">set</span>Timeout第一次执行', this.<span class="keyword">state</span>.val)</span><br><span class="line">            this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">                val: this.<span class="keyword">state</span>.val + <span class="number">1</span></span><br><span class="line">            &#125;);</span><br><span class="line">            console.<span class="keyword">log</span>('<span class="built_in">set</span>Timeout第二次执行', this.<span class="keyword">state</span>.val)</span><br><span class="line">        &#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        this.<span class="built_in">set</span>State(&#123;</span><br><span class="line">            val: this.<span class="keyword">state</span>.val + <span class="number">1</span></span><br><span class="line">        &#125;);</span><br><span class="line">        console.<span class="keyword">log</span>('componentDidMount第三次输出', this.<span class="keyword">state</span>.val)        </span><br><span class="line">    &#125;</span><br><span class="line">render()&#123;</span><br><span class="line">if(this.<span class="keyword">state</span>.val !==<span class="number">0</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>('render执行',this.<span class="keyword">state</span>)</span><br><span class="line">        &#125;</span><br><span class="line"> <span class="variable">&lt;p&gt;</span>当前的值:&#123;this.<span class="keyword">state</span>.val&#125;&lt;/p&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/setState/setTimeout.png" alt="setTimeout"><br>上述结果，如果你了解<font color="red">js事件循环（ event loop）</font>的机制 就太简单了</p>
+<p>默认你已经阅读过全文的上半部分 了解了 <code>setState</code>逻辑都是在<strong>try</strong>模块中执行的,此时当执行到 <code>setTimeout</code> 的时候，把它丢到<strong>定时器触发线程(浏览器提供的线程)</strong>去维护，并没有立即执行，先执行的 <code>finally</code> 代码块，等 finally 执行完了， <code>isBatchingUpdates</code> 又变为了 <code>false</code> ，导致最后去执行队列里的 setState 时候， requestWork 走的是和原生事件一样的 <code>expirationTime === Sync if</code>分支，所以表现就会和原生事件一样，可以同步拿到最新的<code>state</code>值。</p>
+<p>关于js事件循环 又是另一个模块儿的东西 值得单开一章去研究，这里就不再细说了 感兴趣的同学 可移步<br><a href="http://maying.ink/2018/11/17/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3js%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84/#more">js到底是如何工作的</a> 寻找答案</p>
+<hr>
+<h3 id="4-函数式setState用法"><a href="#4-函数式setState用法" class="headerlink" title="4. 函数式setState用法"></a>4. 函数式setState用法</h3><p>我在想 怎么才能更好引出这个大彩蛋，那便又涉及到另一个问题<br>以上文章中我们为了说明<code>setState执行的大流程</code> 有一个实际存在却没提及的问题，那就是<code>setState的批量更新</code></p>
+<p>类似这样儿的代码</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//...</span><br><span class="line">this.<span class="built_in">set</span>State(&#123;val: this.<span class="keyword">state</span>.val + <span class="number">1</span>&#125;);</span><br><span class="line">console.<span class="keyword">log</span>('componentDidMount第一次执行', this.<span class="keyword">state</span>.val)</span><br><span class="line">this.<span class="built_in">set</span>State(&#123;val: this.<span class="keyword">state</span>.val + <span class="number">1</span>&#125;);</span><br><span class="line">console.<span class="keyword">log</span>('componentDidMount第二次执行', this.<span class="keyword">state</span>.val)</span><br><span class="line">this.<span class="built_in">set</span>State(&#123;val: this.<span class="keyword">state</span>.val + <span class="number">1</span>&#125;);</span><br><span class="line">console.<span class="keyword">log</span>('componentDidMount第三次执行', this.<span class="keyword">state</span>.val)</span><br><span class="line">//...</span><br></pre></td></tr></table></figure>
+<p>得到的执行结果<br><img src="/images/setState/render.png" alt="rende"></p>
+<p>API告诉我可以接受，但是有点点懵 发生了什么… emm<br>假如这么写 会不会更清晰👇</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> currentCount = <span class="keyword">this</span>.state.count;</span><br><span class="line"><span class="keyword">this</span>.setState(&#123;count: currentCount + <span class="number">1</span>&#125;);</span><br><span class="line"><span class="keyword">this</span>.setState(&#123;count: currentCount + <span class="number">1</span>&#125;);</span><br><span class="line"><span class="keyword">this</span>.setState(&#123;count: currentCount + <span class="number">1</span>&#125;);</span><br></pre></td></tr></table></figure>
+<p>对的 你每次设置的都是同一个值<br>setState多次,re-render一次，多次同步执行的<code>setState</code>，会进行合并，类似于<code>Object.assign</code>,相同的<code>key</code>会被覆盖 所以结果为<font color="red">1</font></p>
+<p>为了不偏题 实现过程暂时省略,接受这个结论,让我们看函数式setState用法</p>
+<font color="red">如果传递给this.setState的参数<code>不是一个对象而是一个函数</code> 那就完全不一样儿了</font>
+
+<p>一个小🌰体验下神奇的效果</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">componentDidMound = () =&gt;&#123;</span><br><span class="line">        console.<span class="keyword">log</span>('参数为函数第一次执行',this.<span class="keyword">state</span>.val)</span><br><span class="line">        this.<span class="built_in">set</span>State(this.increment);</span><br><span class="line">        console.<span class="keyword">log</span>('参数为函数第二次执行',this.<span class="keyword">state</span>.val)</span><br><span class="line">        this.<span class="built_in">set</span>State(this.increment);</span><br><span class="line">        console.<span class="keyword">log</span>('参数为函数第三次执行',this.<span class="keyword">state</span>.val)</span><br><span class="line">        this.<span class="built_in">set</span>State(this.increment);</span><br><span class="line">        console.<span class="keyword">log</span>('参数为函数第四次执行',this.<span class="keyword">state</span>.val)</span><br><span class="line">&#125;</span><br><span class="line">   /**</span><br><span class="line">     * @description increment函数并不去修改组件状态，只是把“希望的状态改变”返回给React，维护状态这些苦力活完全交给React去做。</span><br><span class="line">     * params  <span class="keyword">state</span>：当前的<span class="keyword">state</span></span><br><span class="line">     * params  props：当前的props</span><br><span class="line">     * @return 对象代表之前你想给this.<span class="built_in">set</span>State传递的参数 比如你认为第一次传<span class="number">0</span> 第二次传<span class="number">1</span> </span><br><span class="line">     * @memberof SetState</span><br><span class="line">     */</span><br><span class="line">    increment = (<span class="keyword">state</span>, props) =&gt; &#123;</span><br><span class="line">        // 计算这个对象的方法有些改变，不再依赖于this.<span class="keyword">state</span>，而是依赖于输入参数<span class="keyword">state</span>。</span><br><span class="line">        console.<span class="keyword">log</span>('---state',<span class="keyword">state</span>) </span><br><span class="line">        return &#123;val: <span class="keyword">state</span>.val + <span class="number">1</span>&#125;; //同样是把状态中的count加<span class="number">1</span>，但是状态的来源不是this.<span class="keyword">state</span>，而是输入参数<span class="keyword">state</span>。</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/setState/fn_state.png" alt="fn_state"><br>仔细看下代码中的注释部分<br>结论：<br>对于多次调用函数式setState的情况，React会保证调用每次increment时，state都已经合并了之前的状态修改结果。<br>但是 在<code>increment</code>函数被调用时<code>，this.state</code>并没有被改变，依然要等到<code>render</code>函数被重新执行时才被改变，也没有推翻上文的结论 真好。</p>
+<p>API的设计符合函数式编程思想，开发者编写无副作用的函数 increment 并不会去改变组件状态，只是把“希望的状态改变”返回给React，维护状态这些苦力活完全交给React去做。<br>也正是 流程的控制权交给了React，所以React才能协调多个setState调用的关系。</p>
+<h3 id="4-手动避免setState的不当调用带来的性能问题"><a href="#4-手动避免setState的不当调用带来的性能问题" class="headerlink" title="4. 手动避免setState的不当调用带来的性能问题"></a>4. 手动避免setState的不当调用带来的性能问题</h3><p>到这里基本上就清楚了setState执行机制，那么 我们应该怎样儿利用自己的知识手动优化页面性能呢</p>
+<p>这里列举了几条</p>
+<ul>
+<li>除了特殊需求 尽量不要在非合成事件中调用<code>setState</code> 这样儿会失控 变成真的同步更新了 每次更新都会走render 走render就不可避免的涉及到 <code>diff对比</code>.. 更新过程很频繁，也就会导致性能问题。</li>
+<li>不要在 <code>shouldComponentUpdate</code> 和 <code>componentWillUpdate</code> 中调用 setState 会造成循环<br><img src="/images/setState/xunhuan.jpg" alt="xunhuan"></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>setState不会立刻改变React组件中state的值；</li>
+<li>setState通过引发一次组件的更新过程来引发重新绘制；</li>
+<li>多次setState函数调用产生的效果会合并。</li>
+<li>setState 只在合成事件和钩子函数中是“异步”的，在原生事件和setTimeout 中都是同步的，批量更新的策略是基于”异步”之上的，在setTimeout和原生事件中是没有的，因为此时时不受控的</li>
+<li>setState 的“异步”并不是说内部由异步代码实现，其实本身执行的过程和代码都是同步的，只是合成事件和钩子函数的调用顺序在更新之前，导致在合成事件和钩子函数中没法立马拿到更新后的值，形成了所谓的“异步”，但是如果需要，也有解决方案可以直接拿到最新的值</li>
+<li>setState 的批量更新优化也是建立在“异步”（合成事件、钩子函数）之上的，在原生事件和setTimeout 中不会批量更新，在“异步”中如果对同一个值进行多次setState，setState的批量更新策略会对其进行覆盖，取最后一次的执行，如果是同时setState多个不同的值，在更新时会对其进行合并批量更新。</li>
+<li>像写受控组件那样儿去操作setState</li>
+</ul>
+<p>参考文章：<a href="https://zhuanlan.zhihu.com/p/39512941" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/39512941</a><br>        <a href="https://zhuanlan.zhihu.com/p/25990883" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25990883</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>您的支持将鼓励我继续创作 笔芯</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/uploads/weixin.jpeg" alt="亦舒 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/uploads/zhifubao.jpeg" alt="亦舒 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/setState/" rel="tag"># setState</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/21/%E4%B8%8D%E8%A6%81%E5%86%8D%E9%97%AE%E5%85%B3%E4%BA%8E%E7%BC%93%E5%AD%98%E7%9A%84%E9%97%AE%E9%A2%98%E4%BA%86/" rel="prev" title="不要再问关于缓存的问题了">
+                  <i class="fa fa-chevron-left"></i> 不要再问关于缓存的问题了
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/02/19/throttleAnddebounce/" rel="next" title="函数节流与防抖">
+                  函数节流与防抖 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦舒</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">NaNm</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">NaN:aN</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '1ade6ae310dee1a615bb',
+      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      repo        : 'maying2020.github.io',
+      owner       : 'maying2020',
+      admin       : ['maying2020'],
+      id          : '599c758d1afd8bb4218122b890780316',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

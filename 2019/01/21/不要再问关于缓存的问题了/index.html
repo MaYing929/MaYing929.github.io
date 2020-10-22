@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="背景：前端er需要关注的点，缓存它在移动端上尤其严重，因为手机随时随地会缓存你的资源，要想清缓存，不像PC使用强制刷新，还要手动找到浏览器的缓存，有时候还要重启等所以 用实践理解缓存机制 写下此文记录 为了对比理解本文会涉及到  DNS缓存 CDN缓存 浏览器缓存(HTTP缓存)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不要再问关于缓存的问题了">
+<meta property="og:url" content="http://maying.ink/2019/01/21/%E4%B8%8D%E8%A6%81%E5%86%8D%E9%97%AE%E5%85%B3%E4%BA%8E%E7%BC%93%E5%AD%98%E7%9A%84%E9%97%AE%E9%A2%98%E4%BA%86/index.html">
+<meta property="og:site_name" content="亦舒的海角">
+<meta property="og:description" content="背景：前端er需要关注的点，缓存它在移动端上尤其严重，因为手机随时随地会缓存你的资源，要想清缓存，不像PC使用强制刷新，还要手动找到浏览器的缓存，有时候还要重启等所以 用实践理解缓存机制 写下此文记录 为了对比理解本文会涉及到  DNS缓存 CDN缓存 浏览器缓存(HTTP缓存)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://maying.ink/images/cache/cache_detail.png">
+<meta property="og:image" content="http://maying.ink/images/cache/cachehttp.png">
+<meta property="og:image" content="http://maying.ink/images/cache/huancunduibi.png">
+<meta property="og:image" content="http://maying.ink/images/cache/cache_one.png">
+<meta property="og:image" content="http://maying.ink/images/cache/cache1.png">
+<meta property="og:image" content="http://maying.ink/images/cache/cache-----.png">
+<meta property="og:image" content="http://maying.ink/images/cache/cache_disk.png">
+<meta property="og:image" content="http://maying.ink/images/cache/cachehuancunshixiao.png">
+<meta property="og:image" content="http://maying.ink/images/cache/xieshang.png">
+<meta property="article:published_time" content="2019-01-21T13:00:37.000Z">
+<meta property="article:modified_time" content="2020-10-22T18:41:42.188Z">
+<meta property="article:author" content="亦舒">
+<meta property="article:tag" content="缓存">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://maying.ink/images/cache/cache_detail.png">
+
+
+<link rel="canonical" href="http://maying.ink/2019/01/21/%E4%B8%8D%E8%A6%81%E5%86%8D%E9%97%AE%E5%85%B3%E4%BA%8E%E7%BC%93%E5%AD%98%E7%9A%84%E9%97%AE%E9%A2%98%E4%BA%86/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>不要再问关于缓存的问题了 | 亦舒的海角</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">亦舒的海角</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E6%A2%B3%E7%90%86%E4%BB%A5%E4%B8%8Bweb%E7%BC%93%E5%AD%98%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">先梳理以下web缓存的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">1.1.</span> <span class="nav-text">缓存的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">缓存的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E7%BC%93%E5%AD%98"><span class="nav-number">2.</span> <span class="nav-text">DNS缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFDNS%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">什么是DNS？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS%E8%A7%A3%E6%9E%90"><span class="nav-number">2.2.</span> <span class="nav-text">DNS解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS%E7%BC%93%E5%AD%98-1"><span class="nav-number">2.3.</span> <span class="nav-text">DNS缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS%E6%9F%A5%E8%AF%A2%E8%BF%87%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">DNS查询过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CDN%E7%BC%93%E5%AD%98"><span class="nav-number">3.</span> <span class="nav-text">CDN缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCDN%EF%BC%9F"><span class="nav-number">3.1.</span> <span class="nav-text">什么是CDN？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDN%E7%BC%93%E5%AD%98-1"><span class="nav-number">3.2.</span> <span class="nav-text">CDN缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDN-%E4%BC%98%E5%8A%BF"><span class="nav-number">3.3.</span> <span class="nav-text">CDN 优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%EF%BC%88HTTP%E7%BC%93%E5%AD%98%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">浏览器缓存（HTTP缓存）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%EF%BC%9F"><span class="nav-number">4.1.</span> <span class="nav-text">什么是浏览器缓存？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%9A%84%E8%B5%84%E6%BA%90%E5%8E%BB%E5%93%AA%E9%87%8C%E4%BA%86%EF%BC%88%E7%BC%93%E5%AD%98%E4%BD%8D%E7%BD%AE%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">缓存的资源去哪里了（缓存位置）?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E7%BC%93%E5%AD%98%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">4.3.</span> <span class="nav-text">访问缓存优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E7%9A%84%E5%88%86%E7%B1%BB%EF%BC%88%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%EF%BC%89"><span class="nav-number">4.4.</span> <span class="nav-text">浏览器缓存的分类（缓存策略）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E7%BC%93%E5%AD%98"><span class="nav-number">4.4.1.</span> <span class="nav-text">强缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98"><span class="nav-number">4.4.2.</span> <span class="nav-text">协商缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">4.5.</span> <span class="nav-text">浏览器缓存的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E7%BC%93%E5%AD%98-1"><span class="nav-number">4.5.1.</span> <span class="nav-text">强缓存</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98-1"><span class="nav-number">5.</span> <span class="nav-text">协商缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E6%A3%80%E9%AA%8C"><span class="nav-number">5.1.</span> <span class="nav-text">实践检验</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">亦舒</p>
+  <div class="site-description" itemprop="description">知识带来自由，我等风也等你 🍂</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/maying2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;maying2020" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maxiaoying929@gmail.com" title="E-Mail → mailto:maxiaoying929@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://weibo.com/3640193250/profile?topnav=1&wvr=6" title="Weibo → http:&#x2F;&#x2F;weibo.com&#x2F;3640193250&#x2F;profile?topnav&#x3D;1&amp;wvr&#x3D;6" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/maying2020" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://maying.ink/2019/01/21/%E4%B8%8D%E8%A6%81%E5%86%8D%E9%97%AE%E5%85%B3%E4%BA%8E%E7%BC%93%E5%AD%98%E7%9A%84%E9%97%AE%E9%A2%98%E4%BA%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="亦舒">
+      <meta itemprop="description" content="知识带来自由，我等风也等你 🍂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="亦舒的海角">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          不要再问关于缓存的问题了
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-21 21:00:37" itemprop="dateCreated datePublished" datetime="2019-01-21T21:00:37+08:00">2019-01-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-23 02:41:42" itemprop="dateModified" datetime="2020-10-23T02:41:42+08:00">2020-10-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span></span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>NaN:aN</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>背景：<br>前端er需要关注的点，<code>缓存</code><br>它在移动端上尤其严重，因为手机随时随地会缓存你的资源，要想清缓存，不像PC使用强制刷新，还要手动找到浏览器的缓存，有时候还要重启等<br>所以 用实践理解缓存机制 写下此文记录</p>
+<p>为了对比理解本文会涉及到</p>
+<ul>
+<li>DNS缓存</li>
+<li>CDN缓存</li>
+<li>浏览器缓存(HTTP缓存)</li>
+</ul>
+<hr>
+<a id="more"></a>
+<h2 id="先梳理以下web缓存的优缺点"><a href="#先梳理以下web缓存的优缺点" class="headerlink" title="先梳理以下web缓存的优缺点"></a>先梳理以下web缓存的优缺点</h2><h3 id="缓存的优势"><a href="#缓存的优势" class="headerlink" title="缓存的优势"></a>缓存的优势</h3><ul>
+<li>减少网络延迟 加快页面打开速度</li>
+<li>降低服务器压力</li>
+</ul>
+<h3 id="缓存的缺点"><a href="#缓存的缺点" class="headerlink" title="缓存的缺点"></a>缓存的缺点</h3><ul>
+<li>缓存没有清理机制（时间一长 当你不需要浏览之前的这些网页，他们就变成了无用文件）</li>
+<li>给开发带来困扰</li>
+</ul>
+<h2 id="DNS缓存"><a href="#DNS缓存" class="headerlink" title="DNS缓存"></a>DNS缓存</h2><h3 id="什么是DNS？"><a href="#什么是DNS？" class="headerlink" title="什么是DNS？"></a>什么是DNS？</h3><p>全称 <code>Domain Name System</code> 域名解析系统</p>
+<hr>
+<p>万维网上作为域名和IP地址相互映射的一个分布式数据库，能够使用户更方便的访问互联网，而不用去记住能够被机器直接读取的IP数串。DNS协议运行在UDP协议之上，使用端口号53。</p>
+<hr>
+<h3 id="DNS解析"><a href="#DNS解析" class="headerlink" title="DNS解析"></a>DNS解析</h3><p>简单的说,通过域名,最终得到该域名对应的IP地址的过程叫做域名解析（或主机名解析）</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">www</span><span class="selector-class">.dnscache</span><span class="selector-class">.com</span> (域名)  <span class="selector-tag">-</span> <span class="selector-tag">DNS</span>解析 <span class="selector-tag">-</span>&gt; 11<span class="selector-class">.222</span><span class="selector-class">.33</span><span class="selector-class">.444</span> (<span class="selector-tag">IP</span>地址)</span><br></pre></td></tr></table></figure>
+<h3 id="DNS缓存-1"><a href="#DNS缓存-1" class="headerlink" title="DNS缓存"></a>DNS缓存</h3><p>有DNS的地方,就有缓存。浏览器、操作系统、Local DNS、根域名服务器，它们都会对DNS结果做一定程度的缓存。</p>
+<hr>
+<h3 id="DNS查询过程"><a href="#DNS查询过程" class="headerlink" title="DNS查询过程"></a>DNS查询过程</h3><hr>
+<ol>
+<li>首先搜索浏览器自身的DNS缓存,如果存在，则域名解析到此完成。</li>
+<li>如果浏览器自身的缓存里面没有找到对应的条目，那么会尝试读取操作系统的hosts文件看是否存在对应的映射关系,如果存在，则域名解析到此完成。</li>
+<li>如果本地hosts文件不存在映射关系，则查找本地DNS服务器(ISP服务器,或者自己手动设置的DNS服务器),如果存在,域名到此解析完成。</li>
+<li>如果本地DNS服务器还没找到的话,它就会向根服务器发出请求,进行递归查询。</li>
+</ol>
+<h2 id="CDN缓存"><a href="#CDN缓存" class="headerlink" title="CDN缓存"></a>CDN缓存</h2><h3 id="什么是CDN？"><a href="#什么是CDN？" class="headerlink" title="什么是CDN？"></a>什么是CDN？</h3><p>全称 Content Delivery Network,即内容分发网络。<br>类似于火车站代售点 这样儿 乘客不用再去售票大厅去排队买票 减轻了售票大厅的压力（起到分流作用,减轻服务器负载压力）</p>
+<hr>
+<p>用户在浏览网站的时候，<code>CDN</code>会选择一个离用户最近的CDN边缘节点来响应用户的请求，这样海南移动用户的请求就不会千里迢迢跑到北京电信机房的服务器（假设源站部署在北京电信机房）上了。</p>
+<h3 id="CDN缓存-1"><a href="#CDN缓存-1" class="headerlink" title="CDN缓存"></a>CDN缓存</h3><p><code>CDN缓存</code>,在浏览器本地缓存失效后,浏览器会向CDN边缘节点发起请求。类似浏览器缓存,CDN边缘节点也存在着一套缓存机制。CDN边缘节点缓存策略因服务商不同而不同，但一般都会遵循<code>http</code>标准协议，通过http响应头中的<br><code>Cache-control: max-age   //后面会提到</code>的字段来设置CDN边缘节点数据缓存时间。</p>
+<hr>
+<p><strong>CDN边缘节点数据缓存机制</strong></p>
+<ul>
+<li>当浏览器向CDN节点请求数据时，CDN节点会判断缓存数据是否过期，</li>
+<li>未过期：直接将缓存数据返回给客户端；</li>
+<li>过期：CDN节点向服务器发出回源请求，拉取最新数据同时更新本地缓存，并将最新数据返回给客户端。 </li>
+</ul>
+<p>CDN服务商一般会提供基于<font color="red">文件后缀、目录多个维度来指定CDN缓存时间</font>，为用户提供更精细化的缓存管理。</p>
+<hr>
+<h3 id="CDN-优势"><a href="#CDN-优势" class="headerlink" title="CDN 优势"></a>CDN 优势</h3><ol>
+<li>CDN节点解决了跨运营商和跨地域访问的问题，访问延时大大降低。</li>
+<li>大部分请求在CDN边缘节点完成，CDN起到了分流作用，减轻了源服务器的负载。</li>
+</ol>
+<hr>
+<h2 id="浏览器缓存（HTTP缓存）"><a href="#浏览器缓存（HTTP缓存）" class="headerlink" title="浏览器缓存（HTTP缓存）"></a>浏览器缓存（HTTP缓存）</h2><p>对于一个数据请求来说，可以分为发起网络请求 后端处理  浏览器响应三个步骤<br>浏览器缓存可以 i帮助我们在第一步和第三步中优化性能<br>比如我们可以直接使用缓存而不发起请求</p>
+<p>盯着这张图<br><img src="/images/cache/cache_detail.png" alt="cache_detai"></p>
+<h3 id="什么是浏览器缓存？"><a href="#什么是浏览器缓存？" class="headerlink" title="什么是浏览器缓存？"></a>什么是浏览器缓存？</h3><p><img src="/images/cache/cachehttp.png" alt="cachehttp"><br>浏览器缓存其实就是浏览器保存通过HTTP获取的所有资源,是浏览器将网络资源存储在本地的一种行为。</p>
+<p>我们从两个方面来看浏览器缓存</p>
+<ul>
+<li>缓存位置</li>
+<li>缓存策略</li>
+</ul>
+<h3 id="缓存的资源去哪里了（缓存位置）"><a href="#缓存的资源去哪里了（缓存位置）" class="headerlink" title="缓存的资源去哪里了（缓存位置）?"></a>缓存的资源去哪里了（缓存位置）?</h3><p>你可能会有疑问,浏览器存储了资源,那它把资源存储在哪里呢？</p>
+<ul>
+<li>memory cache(存在内存)</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MemoryCache顾名思义，就是将资源缓存到内存中，等待下次访问时不需要重新下载资源，而直接从内存中获取。Webkit早已支持memoryCache。</span><br><span class="line">目前Webkit资源分成两类，一类是主资源，比如HTML页面，或者下载项，一类是派生资源，比如HTML页面中内嵌的图片或者脚本链接，分别对应代码中两个类：MainResourceLoader和SubresourceLoader。虽然Webkit支持memoryCache，但是也只是针对派生资源，它对应的类为CachedResource，用于保存原始数据（比如CSS，<span class="keyword">JS</span>等），以及解码过的图片数据。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>disk cache（存在磁盘）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DiskCache顾名思义，就是将资源缓存到磁盘中，等待下次访问时不需要重新下载资源，而直接从磁盘中获取，它的直接操作对象为CurlCacheManager。</span><br></pre></td></tr></table></figure>
+<p><img src="/images/cache/huancunduibi.png" alt="huancunduibi"></p>
+<h3 id="访问缓存优先级"><a href="#访问缓存优先级" class="headerlink" title="访问缓存优先级"></a>访问缓存优先级</h3><ol>
+<li>先在内存中查找,如果有,直接加载。</li>
+<li>如果内存中不存在,则在硬盘中查找,如果有直接加载。</li>
+<li>如果硬盘中也没有,那么就进行网络请求。</li>
+<li>请求获取的资源缓存到硬盘和内存。</li>
+</ol>
+<h3 id="浏览器缓存的分类（缓存策略）"><a href="#浏览器缓存的分类（缓存策略）" class="headerlink" title="浏览器缓存的分类（缓存策略）"></a>浏览器缓存的分类（缓存策略）</h3><h4 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h4><h4 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h4><p>需要说明的是 浏览器会先判断是否命中强缓存</p>
+<h3 id="浏览器缓存的优点"><a href="#浏览器缓存的优点" class="headerlink" title="浏览器缓存的优点"></a>浏览器缓存的优点</h3><ol>
+<li>减少了冗余的数据传输 节省了网费</li>
+<li>减少了服务器的负担，大大提升了网站的性能</li>
+<li>加快了客户端加载网页的速度</li>
+</ol>
+<p><strong>浏览器在第一次请求发生后，再次请求时：</strong></p>
+<ol>
+<li>验证是否命中强缓存，如果命中，就直接使用缓存了。</li>
+<li>如果没有命中强缓存，就发请求到服务器检查是否命中协商缓存。</li>
+<li>如果命中协商缓存，服务器会返回 304 告诉浏览器使用本地缓存。</li>
+<li>否则，返回最新的资源。</li>
+</ol>
+<h4 id="强缓存-1"><a href="#强缓存-1" class="headerlink" title="强缓存"></a>强缓存</h4><p>强缓存是利用http的返回头中的<code>Expires</code>或者<code>Cache-Control</code>两个字段来控制的，用来表示资源的缓存时间。</p>
+<font color="red">Expires</font>:<br>该字段是http1.0时的规范，它的值为一个绝对时间的GMT格式的时间字符串，比如Expires:Mon,18 Oct 2066 23:59:59 GMT。这个时间代表着这个资源的失效时间，在此时间之前，即命中缓存。这种方式有一个明显的缺点，由于失效时间是一个绝对时间，所以当服务器与客户端时间偏差较大时，就会导致缓存混乱。<br><br>——-<br><font color="red">Cache-Control</font>:<br>Cache-Control是http1.1时出现的header信息，主要是利用该字段的max-age值来进行判断，它是一个相对时间，例如Cache-Control:max-age=3600，代表着资源的有效期是3600秒。cache-control除了该字段外，还有下面几个比较常用的设置值：<br><br><em> no-cache：不使用本地缓存。需要使用缓存协商，先与服务器确认返回的响应是否被更改，如果之前的响应中存在ETag，那么请求的时候会与服务端验证，如果资源未被更改，则可以避免重新下载。
+</em> no-store：直接禁止游览器缓存数据，每次用户请求该资源，都会向服务器发送一个请求，每次都会下载完整的资源。<br><em> public：可以被所有的用户缓存，包括终端用户和CDN等中间代理服务器。
+</em> private：只能被终端用户的浏览器缓存，不允许CDN等中继缓存服务器对其缓存。<br><br><br><font color="red">Cache-Control与Expires可以在服务端配置同时启用，同时启用的时候Cache-Control优先级高。</font>
+
+<h2 id="协商缓存-1"><a href="#协商缓存-1" class="headerlink" title="协商缓存"></a>协商缓存</h2><p>当强缓存没有命中的时候，浏览器会发送一个请求到服务器，服务器根据 <code>header</code> 中的部分信息来判断是否命中缓存。如果命中，则返回<code>304</code> ，告诉浏览器资源未更新，可使用本地的缓存。</p>
+<hr>
+<p>header： <code>Last-Modify/If-Modify-Since</code>和 <code>ETag/If-None-Match</code>.</p>
+<p><strong>Last-Modify/If-Modify-Since</strong><br>浏览器第一次请求一个资源的时候，服务器返回的 header 中会加上 Last-Modify，Last-modify 是一个时间标识该资源的最后修改时间。<br>当浏览器再次请求该资源时，request 的请求头中会包含 If-Modify-Since，该值为缓存之前返回的 Last-Modify。服务器收到 If-Modify-Since 后，根据资源的最后修改时间判断是否命中缓存。<br>如果命中缓存，则返回 304，并且不会返回资源内容，并且不会返回 Last-Modify。</p>
+<font color="red">缺点:</font><br>1. <strong>短时间内资源发生了改变</strong>,<code>Last-Modified</code>并不会发生变化。<br>2. <strong>周期性变化</strong>,如果这个资源在一个周期内修改回原来的样子了，我们认为是可以使用缓存的，但是 <code>Last-Modified</code> 可不这样认为,因此便有了 <code>ETag</code><br><br><strong>ETag/If-None-Match</strong><br>与 <code>Last-Modify/If-Modify-Since</code> 不同的是，<code>Etag/If-None-Match</code>返回的是一个校验码。<code>ETag</code> 可以保证每一个资源是唯一的，资源变化都会导致 <code>ETag</code>变化。服务器根据浏览器上送的 <code>If-None-Match</code> 值来判断是否命中缓存。<br>与 <code>Last-Modified</code> 不一样的是，当服务器返回 <code>304 Not Modified</code>的响应时，由于 <code>ETag</code>重新生成过，<code>response header</code>中还会把这个 <code>ETag</code> 返回，即使这个 <code>ETag</code> 跟之前的没有变化。<br><br><font color="red">Last-Modified 与 ETag 是可以一起使用的，服务器会优先验证 ETag，一致的情况下，才会继续比对 Last-Modified，最后才决定是否返回 304。</font>
+
+
+<hr>
+<h3 id="实践检验"><a href="#实践检验" class="headerlink" title="实践检验"></a>实践检验</h3><p>我讨厌文字记忆，所以毫不犹豫选了理工科～～<br><code>talk is cheap , show me your code</code></p>
+<p>⚠️ 实践过程控制台不要禁用缓存</p>
+<p>利用<code>koa</code>启动<code>server</code>服务 <code>port：8000</code></p>
+<p>引入静态资源 加载前端模版 去内蒙的航拍 哈哈哈 有我</p>
+<p><img src="/images/cache/cache_one.png" alt="cache_one"></p>
+<p>如图可见 初次访问 正常加载模版页面<code>cache</code>与图片资源<code>1.jpeg</code></p>
+<p><strong>实现强缓存</strong></p>
+<hr>
+<ol>
+<li><strong>服务端</strong>设置响应头Cache-Control 资源有效期为300秒</li>
+</ol>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line"> </span><br><span class="line">  ctx.<span class="keyword">set</span>(&#123;</span><br><span class="line">    <span class="string">'Cache-Control'</span>: <span class="string">'max-age=300'</span>  </span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">await</span> next();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>刷新页面</li>
+</ol>
+<p><img src="/images/cache/cache1.png" alt="cache1"><br>响应头的<code>Cache-Control</code>变成了 max-age=300</p>
+<p><font color="red">验证访问缓存的优先级:</font><br>第一次的网络请求,浏览器把图片资源缓存到了磁盘和内存里，根据约定 应该会先从内存中找资源</p>
+<ol>
+<li>再次刷新页面</li>
+</ol>
+<p> <img src="/images/cache/cache-----.png" alt="cache-----"></p>
+<p>确实是从内存获取的</p>
+<p>4.关掉页面再重新打开 （内存是存在进程中的,所以关闭该页面,内存中的资源也被释放掉了,磁盘中的资源是永久性的,所以还存在）<br><img src="/images/cache/cache_disk.png" alt="cache_disk"></p>
+<p>from disk cache 从磁盘中获取资源</p>
+<p>5.接下来 有效期 300秒 后.<br><img src="/images/cache/cachehuancunshixiao.png" alt="cachehuancunshixiao"><br>缓存失效 重新向服务器载入资源</p>
+<hr>
+<p><strong>实现协商缓存</strong><br>协商缓存本地测试直接拦截url给定code</p>
+<p>Cache-Control 取默认值 no-cache</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.use( async(ctx, <span class="keyword">next</span>) =&gt; &#123;</span><br><span class="line"><span class="regexp">//</span> <span class="regexp">//</span> 强制缓存</span><br><span class="line"><span class="regexp">//</span>  ctx.set(&#123;</span><br><span class="line"><span class="regexp">//</span>    <span class="string">'Cache-Control'</span>: <span class="string">'max-age=300'</span>  </span><br><span class="line"><span class="regexp">//</span>  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> 协商缓存测试</span><br><span class="line"><span class="keyword">if</span>(ctx.url === <span class="string">'/imgs/1.jpeg'</span>)&#123;</span><br><span class="line">  ctx.status = <span class="number">304</span>;</span><br><span class="line">  return;</span><br><span class="line">&#125;</span><br><span class="line">await <span class="keyword">next</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="/images/cache/xieshang.png" alt="xieshang"></p>
+<p>服务器返回<code>304</code> 同时<code>size</code>变小了很多 因为只返回了必要信息</p>
+<p>也可利用 现成的插件帮我们计算文件的ETag<br><code>npm install koa-tag -D
+npm install koa-conditional-get -D</code><br>就不演示了</p>
+<p>加载资源发生变化（比如换了张图片）<code>ETag</code>改变 会导致协商缓存策略失效</p>
+<p>然后  就行了. 😊</p>
+<p>如果你想亲自体验</p>
+<p><a href>源码在这里</a></p>
+<p>day day up</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>您的支持将鼓励我继续创作 笔芯</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/uploads/weixin.jpeg" alt="亦舒 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/uploads/zhifubao.jpeg" alt="亦舒 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%93%E5%AD%98/" rel="tag"># 缓存</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/21/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/" rel="prev" title="2018 写在年终的话">
+                  <i class="fa fa-chevron-left"></i> 2018 写在年终的话
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/27/re_setState/" rel="next" title="揭秘setState机制">
+                  揭秘setState机制 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦舒</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">NaNm</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">NaN:aN</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '1ade6ae310dee1a615bb',
+      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      repo        : 'maying2020.github.io',
+      owner       : 'maying2020',
+      admin       : ['maying2020'],
+      id          : '4367f8a7a48ec298ef81ef4d6391edde',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

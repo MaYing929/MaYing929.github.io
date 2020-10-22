@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="纸上得来终觉浅，我们来实现一个简易的服务端渲染流程，意在体会SSR带来的红利">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现一个SSR同构应用">
+<meta property="og:url" content="http://maying.ink/2019/03/06/SSRDemo/index.html">
+<meta property="og:site_name" content="亦舒的海角">
+<meta property="og:description" content="纸上得来终觉浅，我们来实现一个简易的服务端渲染流程，意在体会SSR带来的红利">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://maying.ink/images/ssr/ssrcc.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/ssrvs1.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/ssrvs100.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/hydrate_to_render.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/TTFB2.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/TTFB1.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/client_render.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/ssr.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/react15_render.png">
+<meta property="og:image" content="http://maying.ink/images/ssr/react16.png">
+<meta property="article:published_time" content="2019-03-06T07:51:42.000Z">
+<meta property="article:modified_time" content="2020-10-22T18:41:42.180Z">
+<meta property="article:author" content="亦舒">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://maying.ink/images/ssr/ssrcc.png">
+
+
+<link rel="canonical" href="http://maying.ink/2019/03/06/SSRDemo/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>实现一个SSR同构应用 | 亦舒的海角</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">亦舒的海角</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%A0%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">几个重要的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#renderToString-renderToStaticMarkup"><span class="nav-number">1.1.</span> <span class="nav-text">renderToString()&#x2F;renderToStaticMarkup()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B1%E5%90%8C%E7%82%B9%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">共同点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%82%B9"><span class="nav-number">1.1.2.</span> <span class="nav-text">不同点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReactDom-hydrate"><span class="nav-number">1.2.</span> <span class="nav-text">ReactDom.hydrate()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#renderToNodeStream-renderToStaticNodeStream"><span class="nav-number">1.3.</span> <span class="nav-text">renderToNodeStream()&#x2F;renderToStaticNodeStream()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E4%B8%AD%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">实际开发中可能存在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-16-%E5%9C%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B8%B2%E6%9F%93%E4%B8%8A%E7%9A%84%E6%83%8A%E5%96%9C"><span class="nav-number">3.</span> <span class="nav-text">React 16 在服务端渲染上的惊喜</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E4%B8%80-client%E7%AB%AF%E6%B8%B2%E6%9F%93%E4%BB%8D%E7%84%B6%E4%BD%BF%E7%94%A8render"><span class="nav-number">3.1.</span> <span class="nav-text">假设一 client端渲染仍然使用render()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E4%BA%8C-%E5%AE%8C%E5%85%A8%E4%BE%9D%E8%B5%96%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B8%B2%E6%9F%93%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88"><span class="nav-number">3.2.</span> <span class="nav-text">假设二 完全依赖服务端渲染会发生什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E4%B8%89-%E4%BD%BF%E7%94%A8React-16-renderToNodeStream%E6%B8%B2%E6%9F%93"><span class="nav-number">3.3.</span> <span class="nav-text">假设三 使用React 16 renderToNodeStream渲染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E4%B8%89-%E5%90%8C%E6%9E%84%E5%BA%94%E7%94%A8%E4%B8%8E%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E4%BC%98%E5%8A%BF%E5%AF%B9%E6%AF%94"><span class="nav-number">3.4.</span> <span class="nav-text">假设三 同构应用与浏览器渲染优势对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E4%B8%89-react16%E6%AF%94react15%E6%B8%B2%E6%9F%93%E6%9B%B4%E5%8A%A0%E9%AB%98%E6%95%88"><span class="nav-number">3.5.</span> <span class="nav-text">假设三 react16比react15渲染更加高效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%97%E7%95%99%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">遗留问题</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">亦舒</p>
+  <div class="site-description" itemprop="description">知识带来自由，我等风也等你 🍂</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/maying2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;maying2020" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maxiaoying929@gmail.com" title="E-Mail → mailto:maxiaoying929@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://weibo.com/3640193250/profile?topnav=1&wvr=6" title="Weibo → http:&#x2F;&#x2F;weibo.com&#x2F;3640193250&#x2F;profile?topnav&#x3D;1&amp;wvr&#x3D;6" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/maying2020" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://maying.ink/2019/03/06/SSRDemo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="亦舒">
+      <meta itemprop="description" content="知识带来自由，我等风也等你 🍂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="亦舒的海角">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          实现一个SSR同构应用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-06 15:51:42" itemprop="dateCreated datePublished" datetime="2019-03-06T15:51:42+08:00">2019-03-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-23 02:41:42" itemprop="dateModified" datetime="2020-10-23T02:41:42+08:00">2020-10-23</time>
+      </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span></span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>NaN:aN</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>纸上得来终觉浅，我们来实现一个简易的服务端渲染流程，意在体会SSR带来的红利<br><a id="more"></a><br>页面源码来自<a href>React状态管理与同构实战</a></p>
+<h2 id="几个重要的概念"><a href="#几个重要的概念" class="headerlink" title="几个重要的概念"></a>几个重要的概念</h2><p>实现<code>SSR</code>是依靠<code>React</code>提供的<code>ReactDomServer</code>对象</p>
+<p>它主要提供了只能在服务端使用的<code>renderToString()</code>与<code>renderToStaticMarkup()</code>方法</p>
+<h3 id="renderToString-renderToStaticMarkup"><a href="#renderToString-renderToStaticMarkup" class="headerlink" title="renderToString()/renderToStaticMarkup()"></a>renderToString()/renderToStaticMarkup()</h3><p><strong>使用方法：</strong> <code>ReactDomServer.renderTostring(element)</code>/<br><code>ReactDomServer.renderToStaticMarkup(element)</code></p>
+<h4 id="共同点："><a href="#共同点：" class="headerlink" title="共同点："></a>共同点：</h4><ul>
+<li>都接收一个React Element 并<strong>将此 Element 转化为HTML字符串,通过浏览器返回</strong>，实现了在服务端将页面拼接字符串插入HTML文档中并返回给浏览器 完成初步服务端渲染的目的</li>
+</ul>
+<h4 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h4><ul>
+<li>renderToString(<font color="red">注：React 15</font>) 生成的HTML字符串的每个Dom节点都有<code>data-react-id</code>属性，根节点会有一个<code>data-react-checkSum</code>属性</li>
+<li>renderToStaticMarkup 不带<code>data-react-checkSum</code>属性 浏览器渲染时必会重新渲染组件</li>
+</ul>
+<hr>
+<p><font color="red">关于data-react-checkSum</font>：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">如果两个组件有相同的props和<span class="type">Dom</span>结构，这个值是一样的</span><br><span class="line"></span><br><span class="line">我们知道 服务端渲染完页面内容难过之后，浏览器端也会渲染以完成组件的交互等能力，浏览器端会生成组件的<span class="class"><span class="keyword">data</span>-react-checkSum值 然后跟服务端渲染组件的值做对比，如果相等，则不再重复渲染</span></span><br></pre></td></tr></table></figure>
+<p>这里有一张草图能大概描述这个过程嘤嘤嘤.<br><img src="/images/ssr/ssrcc.png" alt="cache_detai"></p>
+<hr>
+<h3 id="ReactDom-hydrate"><a href="#ReactDom-hydrate" class="headerlink" title="ReactDom.hydrate()"></a>ReactDom.hydrate()</h3><p>React 16以后通过<br><code>renderToString</code>渲染的组件不再带有<code>data-react-*</code>属性，因此浏览器端的渲染方式无法简单通过<code>data-react-checksum</code>来判断是否需要重新渲染</p>
+<p>基于这样儿的背景下<code>ReactDom</code>提供了一个新的API <code>ReactDom.hydrate()</code> 用法同<code>render()</code>在浏览器端渲染组件</p>
+<p>当然，react是向下兼容的，浏览器端在渲染组件时使用render()仍然没有问题，但不论是面向未来，还是基于性能的考虑，都应该采用更好的模式</p>
+<hr>
+<h3 id="renderToNodeStream-renderToStaticNodeStream"><a href="#renderToNodeStream-renderToStaticNodeStream" class="headerlink" title="renderToNodeStream()/renderToStaticNodeStream()"></a>renderToNodeStream()/renderToStaticNodeStream()</h3><p><font color="red">React 16 </font>为了优化页面的初始加载速度缩短TTFB时间,提供了这两个方法</p>
+<p><strong>概念</strong><br>该方法持续产生子节流 返回 <code>Readable stream</code> 最终<strong>通过流形式返回的HTML字符串</strong><br>这样 服务端处理内容时是实时向浏览器端传输数据而不是一次性处理完成后才开始返回结果的</p>
+<p><code>renderToStaticNodeStream</code> 之于 <code>renderToNodeStream</code> 也是不会产生<code>data-react-*</code>属性，对于静态页面 可以采用此方法。</p>
+<h2 id="实际开发中可能存在的问题"><a href="#实际开发中可能存在的问题" class="headerlink" title="实际开发中可能存在的问题"></a>实际开发中可能存在的问题</h2><ol>
+<li>服务端不存在支持组件挂载的浏览器环境，所以react组件只有<code>componentDidMount</code>之前的生命周期方法有效，所以在其之前的生命周期方法中不能用到浏览器的特性，比如 <code>window、localStorage</code>.</li>
+<li>双端可能都有拉取数据的需求，所以为了实现代码的复用，一种典型的做法就是把请求数据的逻辑放到React组件的静态方法中 然后双端共用，双端请求方法不一致的问题可以通过服务端与浏览器端的判断来封装一下 <strong>比如根据window是浏览器特有对象</strong></li>
+</ol>
+<h2 id="React-16-在服务端渲染上的惊喜"><a href="#React-16-在服务端渲染上的惊喜" class="headerlink" title="React 16 在服务端渲染上的惊喜"></a>React 16 在服务端渲染上的惊喜</h2><p>前面也有混杂说过，在此总结一下</p>
+<ul>
+<li>在浏览器渲染组件需要配合服务端使用<code>hydrate</code>方法</li>
+<li>提供了<code>stream</code>方式的接口</li>
+<li>与浏览器的新特性相似，除了能处理<code>React Element</code> 也能处理别的类型，比如<code>string number</code></li>
+<li>因为在返回结果Dom中废除了<code>data-react-checksum</code>等属性，所以服务端生成HTML更加高效</li>
+<li>允许在渲染Dom中加入非标准Dom属性</li>
+</ul>
+<hr>
+<p>好了 测试一下，基于Node.js实现一个小demo</p>
+<p><code>Express4.15.3 进行服务端处理</code></p>
+<p><img src="/images/ssr/ssrvs1.png" alt="ssrvs1"><br>browser: 浏览器端渲染<br>server：服务端逻辑<br>share：同构的部分</p>
+<p>运行效果：<br><img src="/images/ssr/ssrvs100.png" alt="ssr"><br><strong>share/app.js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> logo <span class="keyword">from</span> <span class="string">"./logo.svg"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"./App.css"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  handleClick() &#123;</span><br><span class="line">    alert(<span class="string">'我被触发辣'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">"App"</span>&gt;</span><br><span class="line">        &lt;div className=<span class="string">"App-header"</span>&gt;</span><br><span class="line">          &lt;img src=&#123;logo&#125; className=<span class="string">"App-logo"</span> alt=<span class="string">"logo"</span> /&gt;</span><br><span class="line">          &lt;h2&gt;Welcome to React <span class="keyword">in</span> the Server&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">        &lt;p className=<span class="string">"App-intro"</span>&gt;点击按钮体验&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button onClick=&#123;e =&gt; this.handleClick()&#125;&gt; 我是按钮 &lt;/</span>button&gt;  </span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">export default App;</span></span><br></pre></td></tr></table></figure>
+<p><strong>browser/index.js</strong></p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; hydrate &#125; <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">"../shared/App"</span>;</span><br><span class="line"></span><br><span class="line">hydrate(&lt;App /&gt;, <span class="built_in">document</span>.getElementById(<span class="string">"root"</span>));</span><br></pre></td></tr></table></figure>
+<p><strong>server/index.js</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;</span><br><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; renderToString &#125; <span class="keyword">from</span> <span class="string">"react-dom/server"</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">"../shared/App"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line">app.use(express.static(<span class="string">"public"</span>));</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">"*"</span>, (req, res) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> htmlMarkup = renderToString(<span class="xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span>);</span></span><br><span class="line"><span class="xml">  res.send(`</span></span><br><span class="line"><span class="xml">      <span class="meta">&lt;!DOCTYPE html&gt;</span></span></span><br><span class="line">      &lt;head&gt;</span><br><span class="line">        &lt;title&gt;Universal Reacl&lt;/title&gt;</span><br><span class="line">        &lt;link rel="stylesheet" href="/css/main.css"&gt;</span><br><span class="line">        &lt;script src="/bundle.js" defer&gt;&lt;/script&gt;</span><br><span class="line">      &lt;/head&gt;</span><br><span class="line"></span><br><span class="line">      &lt;body&gt;</span><br><span class="line">        &lt;div id="root"&gt;$&#123;htmlMarkup&#125;&lt;/div&gt;</span><br><span class="line">      &lt;/body&gt;</span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="xml">  `);</span></span><br><span class="line"><span class="xml">&#125;);</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">app.listen(process.env.PORT || 3000, () =&gt; &#123;</span></span><br><span class="line"><span class="xml">  console.log("Server is listening");</span></span><br><span class="line"><span class="xml">&#125;);</span></span><br></pre></td></tr></table></figure>
+<p><strong>server端：</strong>使用 <code>renderToString</code>生成的字符串，使用<code>res.send</code>发送给浏览器<br><strong>client端：</strong> id为root的Dom节点就来自服务端返回的结果，用了<code>React.hydrate</code>完成了浏览器端的逻辑处理部分</p>
+<h3 id="假设一-client端渲染仍然使用render"><a href="#假设一-client端渲染仍然使用render" class="headerlink" title="假设一 client端渲染仍然使用render()"></a>假设一 client端渲染仍然使用render()</h3><p><strong>测试</strong></p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;render &#125; <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">"../shared/App"</span>;</span><br><span class="line"></span><br><span class="line">render(&lt;App /&gt;, <span class="built_in">document</span>.getElementById(<span class="string">"root"</span>));</span><br></pre></td></tr></table></figure>
+<p><strong>结果</strong><br>由于实现了向下兼容，所以是可以的，但是会给如下警告⚠️<br><img src="/images/ssr/hydrate_to_render.png" alt="hydrate_to_rende"></p>
+<p><strong>结论</strong> 尽量使用新特性</p>
+<hr>
+<h3 id="假设二-完全依赖服务端渲染会发生什么"><a href="#假设二-完全依赖服务端渲染会发生什么" class="headerlink" title="假设二 完全依赖服务端渲染会发生什么"></a>假设二 完全依赖服务端渲染会发生什么</h3><p><strong>测试</strong><br>将<code>browser/index.js</code>代码注释掉<br><strong>结果</strong><br>页面正常显示，但是点击按钮没有不会弹窗<br><strong>结论</strong> 需要双端一起完成页面的展示与交互</p>
+<hr>
+<h3 id="假设三-使用React-16-renderToNodeStream渲染"><a href="#假设三-使用React-16-renderToNodeStream渲染" class="headerlink" title="假设三 使用React 16 renderToNodeStream渲染"></a>假设三 使用React 16 renderToNodeStream渲染</h3><p><strong>测试 更改 server/index.js</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import express from "express";</span><br><span class="line">import React from "react";</span><br><span class="line">import &#123; renderToNodeStream &#125; from "react-dom/server";</span><br><span class="line">import App from "../shared/App";</span><br><span class="line"></span><br><span class="line">const app = express();</span><br><span class="line"></span><br><span class="line">app.use(express.static("public"));</span><br><span class="line"></span><br><span class="line">app.get("*", (req, res) =&gt; &#123;</span><br><span class="line">  res.write(`</span><br><span class="line">      <span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"content-type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Universal Reacl<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"/css/main.css"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/bundle.js"</span> <span class="attr">defer</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">head</span>&gt;</span>`</span><br><span class="line">  );</span><br><span class="line">  res.write("<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">'root'</span>&gt;</span>"); </span><br><span class="line">  const stream = renderToNodeStream(<span class="tag">&lt;<span class="name">App</span>/&gt;</span>);</span><br><span class="line">  stream.pipe(res, &#123; end: false &#125;);</span><br><span class="line">  stream.on('end', () =&gt; &#123;</span><br><span class="line">    res.write("<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span>");</span><br><span class="line">    res.end();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong> 为了配合返回一个流，使用<code>res.write</code>方法代替先前的<code>res.end</code></p>
+<p><strong>好处</strong><br>使用<code>renderToString</code>页面TTFB时间</p>
+<p><img src="/images/ssr/TTFB2.png" alt="TTFB2"><br>使用<code>renderToNodeStream</code>页面TTFB时间</p>
+<p><img src="/images/ssr/TTFB1.png" alt="TTFB1"></p>
+<p><strong>结论</strong><br>采用渐进式流渲染可以最大限度的缩短服务器响应水间，从而使浏览器可以更快的接收到信息</p>
+<hr>
+<h3 id="假设三-同构应用与浏览器渲染优势对比"><a href="#假设三-同构应用与浏览器渲染优势对比" class="headerlink" title="假设三 同构应用与浏览器渲染优势对比"></a>假设三 同构应用与浏览器渲染优势对比</h3><p>浏览器渲染：<br><img src="/images/ssr/client_render.png" alt="client_rende"></p>
+<p>同构应用：<br><img src="/images/ssr/ssr.png" alt="ss"></p>
+<hr>
+<h3 id="假设三-react16比react15渲染更加高效"><a href="#假设三-react16比react15渲染更加高效" class="headerlink" title="假设三 react16比react15渲染更加高效"></a>假设三 react16比react15渲染更加高效</h3><p>React 15<br><img src="/images/ssr/react15_render.png" alt="react15_rende"><br>React 16<br><img src="/images/ssr/react16.png" alt="react16"></p>
+<h2 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h2><ol>
+<li>鉴于<code>renderToNodeStream()/renderToStaticNodeStream()</code>与<br><code>renderToString()/renderToStaticMarkup()</code><br>React 16之后都不存在<code>data-react-*</code>了 双方还有什么区别？</li>
+<li>react 16之后 如何做双端对比？ 官方说是根据<code>ReactDom.hydrate()</code>与<code>renderToString()</code>结合判断.. 一脸懵逼</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>您的支持将鼓励我继续创作 笔芯</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/uploads/weixin.jpeg" alt="亦舒 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/uploads/zhifubao.jpeg" alt="亦舒 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/05/FrontBackSeparation/" rel="prev" title="前后端分离的演进">
+                  <i class="fa fa-chevron-left"></i> 前后端分离的演进
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/13/new/" rel="next" title="模拟实现JS的new操作符">
+                  模拟实现JS的new操作符 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦舒</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">NaNm</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">NaN:aN</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '1ade6ae310dee1a615bb',
+      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      repo        : 'maying2020.github.io',
+      owner       : 'maying2020',
+      admin       : ['maying2020'],
+      id          : '0c59fe17f4e45af62d3238afe50e83e6',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>

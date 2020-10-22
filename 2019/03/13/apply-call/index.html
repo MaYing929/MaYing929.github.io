@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maying.ink","root":"/","scheme":"Muse","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="先来通过MDN认识下call和apply语法func.apply(thisArg, [argsArray]) 参数thisArg：可选的，func函数运行的时使用的this值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模拟实现apply和call方法">
+<meta property="og:url" content="http://maying.ink/2019/03/13/apply-call/index.html">
+<meta property="og:site_name" content="亦舒的海角">
+<meta property="og:description" content="先来通过MDN认识下call和apply语法func.apply(thisArg, [argsArray]) 参数thisArg：可选的，func函数运行的时使用的this值">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-13T08:12:37.000Z">
+<meta property="article:modified_time" content="2020-10-22T18:41:42.180Z">
+<meta property="article:author" content="亦舒">
+<meta property="article:tag" content="call">
+<meta property="article:tag" content="apply">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://maying.ink/2019/03/13/apply-call/">
+
+
+<script data-pjax class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>模拟实现apply和call方法 | 亦舒的海角</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">亦舒的海角</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%88%E6%9D%A5%E9%80%9A%E8%BF%87MDN%E8%AE%A4%E8%AF%86%E4%B8%8Bcall%E5%92%8Capply"><span class="nav-number">1.</span> <span class="nav-text">先来通过MDN认识下call和apply</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">模拟实现的准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">亦舒</p>
+  <div class="site-description" itemprop="description">知识带来自由，我等风也等你 🍂</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/maying2020" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;maying2020" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:maxiaoying929@gmail.com" title="E-Mail → mailto:maxiaoying929@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://weibo.com/3640193250/profile?topnav=1&wvr=6" title="Weibo → http:&#x2F;&#x2F;weibo.com&#x2F;3640193250&#x2F;profile?topnav&#x3D;1&amp;wvr&#x3D;6" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/maying2020" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://maying.ink/2019/03/13/apply-call/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="亦舒">
+      <meta itemprop="description" content="知识带来自由，我等风也等你 🍂">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="亦舒的海角">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          模拟实现apply和call方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-13 16:12:37" itemprop="dateCreated datePublished" datetime="2019-03-13T16:12:37+08:00">2019-03-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-23 02:41:42" itemprop="dateModified" datetime="2020-10-23T02:41:42+08:00">2020-10-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span></span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>NaN:aN</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="先来通过MDN认识下call和apply"><a href="#先来通过MDN认识下call和apply" class="headerlink" title="先来通过MDN认识下call和apply"></a>先来通过MDN认识下call和apply</h2><h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p><code>func.apply(thisArg, [argsArray])</code></p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p><strong>thisArg</strong>：可选的，<code>func</code>函数运行的时使用的<code>this</code>值</p>
+<a id="more"></a>
+<p>⚠️ </p>
+<ul>
+<li>如果这个函数处于<font color="red">非严格模式下</font> 指定其为<code>null</code> 或者 <code>undefined</code>时 this绑定会应用<code>默认规则</code>（<font color="red">这在<a href="http://maying.ink/2019/03/11/this/#more">分析js指向问题</a>时有提到</font>）</li>
+<li>如果thisArg是原始值会被包装称对象 <code>.apply(2)</code>会被包装成<code>.apply(Number(2))</code></li>
+</ul>
+<hr>
+<p><strong>argsArray</strong>：可选的。一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 func 函数。如果该参数的值为 null 或  undefined，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象</p>
+<hr>
+<p><strong>返回值</strong>：<br>调用有指定this值和参数的函数的结果</p>
+<hr>
+<p>几个有用的例子感受下apply的魔力</p>
+<p><strong>求数组最大最小值</strong></p>
+<p>聪明的apply用法允许你在某些本来需要写成遍历数组变量的任务中使用内建的函数</p>
+<p>使用<code>Math.max/Math.min</code>来找出一个数组中的最大/最小值</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">var</span> numbers = [<span class="number">5</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">7</span>];</span><br><span class="line"><span class="built_in">var</span> <span class="built_in">max</span> = Math.<span class="built_in">max</span>.<span class="built_in">apply</span>(null, numbers);</span><br><span class="line">console.<span class="built_in">log</span>(<span class="built_in">max</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">var</span> <span class="built_in">min</span> = Math.<span class="built_in">min</span>.<span class="built_in">apply</span>(null, numbers);</span><br><span class="line">console.<span class="built_in">log</span>(<span class="built_in">min</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>apply设置的this值</strong></p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var doSth = function(a, b)&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    <span class="built_in">console</span>.log([a, b]);</span><br><span class="line">&#125;</span><br><span class="line">doSth.apply(<span class="literal">null</span>, [<span class="number">1</span>, <span class="number">2</span>]); <span class="regexp">//</span> <span class="keyword">this</span>是<span class="built_in">window</span>  <span class="regexp">//</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">doSth.apply(<span class="number">0</span>, [<span class="number">1</span>, <span class="number">2</span>]); <span class="regexp">//</span> <span class="keyword">this</span> 是 Number(<span class="number">0</span>) <span class="regexp">//</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">doSth.apply(<span class="literal">true</span>); <span class="regexp">//</span> <span class="keyword">this</span> 是 Boolean(<span class="literal">true</span>) <span class="regexp">//</span> [<span class="literal">undefined</span>, <span class="literal">undefined</span>]</span><br><span class="line">doSth.call(<span class="literal">undefined</span>, <span class="number">1</span>, <span class="number">2</span>); <span class="regexp">//</span> <span class="keyword">this</span> 是 <span class="built_in">window</span> <span class="regexp">//</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>用apply将一个数组添加到另一个数组</strong></p>
+<p>如果我们传递一个数组来推送，它实际上会将该数组作为单个元素添加，而不是单独添加元素，因此我们最终得到一个数组内的数组<br><code>concat</code>确实具有我们想要的行为，但它实际上并不附加到现有数组，而是创建并返回一个新数组<br>用<code>apply</code>就能简单实现</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">var</span> <span class="built_in">array</span> = ['a', 'b'];</span><br><span class="line"><span class="built_in">var</span> elements = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="built_in">array</span>.<span class="built_in">push</span>.<span class="built_in">apply</span>(<span class="built_in">array</span>,elements) // [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">//<span class="built_in">array</span>.<span class="built_in">push</span>(elements) //) [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, Array(<span class="number">3</span>)]</span><br><span class="line">console.<span class="built_in">log</span>(<span class="built_in">array</span>);</span><br></pre></td></tr></table></figure>
+<p>call()与apply()非常相似</p>
+<p><code>fun.call(thisArg, arg1, arg2, ...)</code></p>
+<p><strong>call和apply的不同点</strong></p>
+<ul>
+<li><code>apply</code>只接收两个参数，第二个参数可以是<code>数组</code>也可以是<code>类数组</code>，其实也可以是对象，后续的参数忽略不计</li>
+<li><code>call</code>接收第二个及以后一系列的参数</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>重新认识了call和apply会发现<br>它们作用都是一样的，改变函数里的this指向为第一个参数<code>thisArg</code>，如果明确有多少参数，那可以用<code>call</code>，不明确则可以使用<code>apply</code>。也就是说完全可以不使用<code>call</code>，而使用<code>apply</code>代替，我们只需要模拟实现<code>apply</code>，<code>call</code>可以根据参数个数都放在一个数组中，给到<code>apply</code>即可</p>
+<hr>
+<h2 id="模拟实现的准备工作"><a href="#模拟实现的准备工作" class="headerlink" title="模拟实现的准备工作"></a>模拟实现的准备工作</h2><p>模拟之前 我们先得看看<a href="http://yanhaijing.com/es5/#book" target="_blank" rel="noopener">ES5规范</a> 关于apply 摘抄以下几条</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Function.prototype.apply (thisArg, argArray)</span><br><span class="line"></span><br><span class="line">当以 thisArg 和 argArray 为参数在一个 func 对象上调用 apply 方法，采用如下步骤：</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span>如果 IsCallable(func) 是 <span class="literal">false</span>, 则抛出一个 TypeError 异常。</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>如果 argArray 是 null 或 undefined, 则返回提供 thisArg 作为 this 值并以空参数列表调用 func 的 <span class="string">[[Call]]</span> 内部方法的结果。</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span>返回提供 thisArg 作为 this 值并以空参数列表调用 func 的 <span class="string">[[Call]]</span> 内部方法的结果。</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span>如果 Type(argArray) 不是 Object, 则抛出一个 TypeError 异常。</span><br><span class="line">...</span><br><span class="line"><span class="number">9.</span>提供 thisArg 作为 this 值并以 argList 作为参数列表，调用 func 的 <span class="string">[[Call]]</span> 内部方法，返回结果。</span><br><span class="line"></span><br><span class="line">apply 方法的 length 属性是 <span class="number">2</span>。</span><br><span class="line"></span><br><span class="line"><span class="number">10.</span>在外面传入的 thisArg 值会修改并成为 this 值。thisArg 是 undefined 或 null 时它会被替换成全局对象，所有其他值会被应用 ToObject 并将结果作为 this 值，这是第三版引入的更改</span><br></pre></td></tr></table></figure>
+<p>结合上文和规范 ，明确了要解决的问题，<strong>我们如何将函数里的this（一般指向window）指向第一个参数thisArg呢</strong><br>不由得想起来了<a href="http://maying.ink/2019/03/11/this/">介绍this指向那一篇文章</a><br>那就采用隐式绑定呀，也就是说 既然他现有的上下文环境是window（全局作用域）,那我们就手动给他创建一个<code>非全局上下文</code></p>
+<p>看看这个熟悉的例子</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> doSth = <span class="keyword">function</span>()&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">    <span class="built_in">console</span>.log(arguments);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> student = &#123;</span><br><span class="line">    name: <span class="string">'yishu'</span>,</span><br><span class="line">    doSth: doSth,</span><br><span class="line">&#125;;</span><br><span class="line">student.doSth(<span class="number">1</span>, <span class="number">2</span>); <span class="regexp">// this === student //</span> <span class="literal">true</span> <span class="regexp">// 'yishu' //</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">doSth.apply(student, [<span class="number">1</span>, <span class="number">2</span>]); <span class="regexp">// this === student //</span> <span class="literal">true</span> <span class="regexp">// 'yishu' //</span> [<span class="number">1</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>你能看出来什么？<br> 在对象<code>student</code>上加一个函数doSth，再执行这个函数，这个函数里的<code>this</code>就指向了这个对象</p>
+<p> 那我们就模拟这个对象，给他添加一个函数,使用函数调用之后再删除它</p>
+<p> 第一版本</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 浏览器环境 非严格模式</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getGlobalObject</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Function</span>.prototype.applyFn = <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">thisArg,argsArray</span>)</span>&#123;</span><br><span class="line">   <span class="comment">// 1.如果 `IsCallable(func)` 是 `false`, 则抛出一个 `TypeError` 异常。</span></span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> <span class="keyword">this</span> !=<span class="string">'function'</span>)&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="keyword">this</span> + <span class="string">'is not function'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 1.如果 `IsCallable(func)` 是 `false`, 则抛出一个 `TypeError` 异常。</span></span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">typeof</span> argsArray === <span class="string">'undefined'</span> || argsArray === <span class="literal">null</span>)&#123;</span><br><span class="line">    argsArray = [];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//3.如果 Type(argArray) 不是 Object, 则抛出一个 TypeError 异常 .</span></span><br><span class="line">   <span class="keyword">if</span>(argsArray !== <span class="keyword">new</span> <span class="built_in">Object</span>(argsArray))&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'CreateListFromArrayLike called on non-object'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="comment">//4.改变this的指向 在外面传入的 thisArg 值会修改并成为 this 值 如果传入的是 undefined或者null 则this指向应用默认绑定</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> thisArg === <span class="string">'undefined'</span> || thisArg === <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="comment">// ES3: thisArg 是 undefined 或 null 时它会被替换成全局对象 浏览器里是window</span></span><br><span class="line">        thisArg = getGlobalObject();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//开始表演</span></span><br><span class="line">    thisArg = <span class="keyword">new</span> <span class="built_in">Object</span>(thisArg);</span><br><span class="line">    thisArg.fn = <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">//接收返回值</span></span><br><span class="line">    <span class="keyword">var</span> fnResult = thisArg.fn(...argsArray);</span><br><span class="line">    <span class="keyword">delete</span> thisArg.fn;</span><br><span class="line">    <span class="keyword">return</span> fnResult;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> doSth = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> student = &#123;</span><br><span class="line">    name: <span class="string">'马小莹'</span>,</span><br><span class="line">    <span class="comment">//doSth: doSth, //我们主要模拟了这个函数</span></span><br><span class="line">&#125;;</span><br><span class="line">doSth.applyFn(student, [<span class="number">1</span>, <span class="number">2</span>]); </span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123;name: "马小莹", doSth: ƒ, fn: ƒ&#125;</span></span><br><span class="line"><span class="comment">// 马小莹</span></span><br><span class="line"><span class="comment">// Arguments(2) [1, 2, callee: ƒ, Symbol(Symbol.iterator): ƒ]</span></span><br></pre></td></tr></table></figure>
+<p>看起来很完美，那它有没有问题呢？ 其实是有的</p>
+<p><strong>.fn函数同名覆盖问题，<code>thisArg</code>对象上有<code>fn</code>，那就被覆盖了然后被删除了</strong></p>
+<p>那我们就找一个唯一值的函数名</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">thisArg = new Object(thisArg);</span><br><span class="line">var <span class="emphasis">_fn = '_</span>_fn' + new Date().getTime();</span><br><span class="line">thisArg[_fn] = this;</span><br><span class="line">//接收返回值</span><br><span class="line">var fnResult = thisArg[<span class="string">_fn</span>](<span class="link">...argsArray</span>);</span><br><span class="line">delete thisArg[_fn];</span><br><span class="line">return fnResult;</span><br></pre></td></tr></table></figure>
+<p>到现在 简单版本的<code>apply</code>已经实现了，现实业务场景不需要去模拟实现<code>call和apply</code>,毕竟是<code>ES3</code>就提供的方法</p>
+<p>既然实现了<code>apply</code>,<code>call</code>也就简单了，<strong>原理就是</strong>拿到<code>call</code>的参数 转换成数组，然后调用<code>applyFn</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">Function</span>.prototype.applyFn = <span class="function"><span class="keyword">function</span> <span class="title">apply</span>(<span class="params">thisArg</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> argsArray = [];</span><br><span class="line">  <span class="keyword">var</span> argumentsLength = <span class="built_in">arguments</span>.length;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; argumentsLength - <span class="number">1</span>; i++)&#123;</span><br><span class="line">    argsArray.push(<span class="built_in">arguments</span>[i + <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.applyFn(thisArg, argsArray);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>通过MDN认识call和apply，阅读ES5规范，到模拟实现apply，再实现call</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>您的支持将鼓励我继续创作 笔芯</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/uploads/weixin.jpeg" alt="亦舒 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/uploads/zhifubao.jpeg" alt="亦舒 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/call/" rel="tag"># call</a>
+              <a href="/tags/apply/" rel="tag"># apply</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/13/bind/" rel="prev" title="模拟实现JS的bind方法">
+                  <i class="fa fa-chevron-left"></i> 模拟实现JS的bind方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/14/flex/" rel="next" title="深入理解Flexbox">
+                  深入理解Flexbox <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">亦舒</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">NaNm</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">NaN:aN</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+    <div class="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.css">
+
+<script>
+NexT.utils.loadComments('#gitalk-container', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1.6.2/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '1ade6ae310dee1a615bb',
+      clientSecret: 'bb83a1099492163bf8a19e4a14f956dd1d27d018',
+      repo        : 'maying2020.github.io',
+      owner       : 'maying2020',
+      admin       : ['maying2020'],
+      id          : '78bb8e01d243135bd9943a8375feae13',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
